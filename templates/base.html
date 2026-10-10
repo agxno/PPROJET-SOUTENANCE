@@ -1,0 +1,82 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block titre %}Maison Lumière{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header class="entete">
+        <div class="conteneur">
+            <nav class="menu">
+                <a href="#">Boutique</a>
+                <a href="#">Collections</a>
+                <a href="#">Nouveautés</a>
+                <a href="#">Notre histoire</a>
+            </nav>
+            <a href="{% url 'accueil:accueil' %}" class="logo">Maison Lumière</a>
+            <nav class="menu menu-droite">
+                <a href="#">Recherche</a>
+                <a href="#">Compte</a>
+                <a href="#">Favoris</a>
+                <a href="#">Panier (0)</a>
+            </nav>
+        </div>
+    </header>
+
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="message">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <main>
+        {% block contenu %}{% endblock %}
+    </main>
+
+    <footer class="pied">
+        <div class="conteneur">
+            <div class="pied-grille">
+                <div>
+                    <a href="{% url 'accueil:accueil' %}" class="logo">Maison Lumière</a>
+                    <p class="signature">Des bijoux pensés pour durer, offerts avec élégance.</p>
+                </div>
+                <div>
+                    <h4>Boutique</h4>
+                    <ul>
+                        <li><a href="#">Bagues</a></li>
+                        <li><a href="#">Colliers</a></li>
+                        <li><a href="#">Bracelets</a></li>
+                        <li><a href="#">Boucles d'oreilles</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Aide</h4>
+                    <ul>
+                        <li><a href="#">Livraison et retours</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Suivi de commande</a></li>
+                        <li><a href="{% url 'accueil:contact' %}">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Légal</h4>
+                    <ul>
+                        <li><a href="#">CGV</a></li>
+                        <li><a href="#">Mentions légales</a></li>
+                        <li><a href="#">Confidentialité</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pied-bas">
+                <span>&copy; 2026 Maison Lumière</span>
+                <span>Paiement sécurisé · Carte bancaire, mobile money</span>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

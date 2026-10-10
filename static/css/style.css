@@ -1,0 +1,218 @@
+:root {
+    --fond: #f6efe6;
+    --sombre: #2b2118;
+    --carte: #ede1d0;
+    --bordure: #dccbb5;
+    --texte-doux: #6d645b;
+    --accent: #8a6a3f;
+    --vert-doux: #dde5d0;
+    --erreur: #8b3a2e;
+    --police-titre: "Times New Roman", Times, Georgia, serif;
+    --police-texte: Helvetica, Arial, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: var(--police-texte);
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--sombre);
+    background: var(--fond);
+}
+
+a { color: inherit; text-decoration: none; }
+ul { list-style: none; }
+.conteneur { width: min(1100px, 90%); margin-inline: auto; }
+
+h1, h2, h3, h4 {
+    font-family: var(--police-titre);
+    font-weight: 400;
+    line-height: 1.15;
+}
+
+.etiquette {
+    font-size: .72rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--accent);
+}
+
+/* ---------- En-tête ---------- */
+.entete { border-bottom: 1px solid var(--bordure); }
+.entete .conteneur {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 20px;
+    padding: 24px 0;
+}
+.menu {
+    display: flex;
+    gap: 26px;
+    font-size: .75rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+}
+.menu-droite { justify-content: flex-end; }
+.menu a:hover { color: var(--accent); }
+.logo {
+    font-family: var(--police-titre);
+    font-size: 1.7rem;
+    letter-spacing: .18em;
+    text-align: center;
+}
+
+/* ---------- Boutons ---------- */
+.bouton {
+    display: inline-block;
+    background: var(--sombre);
+    color: var(--fond);
+    border: 1px solid var(--sombre);
+    padding: 15px 34px;
+    font-family: var(--police-texte);
+    font-size: .72rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    text-align: center;
+    cursor: pointer;
+    transition: background .2s, color .2s;
+}
+.bouton:hover { background: transparent; color: var(--sombre); }
+.bouton-contour { background: transparent; color: var(--sombre); }
+.bouton-contour:hover { background: var(--sombre); color: var(--fond); }
+.bouton-plein { width: 100%; }
+
+/* ---------- Messages ---------- */
+.messages { margin: 0; }
+.message {
+    background: var(--vert-doux);
+    color: #3d5a2a;
+    text-align: center;
+    padding: 14px;
+    font-size: .85rem;
+}
+
+/* ---------- Bandeau d'accueil ---------- */
+.heros { padding: 110px 0 100px; text-align: center; }
+.heros h1 { font-size: clamp(2.4rem, 6vw, 4.2rem); margin: 18px 0 20px; }
+.heros p { max-width: 520px; margin: 0 auto 34px; color: var(--texte-doux); }
+
+/* ---------- Sections ---------- */
+.section { padding: 70px 0; }
+.section-titre { text-align: center; margin-bottom: 44px; }
+.section-titre .etiquette { display: block; margin-bottom: 10px; }
+.section-titre h2 { font-size: 2.3rem; }
+
+.grille-categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+}
+.categorie .visuel {
+    aspect-ratio: 4 / 5;
+    background: var(--carte);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .72rem;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--texte-doux);
+    margin-bottom: 14px;
+    transition: opacity .2s;
+}
+.categorie:hover .visuel { opacity: .85; }
+.categorie h3 { font-size: 1.4rem; }
+.categorie span {
+    font-size: .72rem;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--accent);
+}
+
+.bande { background: var(--carte); }
+.valeurs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 40px;
+    text-align: center;
+}
+.valeur h3 { font-size: 1.5rem; margin: 10px 0 8px; }
+.valeur p { color: var(--texte-doux); font-size: .92rem; }
+
+.histoire { text-align: center; max-width: 620px; margin-inline: auto; }
+.histoire h2 { font-size: 2.3rem; margin: 10px 0 18px; }
+.histoire p { color: var(--texte-doux); margin-bottom: 30px; }
+
+.appel { text-align: center; border-top: 1px solid var(--bordure); }
+.appel h2 { font-size: 2.3rem; margin: 10px 0 12px; }
+.appel p { color: var(--texte-doux); margin-bottom: 28px; }
+
+/* ---------- Formulaire de contact ---------- */
+.page-formulaire { max-width: 480px; margin: 90px auto; }
+.page-formulaire h1 { font-size: 3rem; margin: 10px 0 16px; }
+.page-formulaire .intro { color: var(--texte-doux); margin-bottom: 28px; }
+.formulaire p { margin-bottom: 18px; }
+.formulaire label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: .72rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--accent);
+}
+.formulaire input,
+.formulaire textarea {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid var(--sombre);
+    border-radius: 0;
+    background: transparent;
+    font: inherit;
+    color: var(--sombre);
+}
+.formulaire textarea { min-height: 150px; resize: vertical; }
+.formulaire input:focus,
+.formulaire textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+.errorlist { color: var(--erreur); font-size: .85rem; margin-bottom: 6px; }
+
+/* ---------- Pied de page ---------- */
+.pied {
+    background: var(--sombre);
+    color: rgba(246, 239, 230, .78);
+    padding: 64px 0 28px;
+    margin-top: 40px;
+}
+.pied-grille {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: 40px;
+}
+.pied .logo { text-align: left; font-size: 1.5rem; color: var(--fond); }
+.pied .signature { margin-top: 14px; font-size: .85rem; }
+.pied h4 { font-size: 1.2rem; margin-bottom: 14px; color: var(--fond); }
+.pied li { font-size: .85rem; margin-bottom: 8px; }
+.pied a:hover { color: var(--fond); }
+.pied-bas {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 44px;
+    padding-top: 22px;
+    border-top: 1px solid #4a3b2d;
+    font-size: .78rem;
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 860px) {
+    .entete .conteneur { grid-template-columns: 1fr; justify-items: center; gap: 14px; }
+    .logo { order: -1; }
+    .menu, .menu-droite { justify-content: center; flex-wrap: wrap; gap: 16px; }
+    .pied-grille { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 520px) {
+    .pied-grille { grid-template-columns: 1fr; }
+    .heros { padding: 70px 0; }
+}

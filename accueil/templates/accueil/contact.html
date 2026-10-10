@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block titre %}Contact - Maison Lumière{% endblock %}
+
+{% block contenu %}
+<div class="conteneur">
+    <div class="page-formulaire">
+        <span class="etiquette">Service client</span>
+        <h1>Contactez-nous</h1>
+        <p class="intro">Une question sur une commande ou un bijou ? Écrivez-nous, nous vous répondons rapidement.</p>
+        <form method="post" class="formulaire">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="bouton bouton-plein">Envoyer le message</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
