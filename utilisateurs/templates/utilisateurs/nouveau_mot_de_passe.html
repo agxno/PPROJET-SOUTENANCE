@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block titre %}Nouveau mot de passe - Maison Lumière{% endblock %}
+
+{% block contenu %}
+<div class="conteneur">
+    <div class="page-formulaire">
+        {% if validlink %}
+            <span class="etiquette">Sécurité</span>
+            <h1>Nouveau mot de passe</h1>
+            <form method="post" class="formulaire">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="bouton bouton-plein">Enregistrer</button>
+            </form>
+        {% else %}
+            <span class="etiquette">Sécurité</span>
+            <h1>Lien invalide</h1>
+            <p class="intro">Ce lien a expiré ou a déjà été utilisé.</p>
+            <a href="{% url 'utilisateurs:mot_de_passe_oublie' %}" class="bouton bouton-plein">Demander un nouveau lien</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

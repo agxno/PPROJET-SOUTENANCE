@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block titre %}Lien invalide - Maison Lumière{% endblock %}
+
+{% block contenu %}
+<div class="conteneur">
+    <div class="page-formulaire">
+        <span class="etiquette">Inscription</span>
+        <h1>Lien invalide</h1>
+        <p class="intro">Ce lien d'activation a expiré ou a déjà été utilisé. Si votre compte est déjà activé, vous pouvez vous connecter.</p>
+        <a href="{% url 'utilisateurs:connexion' %}" class="bouton bouton-plein">Se connecter</a>
+        <p class="liens-formulaire"><a href="{% url 'utilisateurs:renvoyer_activation' %}">Recevoir un nouveau lien</a></p>
+    </div>
+</div>
+{% endblock %}

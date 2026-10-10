@@ -1,0 +1,22 @@
+{% extends 'utilisateurs/compte_base.html' %}
+
+{% block titre %}Mes informations - Maison Lumière{% endblock %}
+{% block titre_page %}Mes informations{% endblock %}
+
+{% block contenu_compte %}
+<h2>Informations personnelles</h2>
+<form method="post" class="formulaire">
+    {% csrf_token %}
+    <input type="hidden" name="action" value="profil">
+    {{ profil_form.as_p }}
+    <button type="submit" class="bouton">Enregistrer</button>
+</form>
+
+<h2>Mot de passe</h2>
+<form method="post" class="formulaire">
+    {% csrf_token %}
+    <input type="hidden" name="action" value="mot_de_passe">
+    {{ mdp_form.as_p }}
+    <button type="submit" class="bouton bouton-contour">Modifier le mot de passe</button>
+</form>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'utilisateurs/compte_base.html' %}
+
+{% block titre %}Modifier l'adresse - Maison Lumière{% endblock %}
+{% block titre_page %}Mes adresses{% endblock %}
+
+{% block contenu_compte %}
+<h2>Modifier l'adresse</h2>
+<form method="post" class="formulaire">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="bouton">Enregistrer</button>
+    <a href="{% url 'utilisateurs:mes_adresses' %}" class="bouton bouton-contour">Annuler</a>
+</form>
+{% endblock %}

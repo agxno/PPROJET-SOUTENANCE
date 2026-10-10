@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block titre %}Connexion - Maison Lumière{% endblock %}
+
+{% block contenu %}
+<div class="conteneur">
+    <div class="page-formulaire">
+        <span class="etiquette">Mon compte</span>
+        <h1>Connexion</h1>
+        <form method="post" class="formulaire">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}">
+            {{ form.as_p }}
+            <button type="submit" class="bouton bouton-plein">Se connecter</button>
+        </form>
+        <p class="liens-formulaire"><a href="{% url 'utilisateurs:mot_de_passe_oublie' %}">Mot de passe oublié ?</a></p>
+        <p class="liens-formulaire">Mail de validation non reçu ? <a href="{% url 'utilisateurs:renvoyer_activation' %}">Renvoyer le lien</a></p>
+        <p class="liens-formulaire">Pas encore de compte ? <a href="{% url 'utilisateurs:inscription' %}">Créer un compte</a></p>
+    </div>
+</div>
+{% endblock %}

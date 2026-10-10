@@ -1,0 +1,23 @@
+{% extends 'utilisateurs/compte_base.html' %}
+
+{% block titre %}Mon compte - Maison Lumière{% endblock %}
+{% block titre_page %}Mon compte{% endblock %}
+
+{% block contenu_compte %}
+<h2>Bonjour {{ user.first_name|default:user.email }}</h2>
+<div class="cartes">
+    <div class="carte-info">
+        <span class="etiquette">Dernière commande</span>
+        <p>Aucune commande pour le moment.</p>
+    </div>
+    <div class="carte-info">
+        <span class="etiquette">Adresse par défaut</span>
+        {% if adresse %}
+            <p>{{ adresse.adresse }}<br>{{ adresse.ville }}</p>
+        {% else %}
+            <p>Aucune adresse enregistrée.</p>
+            <div class="carte-actions"><a href="{% url 'utilisateurs:mes_adresses' %}">Ajouter une adresse</a></div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

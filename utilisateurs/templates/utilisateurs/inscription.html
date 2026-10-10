@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block titre %}Créer un compte - Maison Lumière{% endblock %}
+
+{% block contenu %}
+<div class="conteneur">
+    <div class="page-formulaire">
+        <span class="etiquette">Nouveau client</span>
+        <h1>Créer un compte</h1>
+        <form method="post" class="formulaire">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="bouton bouton-plein">Créer mon compte</button>
+        </form>
+        <p class="liens-formulaire">Déjà client ? <a href="{% url 'utilisateurs:connexion' %}">Se connecter</a></p>
+    </div>
+</div>
+{% endblock %}

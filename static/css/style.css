@@ -204,6 +204,66 @@ h1, h2, h3, h4 {
     border-top: 1px solid #4a3b2d;
     font-size: .78rem;
 }
+/* ---------- Espace compte ---------- */
+.compte-entete { padding: 50px 0 0; }
+.compte-entete h1 { font-size: 3.2rem; }
+.compte { display: grid; grid-template-columns: 220px 1fr; gap: 48px; padding: 40px 0 70px; }
+
+.compte-menu li { border-bottom: 1px solid var(--bordure); }
+.compte-menu a,
+.lien-bouton {
+    display: block;
+    width: 100%;
+    padding: 12px 0;
+    font-size: .85rem;
+    text-align: left;
+}
+.compte-menu a:hover { color: var(--accent); }
+.compte-menu .actif { color: var(--accent); }
+.lien-bouton { background: none; border: none; font-family: inherit; color: inherit; cursor: pointer; }
+.lien-bouton:hover { color: var(--accent); }
+
+.compte-contenu h2 { font-size: 1.8rem; margin-bottom: 22px; }
+.compte-contenu h2:not(:first-child) { margin-top: 48px; }
+.compte-contenu .formulaire { max-width: 520px; }
+
+.cartes { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; }
+.carte-info { position: relative; background: var(--carte); padding: 26px; font-size: .92rem; }
+.carte-info .etiquette { display: block; margin-bottom: 12px; }
+.badge {
+    position: absolute;
+    top: 22px;
+    right: 22px;
+    background: var(--vert-doux);
+    color: #3d5a2a;
+    font-size: .7rem;
+    padding: 3px 12px;
+    border-radius: 20px;
+}
+.carte-actions { display: flex; align-items: center; gap: 16px; margin-top: 14px; font-size: .78rem; }
+.carte-actions form { display: inline; }
+.carte-actions a,
+.carte-actions button {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+}
+.carte-actions .danger { color: var(--erreur); }
+
+.liens-formulaire { text-align: center; margin-top: 20px; font-size: .85rem; }
+.liens-formulaire a { text-decoration: underline; }
+.formulaire input[type="checkbox"] { width: auto; margin-right: 8px; }
+.formulaire .bouton + .bouton { margin-left: 10px; }
+.helptext, .formulaire ul { font-size: .78rem; color: var(--texte-doux); }
+.formulaire ul { padding-left: 18px; margin-top: 6px; }
+
+@media (max-width: 760px) {
+    .compte { grid-template-columns: 1fr; gap: 24px; }
+}
 
 /* ---------- Mobile ---------- */
 @media (max-width: 860px) {

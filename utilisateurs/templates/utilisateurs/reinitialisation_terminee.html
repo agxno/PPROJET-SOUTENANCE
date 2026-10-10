@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block titre %}Mot de passe modifié - Maison Lumière{% endblock %}
+
+{% block contenu %}
+<div class="conteneur">
+    <div class="page-formulaire">
+        <span class="etiquette">Sécurité</span>
+        <h1>Mot de passe modifié</h1>
+        <p class="intro">Votre mot de passe a bien été mis à jour. Vous pouvez maintenant vous connecter.</p>
+        <a href="{% url 'utilisateurs:connexion' %}" class="bouton bouton-plein">Se connecter</a>
+    </div>
+</div>
+{% endblock %}

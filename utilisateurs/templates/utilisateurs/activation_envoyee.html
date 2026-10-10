@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block titre %}Vérifiez vos e-mails - Maison Lumière{% endblock %}
+
+{% block contenu %}
+<div class="conteneur">
+    <div class="page-formulaire">
+        <span class="etiquette">Inscription</span>
+        <h1>Vérifiez vos e-mails</h1>
+        <p class="intro">Un message de validation vient de vous être envoyé. Cliquez sur le lien qu'il contient pour activer votre compte. Pensez à regarder dans vos courriers indésirables.</p>
+        <p class="liens-formulaire">Message non reçu ? <a href="{% url 'utilisateurs:renvoyer_activation' %}">Renvoyer le lien</a></p>
+    </div>
+</div>
+{% endblock %}

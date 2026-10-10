@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block contenu %}
+<div class="conteneur">
+    <div class="compte-entete">
+        <h1>{% block titre_page %}Mon compte{% endblock %}</h1>
+    </div>
+    <div class="compte">
+        <nav class="compte-menu">
+            {% with page=request.resolver_match.url_name %}
+            <ul>
+                <li><a href="{% url 'utilisateurs:tableau_bord' %}"{% if page == 'tableau_bord' %} class="actif"{% endif %}>Tableau de bord</a></li>
+                <li><a href="#">Mes commandes</a></li>
+                <li><a href="{% url 'utilisateurs:mes_adresses' %}"{% if page == 'mes_adresses' or page == 'modifier_adresse' %} class="actif"{% endif %}>Mes adresses</a></li>
+                <li><a href="#">Mes favoris</a></li>
+                <li><a href="{% url 'utilisateurs:mes_informations' %}"{% if page == 'mes_informations' %} class="actif"{% endif %}>Mes informations</a></li>
+                <li>
+                    <form method="post" action="{% url 'utilisateurs:deconnexion' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="lien-bouton">Déconnexion</button>
+                    </form>
+                </li>
+            </ul>
+            {% endwith %}
+        </nav>
+        <section class="compte-contenu">
+            {% block contenu_compte %}{% endblock %}
+        </section>
+    </div>
+</div>
+{% endblock %}

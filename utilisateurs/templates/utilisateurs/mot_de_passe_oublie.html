@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block titre %}Mot de passe oublié - Maison Lumière{% endblock %}
+
+{% block contenu %}
+<div class="conteneur">
+    <div class="page-formulaire">
+        <span class="etiquette">Mot de passe</span>
+        <h1>Mot de passe oublié ?</h1>
+        <p class="intro">Saisissez votre e-mail, nous vous enverrons un lien pour choisir un nouveau mot de passe.</p>
+        <form method="post" class="formulaire">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="bouton bouton-plein">Envoyer le lien</button>
+        </form>
+        <p class="liens-formulaire"><a href="{% url 'utilisateurs:connexion' %}">&larr; Retour à la connexion</a></p>
+    </div>
+</div>
+{% endblock %}
