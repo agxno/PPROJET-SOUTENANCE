@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block titre %}Mon panier - Maison Lumière{% endblock %}
+
+{% block contenu %}
+<div class="conteneur">
+    <p class="fil"><a href="{% url 'accueil:accueil' %}">Accueil</a> / Panier</p>
+    <h1 class="titre-page">Mon panier</h1>
+
+    {% if lignes %}
+        {% if probleme_stock %}
+            <p class="alerte">Certains articles dépassent le stock disponible. Ajustez les quantités ou retirez-les pour continuer.</p>
+        {% endif %}
+        <div class="panier">
+            <div class="panier-lignes">
+                {% for ligne in lignes %}
+                <article class="ligne">
+                    <a href="{{ ligne.produit.get_absolute_url }}" class="ligne-visuel">
+                        {% if ligne.produit.image %}
+                            <img src="{{ ligne.produit.image.url }}" alt="{{ ligne.produit.nom }}" loading="lazy">
+                        {% else %}
+                            <span>Photo</span>
+                        {% endif %}
+                    </a>
+                    <div class="ligne-infos">
+                        <h3><a href="{{ ligne.produit.get_absolute_url }}">{{ ligne.produit.nom }}</a></h3>
+                        <p class="prix">{{ ligne.produit.prix_actuel|floatformat:"0g" }} FCFA</p>
+                        {% if ligne.produit.en_rupture %}
+                            <p class="stock stock-rupture">Épuisé</p>
+                        {% elif not ligne.disponible %}
+                            <p class="stock stock-faible">Stock disponible : {{ ligne.produit.stock }}</p>
+                        {% endif %}
+                        <div class="ligne-actions">
+                            <form method="post" action="{% url 'panier:modifier' ligne.pk %}" class="quantite-form">
+                                {% csrf_token %}
+                                <input type="number" name="quantite" value="{{ ligne.quantite }}" min="0" max="{{ ligne.produit.stock }}" aria-label="Quantité">
+                                <button type="submit" class="lien-souligne">Mettre à jour</button>
+                            </form>
+                            <form method="post" action="{% url 'panier:retirer' ligne.pk %}">
+                                {% csrf_token %}
+                                <button type="submit" class="lien-souligne danger">Retirer</button>
+                            </form>
+                        </div>
+                    </div>
+                    <p class="ligne-total">{{ ligne.sous_total|floatformat:"0g" }} FCFA</p>
+                </article>
+                {% endfor %}
+            </div>
+
+            <aside class="panier-resume">
+                <span class="etiquette">Récapitulatif</span>
+                <p class="resume-ligne"><span>Articles</span><span>{{ quantite_totale }}</span></p>
+                <p class="resume-ligne resume-total"><span>Total</span><span>{{ total|floatformat:"0g" }} FCFA</span></p>
+                <button type="button" class="bouton bouton-plein" disabled>Passer la commande</button>
+                <a href="{% url 'produits:liste' %}" class="lien-continuer">Continuer mes achats</a>
+            </aside>
+        </div>
+    {% else %}
+        <p class="vide">Votre panier est vide.</p>
+        <p style="text-align:center;"><a href="{% url 'produits:liste' %}" class="bouton">Découvrir la boutique</a></p>
+    {% endif %}
+</div>
+{% endblock %}

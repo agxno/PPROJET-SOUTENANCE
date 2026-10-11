@@ -49,8 +49,17 @@
 
             {% if produit.en_rupture %}
                 <button type="button" class="bouton bouton-plein" disabled>Épuisé</button>
+            {% elif user.is_authenticated %}
+                <form method="post" action="{% url 'panier:ajouter' produit.pk %}" class="ajout-panier">
+                    {% csrf_token %}
+                    <input type="hidden" name="suivant" value="{{ produit.get_absolute_url }}">
+                    <label class="etiquette" for="quantite">Quantité</label>
+                    <input type="number" id="quantite" name="quantite" value="1" min="1" max="{{ produit.stock }}">
+                    <button type="submit" class="bouton bouton-plein">Ajouter au panier</button>
+                </form>
             {% else %}
-                <button type="button" class="bouton bouton-plein" disabled>Ajouter au panier</button>
+                <a href="{% url 'utilisateurs:connexion' %}?next={{ produit.get_absolute_url|urlencode }}" class="bouton bouton-plein">Se connecter pour commander</a>
+                <p class="note-connexion">Pas encore de compte ? <a href="{% url 'utilisateurs:inscription' %}">Créer un compte</a></p>
             {% endif %}
             <p class="reference">Réf. {{ produit.reference }}</p>
         </div>

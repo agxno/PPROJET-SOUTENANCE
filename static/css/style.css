@@ -528,3 +528,93 @@ button.en-cours:not(.bouton) { opacity: .5; pointer-events: none; }
         transition-delay: 0ms !important;
     }
 }
+
+/* ---------- Messages par type ---------- */
+.message.error { background: #f3dcd6; color: var(--erreur); }
+.message.warning { background: #f1e4c8; color: #6b4e1a; }
+.message.info { background: var(--carte); color: var(--sombre); }
+
+/* ---------- Ajout au panier (fiche produit) ---------- */
+.ajout-panier { display: grid; gap: 10px; }
+.ajout-panier .etiquette { display: block; }
+.ajout-panier input,
+.quantite-form input {
+    width: 84px;
+    padding: 10px;
+    border: 1px solid var(--sombre);
+    border-radius: 0;
+    background: transparent;
+    font: inherit;
+    color: var(--sombre);
+}
+.note-connexion { margin-top: 14px; font-size: .85rem; text-align: center; color: var(--texte-doux); }
+.note-connexion a { text-decoration: underline; }
+
+/* ---------- Page panier ---------- */
+.panier {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 48px;
+    padding: 20px 0 40px;
+    align-items: start;
+}
+.panier-lignes { border-top: 1px solid var(--bordure); }
+.ligne {
+    display: grid;
+    grid-template-columns: 96px 1fr auto;
+    gap: 20px;
+    padding: 22px 0;
+    border-bottom: 1px solid var(--bordure);
+}
+.ligne-visuel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 4 / 5;
+    background: var(--carte);
+    overflow: hidden;
+    font-size: .65rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--texte-doux);
+}
+.ligne-visuel img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ligne-infos h3 { font-size: 1.25rem; margin-bottom: 2px; }
+.ligne-infos h3 a:hover { color: var(--accent); }
+.ligne-infos .prix { margin-bottom: 8px; }
+.ligne-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; margin-top: 10px; }
+.quantite-form { display: flex; align-items: center; gap: 12px; }
+.lien-souligne {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    font-size: .78rem;
+    text-decoration: underline;
+    color: inherit;
+    cursor: pointer;
+}
+.lien-souligne:hover { color: var(--accent); }
+.lien-souligne.danger { color: var(--erreur); }
+.ligne-total { font-family: var(--police-titre); font-size: 1.15rem; white-space: nowrap; }
+
+.panier-resume { background: var(--carte); padding: 28px; position: sticky; top: 20px; }
+.resume-ligne { display: flex; justify-content: space-between; margin-top: 14px; font-size: .92rem; }
+.resume-total {
+    border-top: 1px solid var(--bordure);
+    padding-top: 14px;
+    margin-bottom: 22px;
+    font-family: var(--police-titre);
+    font-size: 1.4rem;
+}
+.lien-continuer { display: block; text-align: center; margin-top: 16px; font-size: .8rem; text-decoration: underline; }
+.alerte { background: #f1e4c8; color: #6b4e1a; padding: 12px 16px; margin-bottom: 20px; font-size: .88rem; }
+
+@media (max-width: 860px) {
+    .panier { grid-template-columns: 1fr; gap: 28px; }
+    .panier-resume { position: static; }
+}
+@media (max-width: 520px) {
+    .ligne { grid-template-columns: 72px 1fr; }
+    .ligne-total { grid-column: 2; }
+}

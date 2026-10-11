@@ -23,7 +23,7 @@
                 <a href="{% url 'produits:liste' %}#recherche">Recherche</a>
                 <a href="{% url 'utilisateurs:tableau_bord' %}">Compte</a>
                 <a href="#">Favoris</a>
-                <a href="#">Panier (0)</a>
+                <a href="{% url 'panier:voir' %}">Panier ({{ panier_quantite }})</a>
             </nav>
         </div>
     </header>
@@ -31,7 +31,7 @@
     {% if messages %}
         <ul class="messages">
             {% for message in messages %}
-                <li class="message">{{ message }}</li>
+                <li class="message {{ message.tags }}">{{ message }}</li>
             {% endfor %}
         </ul>
     {% endif %}
