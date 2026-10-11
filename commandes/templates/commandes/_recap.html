@@ -1,0 +1,10 @@
+<span class="etiquette">Récapitulatif</span>
+<ul class="recap-liste">
+    {% for ligne in lignes %}
+    <li>
+        <span>{{ ligne.produit.nom }} <small>x {{ ligne.quantite }}</small></span>
+        <span>{{ ligne.sous_total|floatformat:"0g" }} FCFA</span>
+    </li>
+    {% endfor %}
+</ul>
+<p class="resume-ligne resume-total"><span>Total</span><span>{{ total|floatformat:"0g" }} FCFA</span></p>

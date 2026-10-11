@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block titre %}Valider ma commande - Maison Lumière{% endblock %}
+
+{% block contenu %}
+<link rel="stylesheet" href="{% static 'css/commandes.css' %}">
+<div class="conteneur">
+    <p class="fil">
+        <a href="{% url 'accueil:accueil' %}">Accueil</a> /
+        <a href="{% url 'panier:voir' %}">Panier</a> / Commande
+    </p>
+    <h1 class="titre-page">Valider ma commande</h1>
+
+    {% if probleme_stock %}
+        <p class="alerte">Certains articles dépassent le stock disponible. <a href="{% url 'panier:voir' %}" style="text-decoration:underline;">Modifier mon panier</a></p>
+    {% endif %}
+
+    {% if adresses %}
+    <form method="post" class="panier">
+        {% csrf_token %}
+        <div>
+            <span class="etiquette">Adresse de livraison</span>
+            <div class="choix-adresse">
+                {% for a in adresses %}
+                <label>
+                    <input type="radio" name="adresse" value="{{ a.pk }}"{% if forloop.first %} checked{% endif %}>
+                    <span>
+                        {{ a.prenom }} {{ a.nom }}<br>{{ a.adresse }}<br>{{ a.ville }} · {{ a.telephone }}
+                        {% if a.par_defaut %}<em class="badge-inline">Par défaut</em>{% endif %}
+                    </span>
+                </label>
+                {% endfor %}
+            </div>
+        </div>
+        <aside class="panier-resume">
+            {% include 'commandes/_recap.html' %}
+            <button type="submit" class="bouton bouton-plein"{% if probleme_stock %} disabled{% endif %}>Confirmer la commande</button>
+            <a href="{% url 'panier:voir' %}" class="lien-continuer">Retour au panier</a>
+        </aside>
+    </form>
+
+    <details class="nouvelle-adresse"{% if form.errors %} open{% endif %}>
+        <summary>Ajouter une nouvelle adresse</summary>
+        <form method="post" class="formulaire">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="ajouter_adresse">
+            {{ form.as_p }}
+            <button type="submit" class="bouton bouton-contour">Enregistrer l'adresse</button>
+        </form>
+    </details>
+    {% else %}
+    <div class="panier">
+        <div>
+            <span class="etiquette">Adresse de livraison</span>
+            <h2 class="sous-titre">Ajoutez une adresse pour continuer</h2>
+            <form method="post" class="formulaire">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="ajouter_adresse">
+                {{ form.as_p }}
+                <button type="submit" class="bouton">Enregistrer l'adresse</button>
+            </form>
+        </div>
+        <aside class="panier-resume">
+            {% include 'commandes/_recap.html' %}
+            <button type="button" class="bouton bouton-plein" disabled>Confirmer la commande</button>
+            <a href="{% url 'panier:voir' %}" class="lien-continuer">Retour au panier</a>
+        </aside>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

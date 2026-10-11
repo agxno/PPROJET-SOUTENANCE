@@ -3,6 +3,38 @@
 {% block titre %}À propos - Maison Lumière{% endblock %}
 
 {% block contenu %}
+<style>
+    .valeur-icone {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 64px;
+        height: 64px;
+        margin: 0 auto 16px;
+        border-radius: 50%;
+        background: var(--fond);
+        border: 1.5px solid var(--accent);
+        color: var(--accent);
+        transition: transform .3s ease, background .3s ease, color .3s ease, border-color .3s ease;
+    }
+    .valeur-icone svg {
+        width: 26px;
+        height: 26px;
+        flex: none;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+    .valeur:hover .valeur-icone {
+        transform: translateY(-4px);
+        background: var(--sombre);
+        border-color: var(--sombre);
+        color: var(--fond);
+    }
+</style>
+
 <section class="heros">
     <div class="conteneur">
         <span class="etiquette">À propos</span>
@@ -24,17 +56,33 @@
     <div class="conteneur">
         <div class="valeurs">
             <div class="valeur">
-                <span class="etiquette">01</span>
+                <div class="valeur-icone">
+                    <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M6 3h12l4 6-10 12L2 9z"/>
+                        <path d="M2 9h20"/>
+                        <path d="M10 3 8 9l4 12 4-12-2-6"/>
+                    </svg>
+                </div>
                 <h3>Qualité</h3>
                 <p>Des matières et des finitions soigneusement contrôlées avant chaque expédition.</p>
             </div>
             <div class="valeur">
-                <span class="etiquette">02</span>
+                <div class="valeur-icone">
+                    <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M11 3l2 5.5L18.5 10.5 13 12.5 11 18l-2-5.5L3.5 10.5 9 8.5z"/>
+                        <path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/>
+                    </svg>
+                </div>
                 <h3>Élégance</h3>
                 <p>Des créations sobres et intemporelles, faciles à porter au quotidien.</p>
             </div>
             <div class="valeur">
-                <span class="etiquette">03</span>
+                <div class="valeur-icone">
+                    <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 3l7 3v5c0 4.5-3 8.2-7 10-4-1.8-7-5.5-7-10V6z"/>
+                        <path d="M9 12l2 2 4-4"/>
+                    </svg>
+                </div>
                 <h3>Confiance</h3>
                 <p>Un paiement sécurisé, une livraison suivie et un service client à votre écoute.</p>
             </div>

@@ -1,0 +1,69 @@
+{% extends 'utilisateurs/compte_base.html' %}
+
+{% block titre %}Commande {{ commande.reference }} - Maison Lumière{% endblock %}
+{% block titre_page %}{% if confirmation %}Commande confirmée{% else %}Ma commande{% endif %}{% endblock %}
+
+{% block contenu_compte %}
+{% if confirmation %}
+<div class="confirmation">
+    <div class="valeur-icone">
+        <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 12.5l4.5 4.5L19 7.5"/>
+        </svg>
+    </div>
+    <h2>Merci pour votre commande</h2>
+    <p>Votre commande <strong>{{ commande.reference }}</strong> est enregistrée. Conservez ce numéro pour la suivre.</p>
+</div>
+{% endif %}
+
+<h2>Commande {{ commande.reference }}</h2>
+<p class="entete-commande">
+    <span class="statut statut-{{ commande.statut }}">{{ commande.get_statut_display }}</span>
+    <span>Passée le {{ commande.date_creation|date:"d/m/Y à H:i" }}</span>
+</p>
+
+<div class="tableau-defile">
+    <table class="tableau-commandes">
+        <thead>
+            <tr><th>Article</th><th>Prix</th><th>Qté</th><th>Total</th></tr>
+        </thead>
+        <tbody>
+            {% for ligne in commande.lignes.all %}
+            <tr>
+                <td>
+                    {% if ligne.produit %}<a href="{{ ligne.produit.get_absolute_url }}">{{ ligne.nom_produit }}</a>{% else %}{{ ligne.nom_produit }}{% endif %}
+                    <br><small>Réf. {{ ligne.reference_produit }}</small>
+                </td>
+                <td>{{ ligne.prix_unitaire|floatformat:"0g" }} FCFA</td>
+                <td>{{ ligne.quantite }}</td>
+                <td>{{ ligne.sous_total|floatformat:"0g" }} FCFA</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr class="total">
+                <td colspan="3">Total</td>
+                <td>{{ commande.total|floatformat:"0g" }} FCFA</td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+<div class="cartes" style="margin-top:28px;">
+    <div class="carte-info">
+        <span class="etiquette">Adresse de livraison</span>
+        <p>{{ commande.livraison_prenom }} {{ commande.livraison_nom }}<br>{{ commande.livraison_adresse }}<br>{{ commande.livraison_ville }} · {{ commande.livraison_telephone }}</p>
+    </div>
+</div>
+
+<div class="actions-commande">
+    <a href="{% url 'commandes:liste' %}" class="bouton bouton-contour">Mes commandes</a>
+    {% if commande.peut_annuler %}
+    <form method="post" action="{% url 'commandes:annuler' commande.reference %}"
+          onsubmit="return confirm('Annuler cette commande ?');">
+        {% csrf_token %}
+        <button type="submit" class="bouton bouton-contour">Annuler la commande</button>
+    </form>
+    {% endif %}
+</div>
+{% endblock %}

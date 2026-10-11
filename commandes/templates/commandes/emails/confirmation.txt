@@ -1,0 +1,20 @@
+{% autoescape off %}Bonjour {{ commande.utilisateur.first_name }},
+
+Merci pour votre commande sur Maison Lumière.
+
+Référence : {{ commande.reference }}
+Date : {{ commande.date_creation|date:"d/m/Y H:i" }}
+
+{% for ligne in commande.lignes.all %}- {{ ligne.nom_produit }} x {{ ligne.quantite }} : {{ ligne.sous_total|floatformat:"0g" }} FCFA
+{% endfor %}
+Total : {{ commande.total|floatformat:"0g" }} FCFA
+
+Livraison :
+{{ commande.livraison_prenom }} {{ commande.livraison_nom }}
+{{ commande.livraison_adresse }}
+{{ commande.livraison_ville }} - {{ commande.livraison_telephone }}
+
+Suivre ma commande : {{ lien }}
+
+L'équipe Maison Lumière
+{% endautoescape %}

@@ -618,3 +618,53 @@ button.en-cours:not(.bouton) { opacity: .5; pointer-events: none; }
     .ligne { grid-template-columns: 72px 1fr; }
     .ligne-total { grid-column: 2; }
 }
+
+/* ---------- Icônes des engagements ---------- */
+.valeur-icone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 68px;
+    height: 68px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    background: var(--fond);
+    border: 1px solid var(--bordure);
+    color: var(--accent);
+    transition: transform .3s ease, background .3s ease, color .3s ease, border-color .3s ease;
+}
+.valeur-icone svg {
+    width: 30px;
+    height: 30px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+.valeur:hover .valeur-icone {
+    transform: translateY(-4px);
+    background: var(--sombre);
+    border-color: var(--sombre);
+    color: var(--fond);
+}
+/* ---------- Bandeau d'accueil avec image de fond ---------- */
+.heros-image {
+    padding: 150px 0 140px;
+    color: var(--fond);
+    background-color: var(--sombre);
+    background-image:
+        linear-gradient(rgba(43, 33, 24, .55), rgba(43, 33, 24, .55)),
+        url('../img/hero.jfif');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.heros-image .etiquette { color: #e8d3ad; }
+.heros-image p { color: rgba(246, 239, 230, .92); }
+.heros-image .bouton { background: var(--fond); color: var(--sombre); border-color: var(--fond); }
+.heros-image .bouton:hover { background: transparent; color: var(--fond); }
+
+@media (max-width: 700px) {
+    .heros-image { padding: 90px 0 80px; }
+}

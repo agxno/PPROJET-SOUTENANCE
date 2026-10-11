@@ -5,10 +5,20 @@
 
 {% block contenu_compte %}
 <h2>Bonjour {{ user.first_name|default:user.email }}</h2>
+
+{% with derniere=user.commandes.first %}
 <div class="cartes">
     <div class="carte-info">
         <span class="etiquette">Dernière commande</span>
-        <p>Aucune commande pour le moment.</p>
+        {% if derniere %}
+            <p>
+                <a href="{% url 'commandes:detail' derniere.reference %}" style="text-decoration:underline;">{{ derniere.reference }}</a>
+                · <span class="statut statut-{{ derniere.statut }}">{{ derniere.get_statut_display }}</span><br>
+                {{ derniere.date_creation|date:"d/m/Y" }} · {{ derniere.total|floatformat:"0g" }} FCFA
+            </p>
+        {% else %}
+            <p>Aucune commande pour le moment.</p>
+        {% endif %}
     </div>
     <div class="carte-info">
         <span class="etiquette">Adresse par défaut</span>
@@ -20,4 +30,28 @@
         {% endif %}
     </div>
 </div>
+
+{% if derniere %}
+<h2>Mes commandes</h2>
+<div class="tableau-defile">
+    <table class="tableau-commandes">
+        <thead>
+            <tr><th>N° commande</th><th>Date</th><th>Statut</th><th>Total</th><th></th></tr>
+        </thead>
+        <tbody>
+            {% for commande in user.commandes.all|slice:":4" %}
+            <tr>
+                <td>{{ commande.reference }}</td>
+                <td>{{ commande.date_creation|date:"d/m/Y" }}</td>
+                <td><span class="statut statut-{{ commande.statut }}">{{ commande.get_statut_display }}</span></td>
+                <td>{{ commande.total|floatformat:"0g" }} FCFA</td>
+                <td><a href="{% url 'commandes:detail' commande.reference %}">Voir</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<p style="margin-top:18px;"><a href="{% url 'commandes:liste' %}" style="text-decoration:underline; font-size:.85rem;">Voir toutes mes commandes</a></p>
+{% endif %}
+{% endwith %}
 {% endblock %}

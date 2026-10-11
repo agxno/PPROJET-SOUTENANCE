@@ -51,7 +51,11 @@
                 <span class="etiquette">Récapitulatif</span>
                 <p class="resume-ligne"><span>Articles</span><span>{{ quantite_totale }}</span></p>
                 <p class="resume-ligne resume-total"><span>Total</span><span>{{ total|floatformat:"0g" }} FCFA</span></p>
-                <button type="button" class="bouton bouton-plein" disabled>Passer la commande</button>
+                {% if probleme_stock %}
+                    <button type="button" class="bouton bouton-plein" disabled>Passer la commande</button>
+                {% else %}
+                    <a href="{% url 'commandes:valider' %}" class="bouton bouton-plein">Passer la commande</a>
+                {% endif %}
                 <a href="{% url 'produits:liste' %}" class="lien-continuer">Continuer mes achats</a>
             </aside>
         </div>

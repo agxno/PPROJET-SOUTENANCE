@@ -69,7 +69,9 @@
     });
 
     /* ---------- Photos : squelette puis fondu ---------- */
-    document.querySelectorAll('.produit-visuel, .categorie .visuel, .detail-visuel').forEach(function (conteneur) {
+    document.querySelectorAll(
+        '.produit-visuel, .categorie .visuel, .detail-visuel, .tuile, .editorial-visuel'
+    ).forEach(function (conteneur) {
         var img = conteneur.querySelector('img');
         if (!img) return;
         if (img.complete && img.naturalWidth > 0) {
@@ -89,7 +91,8 @@
     if (!reduit && 'IntersectionObserver' in window) {
         var cibles = document.querySelectorAll(
             '.section-titre, .categorie, .produit, .valeur, .histoire, .appel .conteneur, ' +
-            '.detail-visuel, .detail-infos, .pied-grille > div'
+            '.detail-visuel, .detail-infos, .pied-grille > div, ' +
+            '.tuile, .editorial-visuel, .editorial-texte'
         );
         var observateur = new IntersectionObserver(function (entrees) {
             entrees.forEach(function (entree) {
@@ -107,6 +110,68 @@
             el.classList.add('revele');
             observateur.observe(el);
         });
+    }
+
+    /* ---------- Carrousel de l'accueil ---------- */
+    var carrousel = document.querySelector('.carrousel');
+    if (carrousel) {
+        var diapos = carrousel.querySelectorAll('.diapo');
+        var points = carrousel.querySelectorAll('.point');
+
+        if (diapos.length > 1) {
+            var courant = 0;
+            var minuteur = null;
+
+            var afficher = function (i) {
+                courant = (i + diapos.length) % diapos.length;
+                diapos.forEach(function (d, n) {
+                    var actif = n === courant;
+                    d.classList.toggle('active', actif);
+                    d.setAttribute('aria-hidden', actif ? 'false' : 'true');
+                });
+                points.forEach(function (p, n) { p.classList.toggle('actif', n === courant); });
+            };
+            var arreter = function () {
+                if (minuteur) { clearInterval(minuteur); minuteur = null; }
+            };
+            var demarrer = function () {
+                if (reduit) return;
+                arreter();
+                minuteur = setInterval(function () { afficher(courant + 1); }, 6500);
+            };
+            var aller = function (i) { afficher(i); demarrer(); };
+
+            var prec = carrousel.querySelector('.fleche-prec');
+            var suiv = carrousel.querySelector('.fleche-suiv');
+            if (prec) prec.addEventListener('click', function () { aller(courant - 1); });
+            if (suiv) suiv.addEventListener('click', function () { aller(courant + 1); });
+            points.forEach(function (p, n) {
+                p.addEventListener('click', function () { aller(n); });
+            });
+
+            // Pause au survol, au focus et quand l'onglet est caché
+            carrousel.addEventListener('mouseenter', arreter);
+            carrousel.addEventListener('mouseleave', demarrer);
+            carrousel.addEventListener('focusin', arreter);
+            carrousel.addEventListener('focusout', demarrer);
+            document.addEventListener('visibilitychange', function () {
+                if (document.hidden) { arreter(); } else { demarrer(); }
+            });
+
+            // Glissement tactile
+            var departX = null;
+            carrousel.addEventListener('touchstart', function (e) {
+                departX = e.touches[0].clientX;
+            }, { passive: true });
+            carrousel.addEventListener('touchend', function (e) {
+                if (departX === null) return;
+                var ecart = e.changedTouches[0].clientX - departX;
+                departX = null;
+                if (Math.abs(ecart) > 45) aller(courant + (ecart < 0 ? 1 : -1));
+            }, { passive: true });
+
+            demarrer();
+        }
     }
 
     /* ---------- Messages : disparition automatique ---------- */

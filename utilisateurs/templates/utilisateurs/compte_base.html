@@ -1,16 +1,18 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block contenu %}
+<link rel="stylesheet" href="{% static 'css/commandes.css' %}">
 <div class="conteneur">
     <div class="compte-entete">
         <h1>{% block titre_page %}Mon compte{% endblock %}</h1>
     </div>
     <div class="compte">
         <nav class="compte-menu">
-            {% with page=request.resolver_match.url_name %}
+            {% with page=request.resolver_match.url_name app=request.resolver_match.app_name %}
             <ul>
                 <li><a href="{% url 'utilisateurs:tableau_bord' %}"{% if page == 'tableau_bord' %} class="actif"{% endif %}>Tableau de bord</a></li>
-                <li><a href="#">Mes commandes</a></li>
+                <li><a href="{% url 'commandes:liste' %}"{% if app == 'commandes' %} class="actif"{% endif %}>Mes commandes</a></li>
                 <li><a href="{% url 'utilisateurs:mes_adresses' %}"{% if page == 'mes_adresses' or page == 'modifier_adresse' %} class="actif"{% endif %}>Mes adresses</a></li>
                 <li><a href="#">Mes favoris</a></li>
                 <li><a href="{% url 'utilisateurs:mes_informations' %}"{% if page == 'mes_informations' %} class="actif"{% endif %}>Mes informations</a></li>

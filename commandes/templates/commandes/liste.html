@@ -1,0 +1,37 @@
+{% extends 'utilisateurs/compte_base.html' %}
+
+{% block titre %}Mes commandes - Maison Lumière{% endblock %}
+{% block titre_page %}Mes commandes{% endblock %}
+
+{% block contenu_compte %}
+<div class="filtres">
+    <a href="{% url 'commandes:liste' %}" class="filtre{% if not filtre %} actif{% endif %}">Toutes</a>
+    <a href="?statut=en_cours" class="filtre{% if filtre == 'en_cours' %} actif{% endif %}">En cours</a>
+    <a href="?statut=livrees" class="filtre{% if filtre == 'livrees' %} actif{% endif %}">Livrées</a>
+    <a href="?statut=annulees" class="filtre{% if filtre == 'annulees' %} actif{% endif %}">Annulées</a>
+</div>
+
+{% if commandes %}
+<div class="tableau-defile">
+    <table class="tableau-commandes">
+        <thead>
+            <tr><th>N° commande</th><th>Date</th><th>Statut</th><th>Total</th><th></th></tr>
+        </thead>
+        <tbody>
+            {% for commande in commandes %}
+            <tr>
+                <td>{{ commande.reference }}</td>
+                <td>{{ commande.date_creation|date:"d/m/Y" }}</td>
+                <td><span class="statut statut-{{ commande.statut }}">{{ commande.get_statut_display }}</span></td>
+                <td>{{ commande.total|floatformat:"0g" }} FCFA</td>
+                <td><a href="{% url 'commandes:detail' commande.reference %}">Voir</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+    <p class="vide">Aucune commande{% if filtre %} dans cette catégorie{% endif %}.</p>
+    <p style="text-align:center;"><a href="{% url 'produits:liste' %}" class="bouton">Découvrir la boutique</a></p>
+{% endif %}
+{% endblock %}
