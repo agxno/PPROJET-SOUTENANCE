@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block titre %}{{ produit.nom }} - Maison Lumière{% endblock %}
+
+{% block contenu %}
+<div class="conteneur">
+    <p class="fil">
+        <a href="{% url 'accueil:accueil' %}">Accueil</a> /
+        <a href="{% url 'produits:liste' %}">Boutique</a> /
+        <a href="{% url 'produits:liste' %}?categorie={{ produit.categorie.slug }}">{{ produit.categorie.nom }}</a> /
+        {{ produit.nom }}
+    </p>
+
+    <div class="detail">
+        <div class="detail-visuel">
+            {% if produit.image %}
+                <img src="{{ produit.image.url }}" alt="{{ produit.nom }}">
+            {% else %}
+                <span>Photo</span>
+            {% endif %}
+        </div>
+
+        <div class="detail-infos">
+            <span class="etiquette">{{ produit.categorie.nom }}</span>
+            <h1>{{ produit.nom }}</h1>
+            <p class="prix prix-grand">
+                {% if produit.en_promotion %}
+                    <s>{{ produit.prix|floatformat:"0g" }} FCFA</s>
+                    <span class="prix-promo">{{ produit.prix_promo|floatformat:"0g" }} FCFA</span>
+                    <span class="pastille pastille-fixe">-{{ produit.remise }}%</span>
+                {% else %}
+                    {{ produit.prix|floatformat:"0g" }} FCFA
+                {% endif %}
+            </p>
+
+            {% if produit.description %}
+                <p class="detail-description">{{ produit.description|linebreaksbr }}</p>
+            {% endif %}
+
+            <p class="stock stock-{{ produit.statut_stock }}">
+                {% if produit.statut_stock == 'rupture' %}
+                    Épuisé
+                {% elif produit.statut_stock == 'faible' %}
+                    Plus que {{ produit.stock }} en stock
+                {% else %}
+                    En stock
+                {% endif %}
+            </p>
+
+            {% if produit.en_rupture %}
+                <button type="button" class="bouton bouton-plein" disabled>Épuisé</button>
+            {% else %}
+                <button type="button" class="bouton bouton-plein" disabled>Ajouter au panier</button>
+            {% endif %}
+            <p class="reference">Réf. {{ produit.reference }}</p>
+        </div>
+    </div>
+
+    {% if similaires %}
+    <section class="section">
+        <div class="section-titre">
+            <span class="etiquette">Dans la même catégorie</span>
+            <h2>Vous aimerez aussi</h2>
+        </div>
+        <div class="grille-produits">
+            {% for produit in similaires %}
+                {% include 'produits/_carte.html' %}
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+</div>
+{% endblock %}

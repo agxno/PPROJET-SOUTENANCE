@@ -5,20 +5,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block titre %}Maison Lumière{% endblock %}</title>
+    <script>document.documentElement.classList.add('js');</script>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="{% static 'js/site.js' %}" defer></script>
 </head>
 <body>
     <header class="entete">
         <div class="conteneur">
             <nav class="menu">
-                <a href="#">Boutique</a>
-                <a href="#">Collections</a>
-                <a href="#">Nouveautés</a>
-                <a href="#">Notre histoire</a>
+                <a href="{% url 'produits:liste' %}">Boutique</a>
+                <a href="{% url 'produits:nouveautes' %}">Nouveautés</a>
+                <a href="{% url 'produits:promotions' %}">Promotions</a>
+                <a href="{% url 'accueil:a_propos' %}">À propos</a>
             </nav>
             <a href="{% url 'accueil:accueil' %}" class="logo">Maison Lumière</a>
             <nav class="menu menu-droite">
-                <a href="#">Recherche</a>
+                <a href="{% url 'produits:liste' %}#recherche">Recherche</a>
                 <a href="{% url 'utilisateurs:tableau_bord' %}">Compte</a>
                 <a href="#">Favoris</a>
                 <a href="#">Panier (0)</a>
@@ -48,15 +50,16 @@
                 <div>
                     <h4>Boutique</h4>
                     <ul>
-                        <li><a href="#">Bagues</a></li>
-                        <li><a href="#">Colliers</a></li>
-                        <li><a href="#">Bracelets</a></li>
-                        <li><a href="#">Boucles d'oreilles</a></li>
+                        <li><a href="{% url 'produits:liste' %}?categorie=bagues">Bagues</a></li>
+                        <li><a href="{% url 'produits:liste' %}?categorie=colliers">Colliers</a></li>
+                        <li><a href="{% url 'produits:liste' %}?categorie=bracelets">Bracelets</a></li>
+                        <li><a href="{% url 'produits:liste' %}?categorie=boucles-doreilles">Boucles d'oreilles</a></li>
                     </ul>
                 </div>
                 <div>
                     <h4>Aide</h4>
                     <ul>
+                        <li><a href="{% url 'accueil:a_propos' %}">À propos</a></li>
                         <li><a href="#">Livraison et retours</a></li>
                         <li><a href="#">FAQ</a></li>
                         <li><a href="#">Suivi de commande</a></li>

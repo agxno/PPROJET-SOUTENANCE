@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accueil',
     'utilisateurs',
+    'produits',
 ]
 
 MIDDLEWARE = [
@@ -144,3 +145,6 @@ LOGIN_REDIRECT_URL = 'utilisateurs:tableau_bord'
 LOGOUT_REDIRECT_URL = 'accueil:accueil'
 # Permet d'afficher un message clair aux comptes pas encore activés
 AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.AllowAllUsersModelBackend']
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'

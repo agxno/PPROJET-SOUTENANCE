@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block titre %}À propos - Maison Lumière{% endblock %}
+
+{% block contenu %}
+<section class="heros">
+    <div class="conteneur">
+        <span class="etiquette">À propos</span>
+        <h1>Une maison, un savoir-faire</h1>
+        <p>Maison Lumière sélectionne des bijoux élégants et durables, pour accompagner vos plus beaux moments.</p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="conteneur histoire">
+        <span class="etiquette">Qui sommes-nous</span>
+        <h2>Faire briller le quotidien</h2>
+        <p>Maison Lumière est née d'une conviction : un bijou doit raconter quelque chose. Chaque pièce de notre collection est choisie pour la qualité de sa finition, la justesse de son dessin et sa capacité à durer.</p>
+        <p>Nous proposons des bagues, des colliers, des bracelets et des boucles d'oreilles pour toutes les occasions, du cadeau qui marque une date aux petites attentions de tous les jours.</p>
+    </div>
+</section>
+
+<section class="section bande">
+    <div class="conteneur">
+        <div class="valeurs">
+            <div class="valeur">
+                <span class="etiquette">01</span>
+                <h3>Qualité</h3>
+                <p>Des matières et des finitions soigneusement contrôlées avant chaque expédition.</p>
+            </div>
+            <div class="valeur">
+                <span class="etiquette">02</span>
+                <h3>Élégance</h3>
+                <p>Des créations sobres et intemporelles, faciles à porter au quotidien.</p>
+            </div>
+            <div class="valeur">
+                <span class="etiquette">03</span>
+                <h3>Confiance</h3>
+                <p>Un paiement sécurisé, une livraison suivie et un service client à votre écoute.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section appel">
+    <div class="conteneur">
+        <span class="etiquette">Prêt à choisir ?</span>
+        <h2>Découvrez la collection</h2>
+        <p>Parcourez nos créations ou écrivez-nous pour toute question.</p>
+        <a href="{% url 'produits:liste' %}" class="bouton">Voir la boutique</a>
+        <a href="{% url 'accueil:contact' %}" class="bouton bouton-contour">Nous contacter</a>
+    </div>
+</section>
+{% endblock %}

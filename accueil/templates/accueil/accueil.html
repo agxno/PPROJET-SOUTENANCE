@@ -8,10 +8,11 @@
         <span class="etiquette">Nouvelle collection</span>
         <h1>L'éclat qui vous ressemble</h1>
         <p>Découvrez nos bijoux et commandez en ligne, où que vous soyez, en toute simplicité.</p>
-        <a href="#categories" class="bouton">Découvrir la boutique</a>
+        <a href="{% url 'produits:liste' %}" class="bouton">Découvrir la boutique</a>
     </div>
 </section>
 
+{% if categories %}
 <section class="section" id="categories">
     <div class="conteneur">
         <div class="section-titre">
@@ -19,29 +20,42 @@
             <h2>Parcourir par catégorie</h2>
         </div>
         <div class="grille-categories">
-            <a href="#" class="categorie">
-                <div class="visuel">Photo</div>
-                <h3>Bagues</h3>
+            {% for categorie in categories %}
+            <a href="{% url 'produits:liste' %}?categorie={{ categorie.slug }}" class="categorie">
+                <div class="visuel">
+                    {% if categorie.image %}
+                        <img src="{{ categorie.image.url }}" alt="{{ categorie.nom }}">
+                    {% else %}
+                        Photo
+                    {% endif %}
+                </div>
+                <h3>{{ categorie.nom }}</h3>
                 <span>Découvrir</span>
             </a>
-            <a href="#" class="categorie">
-                <div class="visuel">Photo</div>
-                <h3>Colliers</h3>
-                <span>Découvrir</span>
-            </a>
-            <a href="#" class="categorie">
-                <div class="visuel">Photo</div>
-                <h3>Bracelets</h3>
-                <span>Découvrir</span>
-            </a>
-            <a href="#" class="categorie">
-                <div class="visuel">Photo</div>
-                <h3>Boucles d'oreilles</h3>
-                <span>Découvrir</span>
-            </a>
+            {% endfor %}
         </div>
     </div>
 </section>
+{% endif %}
+
+{% if nouveautes %}
+<section class="section">
+    <div class="conteneur">
+        <div class="section-titre">
+            <span class="etiquette">Dernières créations</span>
+            <h2>Nouveautés</h2>
+        </div>
+        <div class="grille-produits">
+            {% for produit in nouveautes %}
+                {% include 'produits/_carte.html' %}
+            {% endfor %}
+        </div>
+        <p style="text-align:center; margin-top:40px;">
+            <a href="{% url 'produits:nouveautes' %}" class="bouton bouton-contour">Voir toutes les nouveautés</a>
+        </p>
+    </div>
+</section>
+{% endif %}
 
 <section class="section bande">
     <div class="conteneur">
@@ -67,10 +81,10 @@
 
 <section class="section">
     <div class="conteneur histoire">
-        <span class="etiquette">Notre histoire</span>
+        <span class="etiquette">À propos</span>
         <h2>Une maison, un savoir-faire</h2>
         <p>Chaque pièce est choisie avec soin pour sa qualité et son élégance. Notre ambition : vous offrir des bijoux qui accompagnent vos plus beaux moments.</p>
-        <a href="#" class="bouton bouton-contour">En savoir plus</a>
+        <a href="{% url 'accueil:a_propos' %}" class="bouton bouton-contour">En savoir plus</a>
     </div>
 </section>
 

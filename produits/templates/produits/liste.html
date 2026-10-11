@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block titre %}{{ titre }} - Maison Lumière{% endblock %}
+
+{% block contenu %}
+<div class="conteneur">
+    <p class="fil"><a href="{% url 'accueil:accueil' %}">Accueil</a> / {{ titre }}</p>
+    <h1 class="titre-page">{{ titre }}</h1>
+    <p class="intro-page">{{ intro }}</p>
+
+    {% if recherche %}
+    <form method="get" class="recherche" id="recherche">
+        {% if categorie_active %}<input type="hidden" name="categorie" value="{{ categorie_active.slug }}">{% endif %}
+        <input type="search" name="q" value="{{ q }}" placeholder="Rechercher un bijou">
+        <button type="submit" class="bouton">Rechercher</button>
+    </form>
+    {% endif %}
+
+    <div class="filtres">
+        <a href="?{% if q %}q={{ q|urlencode }}{% endif %}" class="filtre{% if not categorie_active %} actif{% endif %}">Tout</a>
+        {% for categorie in categories %}
+            <a href="?categorie={{ categorie.slug }}{% if q %}&amp;q={{ q|urlencode }}{% endif %}"
+               class="filtre{% if categorie_active == categorie %} actif{% endif %}">{{ categorie.nom }}</a>
+        {% endfor %}
+    </div>
+
+    {% if page_obj %}
+        <div class="grille-produits">
+            {% for produit in page_obj %}
+                {% include 'produits/_carte.html' %}
+            {% endfor %}
+        </div>
+
+        {% if page_obj.has_other_pages %}
+        <nav class="pagination">
+            {% if page_obj.has_previous %}
+                <a href="?{% if qs %}{{ qs }}&amp;{% endif %}page={{ page_obj.previous_page_number }}">Précédent</a>
+            {% endif %}
+            {% for n in page_obj.paginator.page_range %}
+                {% if n == page_obj.number %}
+                    <span class="actif">{{ n }}</span>
+                {% else %}
+                    <a href="?{% if qs %}{{ qs }}&amp;{% endif %}page={{ n }}">{{ n }}</a>
+                {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+                <a href="?{% if qs %}{{ qs }}&amp;{% endif %}page={{ page_obj.next_page_number }}">Suivant</a>
+            {% endif %}
+        </nav>
+        {% endif %}
+    {% else %}
+        <p class="vide">Aucun produit ne correspond à votre sélection.</p>
+    {% endif %}
+</div>
+{% endblock %}

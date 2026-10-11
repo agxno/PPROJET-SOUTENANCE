@@ -1,20 +1,29 @@
-from django.shortcuts import render
 from django.contrib import messages
+from django.shortcuts import redirect, render
+
+from produits.models import Categorie, Produit
+
 from .forms import ContactForm
-# Create your views here.
+
 
 def accueil(request):
-    return render(request, 'accueil/accueil.html')
+    return render(request, 'accueil/accueil.html', {
+        'categories': Categorie.objects.all()[:4],
+        'nouveautes': Produit.objects.disponibles().order_by('-date_creation')[:4],
+    })
+
+
+def a_propos(request):
+    return render(request, 'accueil/a_propos.html')
+
 
 def contact(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Votre message a été envoyé avec succès !')
-        else:
-            messages.error(request, 'Veuillez corriger les erreurs ci-dessous.')
+            messages.success(request, "Votre message a bien été envoyé. Nous vous répondrons rapidement.")
+            return redirect('accueil:contact')
     else:
         form = ContactForm()
-    
     return render(request, 'accueil/contact.html', {'form': form})

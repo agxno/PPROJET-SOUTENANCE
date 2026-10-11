@@ -276,3 +276,255 @@ h1, h2, h3, h4 {
     .pied-grille { grid-template-columns: 1fr; }
     .heros { padding: 70px 0; }
 }
+
+/* ---------- Catalogue ---------- */
+.fil { padding: 28px 0 0; font-size: .75rem; color: var(--texte-doux); }
+.fil a:hover { color: var(--accent); }
+.titre-page { font-size: clamp(2.4rem, 5vw, 3.4rem); margin: 14px 0 10px; }
+.intro-page { color: var(--texte-doux); margin-bottom: 26px; }
+
+.recherche { display: flex; gap: 10px; max-width: 480px; margin-bottom: 22px; }
+.recherche input {
+    flex: 1;
+    padding: 12px 14px;
+    border: 1px solid var(--sombre);
+    border-radius: 0;
+    background: transparent;
+    font: inherit;
+    color: var(--sombre);
+}
+.recherche .bouton { padding: 12px 22px; }
+
+.filtres { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 34px; }
+.filtre {
+    padding: 9px 18px;
+    border: 1px solid var(--sombre);
+    font-size: .7rem;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    transition: background .2s, color .2s;
+}
+.filtre:hover, .filtre.actif { background: var(--sombre); color: var(--fond); }
+
+.grille-produits { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px 22px; }
+
+.produit-visuel {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 4 / 5;
+    background: var(--carte);
+    margin-bottom: 12px;
+    overflow: hidden;
+    font-size: .72rem;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--texte-doux);
+}
+.produit-visuel img,
+.categorie .visuel img,
+.detail-visuel img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.pastille {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: var(--sombre);
+    color: var(--fond);
+    font-size: .68rem;
+    letter-spacing: .08em;
+    padding: 3px 12px;
+    border-radius: 20px;
+}
+.pastille-fixe { position: static; display: inline-block; margin-left: 10px; vertical-align: middle; }
+
+.produit h3 { font-size: 1.25rem; margin-bottom: 2px; }
+.produit h3 a:hover { color: var(--accent); }
+.prix { font-size: .9rem; margin-bottom: 12px; color: var(--texte-doux); }
+.prix s { margin-right: 8px; opacity: .7; }
+.prix-promo { color: var(--erreur); font-weight: 600; }
+.produit .bouton { padding: 12px 10px; }
+
+.pagination { display: flex; justify-content: center; gap: 18px; margin-top: 48px; font-size: .85rem; }
+.pagination a:hover { color: var(--accent); }
+.pagination .actif { text-decoration: underline; }
+.vide { text-align: center; color: var(--texte-doux); padding: 60px 0; }
+
+/* ---------- Fiche produit ---------- */
+.detail { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; padding: 36px 0 30px; }
+.detail-visuel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 4 / 5;
+    background: var(--carte);
+    overflow: hidden;
+    font-size: .72rem;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--texte-doux);
+}
+.detail-infos h1 { font-size: 2.6rem; margin: 10px 0 12px; }
+.prix-grand { font-size: 1.15rem; margin-bottom: 20px; }
+.detail-description { color: var(--texte-doux); margin-bottom: 22px; }
+.stock { font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 18px; }
+.stock-en_stock { color: #3d5a2a; }
+.stock-faible { color: var(--accent); }
+.stock-rupture { color: var(--erreur); }
+.reference { margin-top: 14px; font-size: .75rem; color: var(--texte-doux); }
+.bouton[disabled] { opacity: .45; cursor: not-allowed; }
+.bouton[disabled]:hover { background: var(--sombre); color: var(--fond); }
+
+@media (max-width: 900px) {
+    .grille-produits { grid-template-columns: repeat(2, 1fr); }
+    .detail { grid-template-columns: 1fr; gap: 28px; }
+}
+@media (max-width: 520px) {
+    .grille-produits { grid-template-columns: 1fr; }
+}
+
+/* ==========================================================
+   Animations et états de chargement
+   ========================================================== */
+html { scroll-behavior: smooth; }
+
+@keyframes fondu { from { opacity: 0; } to { opacity: 1; } }
+@keyframes apparition { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+@keyframes descend { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: none; } }
+@keyframes tourne { to { transform: rotate(360deg); } }
+@keyframes eclat { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+@keyframes secours { to { opacity: 1; } }
+
+/* ---------- Entrée de page ---------- */
+main { animation: fondu .4s ease backwards; }
+.heros .etiquette { display: inline-block; }
+.heros .etiquette,
+.heros h1,
+.heros p,
+.heros .bouton { animation: apparition .8s ease backwards; }
+.heros h1 { animation-delay: .1s; }
+.heros p { animation-delay: .2s; }
+.heros .bouton { animation-delay: .3s; }
+
+/* ---------- Apparition au scroll (classes ajoutées par site.js) ---------- */
+.revele { opacity: 0; transform: translateY(24px); transition: opacity .8s ease, transform .8s ease; }
+.revele.visible { opacity: 1; transform: none; }
+
+/* ---------- Menu : soulignement animé ---------- */
+.menu a { position: relative; }
+.menu a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -4px;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .3s ease;
+}
+.menu a:hover::after { transform: scaleX(1); }
+.entete .logo { transition: opacity .2s ease; }
+.entete .logo:hover { opacity: .75; }
+
+/* ---------- Photos : zoom au survol, fondu au chargement ---------- */
+.produit-visuel img,
+.categorie .visuel img,
+.detail-visuel img { transition: transform .7s ease, opacity .5s ease; }
+.categorie .visuel { overflow: hidden; }
+.produit:hover .produit-visuel img,
+.categorie:hover .visuel img { transform: scale(1.05); }
+
+/* Masquées jusqu'au chargement (si le script ne tourne pas, elles s'affichent après 5 s) */
+.js .produit-visuel img,
+.js .categorie .visuel img,
+.js .detail-visuel img { opacity: 0; animation: secours .01s 5s forwards; }
+.js .produit-visuel img.charge,
+.js .categorie .visuel img.charge,
+.js .detail-visuel img.charge { opacity: 1; animation: none; }
+
+/* Squelette qui scintille pendant le chargement d'une photo */
+.produit-visuel.chargement,
+.categorie .visuel.chargement,
+.detail-visuel.chargement {
+    background-image: linear-gradient(100deg, var(--carte) 30%, var(--fond) 50%, var(--carte) 70%);
+    background-size: 200% 100%;
+    animation: eclat 1.4s linear infinite;
+}
+
+/* ---------- Boutique : grille en attente (filtre ou page cliqués) ---------- */
+.grille-produits { transition: opacity .25s ease; }
+.grille-produits.attente { opacity: .5; pointer-events: none; }
+.grille-produits.attente .produit-visuel::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, .5) 50%, transparent 70%);
+    background-size: 200% 100%;
+    animation: eclat 1.2s linear infinite;
+}
+
+/* ---------- Boutons : état « en cours » avec spinner ---------- */
+.bouton { position: relative; }
+.bouton.en-cours,
+.bouton.en-cours:hover {
+    background: var(--sombre);
+    border-color: var(--sombre);
+    color: transparent;
+    pointer-events: none;
+}
+.bouton.en-cours::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 16px;
+    height: 16px;
+    margin: -8px 0 0 -8px;
+    border: 2px solid var(--fond);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: tourne .7s linear infinite;
+}
+button.en-cours:not(.bouton) { opacity: .5; pointer-events: none; }
+
+/* ---------- Barre de progression en haut de page ---------- */
+.barre-chargement {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--accent);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1000;
+}
+.barre-chargement.demarre {
+    width: 85%;
+    opacity: 1;
+    transition: width 8s cubic-bezier(.1, .6, .2, 1), opacity .2s ease;
+}
+
+/* ---------- Messages ---------- */
+.message {
+    max-height: 200px;
+    overflow: hidden;
+    animation: descend .5s ease backwards;
+    transition: opacity .5s ease, max-height .5s ease, padding .5s ease;
+}
+.message.masque { opacity: 0; max-height: 0; padding-top: 0; padding-bottom: 0; }
+
+/* ---------- Accessibilité : mouvements réduits ---------- */
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-delay: 0ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+        transition-delay: 0ms !important;
+    }
+}

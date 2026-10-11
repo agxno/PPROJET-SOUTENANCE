@@ -1,0 +1,26 @@
+<article class="produit">
+    <a href="{{ produit.get_absolute_url }}" class="produit-visuel">
+        {% if produit.image %}
+            <img src="{{ produit.image.url }}" alt="{{ produit.nom }}">
+        {% else %}
+            <span>Photo</span>
+        {% endif %}
+        {% if produit.en_rupture %}
+            <span class="pastille">Épuisé</span>
+        {% elif produit.en_promotion %}
+            <span class="pastille">-{{ produit.remise }}%</span>
+        {% elif produit.est_nouveau %}
+            <span class="pastille">Nouveau</span>
+        {% endif %}
+    </a>
+    <h3><a href="{{ produit.get_absolute_url }}">{{ produit.nom }}</a></h3>
+    <p class="prix">
+        {% if produit.en_promotion %}
+            <s>{{ produit.prix|floatformat:"0g" }} FCFA</s>
+            <span class="prix-promo">{{ produit.prix_promo|floatformat:"0g" }} FCFA</span>
+        {% else %}
+            {{ produit.prix|floatformat:"0g" }} FCFA
+        {% endif %}
+    </p>
+    <a href="{{ produit.get_absolute_url }}" class="bouton bouton-contour bouton-plein">Voir le produit</a>
+</article>
