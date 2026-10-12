@@ -3,12 +3,13 @@ from django.urls import path, reverse_lazy
 from django.views.generic import TemplateView
 
 from . import views
+from .connexion import ConnexionView
 from .forms import ConnexionForm
 
 app_name = 'utilisateurs'
 
 urlpatterns = [
-    path('connexion/', auth_views.LoginView.as_view(
+    path('connexion/', ConnexionView.as_view(
         template_name='utilisateurs/connexion.html',
         authentication_form=ConnexionForm,
         redirect_authenticated_user=True,

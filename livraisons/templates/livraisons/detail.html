@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block titre %}Livraison {{ commande.reference }} - Maison Lumière{% endblock %}
+
+{% block contenu %}
+<link rel="stylesheet" href="{% static 'css/commandes.css' %}">
+<div class="conteneur">
+    <p class="fil">
+        <a href="{% url 'accueil:accueil' %}">Accueil</a> /
+        <a href="{% url 'livraisons:tableau' %}">Espace livreur</a> / {{ commande.reference }}
+    </p>
+    <h1 class="titre-page">Livraison {{ commande.reference }}</h1>
+    <p class="entete-commande">
+        <span class="statut statut-{{ commande.statut }}">{{ commande.get_statut_display }}</span>
+        <span>Commande du {{ commande.date_creation|date:"d/m/Y" }}</span>
+    </p>
+
+    {% with payee=commande.est_payee %}
+    {% if not payee %}
+        <p class="alerte">Paiement non confirmé : ne livrez pas avant d'avoir contacté l'administration.</p>
+    {% endif %}
+
+    <div class="cartes">
+        <div class="carte-info">
+            <span class="etiquette">Destinataire</span>
+            <p>
+                {{ commande.livraison_prenom }} {{ commande.livraison_nom }}<br>
+                <a href="tel:{{ commande.livraison_telephone }}" style="text-decoration:underline;">{{ commande.livraison_telephone }}</a>
+            </p>
+        </div>
+        <div class="carte-info">
+            <span class="etiquette">Adresse de livraison</span>
+            <p>{{ commande.livraison_adresse }}<br>{{ commande.livraison_ville }}</p>
+            <div class="carte-actions">
+                <a href="https://www.google.com/maps/search/?api=1&amp;query={{ commande.livraison_adresse|urlencode }}%20{{ commande.livraison_ville|urlencode }}" target="_blank" rel="noopener">Ouvrir dans Maps</a>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="sous-titre" style="margin-top:34px;">Colis</h2>
+    <ul class="recap-liste" style="max-width:520px;">
+        {% for ligne in commande.lignes.all %}
+        <li><span>{{ ligne.nom_produit }}</span><span>x {{ ligne.quantite }}</span></li>
+        {% endfor %}
+    </ul>
+    <p style="margin-top:12px; font-size:.88rem; color:var(--texte-doux);">
+        Paiement : {% if payee %}reçu{% else %}non confirmé{% endif %}
+    </p>
+
+    <div class="actions-commande">
+        {% if payee %}
+            {% if commande.statut == 'en_preparation' %}
+                <form method="post" action="{% url 'livraisons:changer_statut' commande.reference %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="en_route">
+                    <button type="submit" class="bouton">Je pars livrer</button>
+                </form>
+            {% elif commande.statut == 'expediee' %}
+                <form method="post" action="{% url 'livraisons:changer_statut' commande.reference %}"
+                      onsubmit="return confirm('Confirmer que la commande a bien été remise au client ?');">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="livree">
+                    <button type="submit" class="bouton">Marquer comme livrée</button>
+                </form>
+            {% elif commande.statut == 'livree' %}
+                <p>Livrée le {{ commande.date_livraison|date:"d/m/Y à H:i" }}.</p>
+            {% endif %}
+        {% endif %}
+        <a href="{% url 'livraisons:tableau' %}" class="bouton bouton-contour">Mes livraisons</a>
+    </div>
+    {% endwith %}
+</div>
+{% endblock %}

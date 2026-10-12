@@ -11,6 +11,7 @@ urlpatterns = [
     path('', include('panier.urls')),
     path('', include('commandes.urls')),
     path('', include('paiements.urls')),
+    path('', include('livraisons.urls')),
 ]
 
 if settings.DEBUG:

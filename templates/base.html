@@ -7,6 +7,38 @@
     <title>{% block titre %}Maison Lumière{% endblock %}</title>
     <script>document.documentElement.classList.add('js');</script>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        /* Icônes dans un cercle, utilisées sur tout le site */
+        .valeur-icone {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 16px;
+            border-radius: 50%;
+            background: var(--fond);
+            border: 1.5px solid var(--accent);
+            color: var(--accent);
+            transition: transform .3s ease, background .3s ease, color .3s ease, border-color .3s ease;
+        }
+        .valeur-icone svg {
+            width: 26px;
+            height: 26px;
+            flex: none;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .valeur:hover .valeur-icone {
+            transform: translateY(-4px);
+            background: var(--sombre);
+            border-color: var(--sombre);
+            color: var(--fond);
+        }
+    </style>
     <script src="{% static 'js/site.js' %}" defer></script>
 </head>
 <body>
@@ -16,11 +48,12 @@
                 <a href="{% url 'produits:liste' %}">Boutique</a>
                 <a href="{% url 'produits:nouveautes' %}">Nouveautés</a>
                 <a href="{% url 'produits:promotions' %}">Promotions</a>
-                <a href="{% url 'accueil:a_propos' %}">Nous</a>
+                <a href="{% url 'accueil:a_propos' %}">À propos</a>
             </nav>
             <a href="{% url 'accueil:accueil' %}" class="logo">Maison Lumière</a>
             <nav class="menu menu-droite">
                 <a href="{% url 'produits:liste' %}#recherche">Recherche</a>
+                {% if user.est_livreur %}<a href="{% url 'livraisons:tableau' %}">Livraisons</a>{% endif %}
                 <a href="{% url 'utilisateurs:tableau_bord' %}">Compte</a>
                 <a href="#">Favoris</a>
                 <a href="{% url 'panier:voir' %}">Panier ({{ panier_quantite }})</a>

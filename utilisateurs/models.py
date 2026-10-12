@@ -29,6 +29,10 @@ class Utilisateur(AbstractUser):
     username = None
     email = models.EmailField("adresse e-mail", unique=True)
     telephone = models.CharField("téléphone", max_length=20, blank=True)
+    est_livreur = models.BooleanField(
+        "livreur", default=False,
+        help_text="Donne accès à l'espace livreur. Les livreurs sont créés par l'administration.",
+    )
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

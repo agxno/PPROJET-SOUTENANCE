@@ -70,6 +70,21 @@
             <p>Paiement non enregistré.</p>
         {% endif %}
     </div>
+    {% if commande.statut != 'annulee' and commande.statut != 'en_attente' %}
+    <div class="carte-info">
+        <span class="etiquette">Suivi de livraison</span>
+        <p>
+            {% if commande.statut == 'en_preparation' %}
+                Votre commande est en préparation.
+            {% elif commande.statut == 'expediee' %}
+                Votre commande est en route{% if commande.date_expedition %} depuis le {{ commande.date_expedition|date:"d/m/Y à H:i" }}{% endif %}.
+            {% elif commande.statut == 'livree' %}
+                Livrée le {{ commande.date_livraison|date:"d/m/Y à H:i" }}.
+            {% endif %}
+            {% if commande.livreur and commande.livreur.first_name %}<br>Livreur : {{ commande.livreur.first_name }}{% endif %}
+        </p>
+    </div>
+    {% endif %}
 </div>
 
 <div class="actions-commande">

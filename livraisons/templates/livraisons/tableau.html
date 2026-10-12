@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block titre %}Espace livreur - Maison Lumière{% endblock %}
+
+{% block contenu %}
+<link rel="stylesheet" href="{% static 'css/commandes.css' %}">
+<div class="conteneur">
+    <p class="fil"><a href="{% url 'accueil:accueil' %}">Accueil</a> / Espace livreur</p>
+    <h1 class="titre-page">Bonjour {{ user.first_name|default:user.email }}</h1>
+    <p class="intro-page">Voici vos livraisons.</p>
+
+    <div class="filtres">
+        <a href="?onglet=a_livrer" class="filtre{% if onglet == 'a_livrer' %} actif{% endif %}">À livrer ({{ nb_a_livrer }})</a>
+        <a href="?onglet=livrees" class="filtre{% if onglet == 'livrees' %} actif{% endif %}">Livrées ({{ nb_livrees }})</a>
+    </div>
+
+    {% if commandes %}
+    <div class="tableau-defile">
+        <table class="tableau-commandes">
+            <thead>
+                <tr><th>N° commande</th><th>Client</th><th>Ville</th><th>Statut</th><th></th></tr>
+            </thead>
+            <tbody>
+                {% for commande in commandes %}
+                <tr>
+                    <td>{{ commande.reference }}</td>
+                    <td>{{ commande.livraison_prenom }} {{ commande.livraison_nom }}<br><small>{{ commande.livraison_telephone }}</small></td>
+                    <td>{{ commande.livraison_ville }}</td>
+                    <td><span class="statut statut-{{ commande.statut }}">{{ commande.get_statut_display }}</span></td>
+                    <td><a href="{% url 'livraisons:detail' commande.reference %}">Voir</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+        <p class="vide">
+            {% if onglet == 'livrees' %}Aucune livraison terminée pour le moment.{% else %}Aucune livraison en attente. Revenez plus tard !{% endif %}
+        </p>
+    {% endif %}
+</div>
+{% endblock %}

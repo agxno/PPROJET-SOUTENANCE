@@ -16,14 +16,15 @@ class LigneCommandeInline(admin.TabularInline):
 
 @admin.register(Commande)
 class CommandeAdmin(admin.ModelAdmin):
-    list_display = ('reference', 'utilisateur', 'date_creation', 'total', 'statut')
-    list_editable = ('statut',)
-    list_filter = ('statut', 'date_creation')
-    search_fields = ('reference', 'utilisateur__email', 'livraison_nom')
+    list_display = ('reference', 'utilisateur', 'date_creation', 'total', 'statut', 'livreur')
+    list_editable = ('statut', 'livreur')
+    list_filter = ('statut', 'livreur', 'date_creation')
+    search_fields = ('reference', 'utilisateur__email', 'livraison_nom', 'livreur__email')
     date_hierarchy = 'date_creation'
     inlines = [LigneCommandeInline]
     readonly_fields = (
         'reference', 'utilisateur', 'total', 'date_creation', 'date_modification',
+        'date_expedition', 'date_livraison',
         'livraison_prenom', 'livraison_nom', 'livraison_adresse',
         'livraison_ville', 'livraison_telephone',
     )

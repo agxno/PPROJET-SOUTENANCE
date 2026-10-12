@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'panier',
     'commandes',
     'paiements',
+    'livraisons',
 ]
 
 MIDDLEWARE = [

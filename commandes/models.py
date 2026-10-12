@@ -1,10 +1,16 @@
+import logging
+
 from django.conf import settings
 from django.core.exceptions import ValidationError
+from django.core.mail import send_mail
 from django.db import models, transaction
 from django.db.models import F
+from django.utils import timezone
 
 from panier.models import Panier
 from produits.models import Produit
+
+logger = logging.getLogger(__name__)
 
 
 class PanierVide(Exception):
@@ -34,6 +40,15 @@ class Commande(models.Model):
     statut = models.CharField(max_length=20, choices=STATUTS, default='en_attente')
     total = models.DecimalField("total (FCFA)", max_digits=12, decimal_places=0, default=0)
 
+    # Livraison
+    livreur = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True,
+        related_name='livraisons', limit_choices_to={'est_livreur': True},
+        verbose_name="livreur",
+    )
+    date_expedition = models.DateTimeField("date d'expédition", null=True, blank=True)
+    date_livraison = models.DateTimeField("date de livraison", null=True, blank=True)
+
     # Adresse de livraison copiée au moment de la commande (elle ne change plus ensuite)
     livraison_prenom = models.CharField("prénom", max_length=100)
     livraison_nom = models.CharField("nom", max_length=100)
@@ -62,15 +77,49 @@ class Commande(models.Model):
 
     def save(self, *args, **kwargs):
         ancien = self._statut_initial
+        statut_change = ancien is not None and self.statut != ancien
+
+        if statut_change:
+            maintenant = timezone.now()
+            if self.statut == 'expediee' and not self.date_expedition:
+                self.date_expedition = maintenant
+            if self.statut == 'livree':
+                self.date_livraison = maintenant
+                if not self.date_expedition:
+                    self.date_expedition = maintenant
+
         super().save(*args, **kwargs)
+
         # Passage à « Annulée » : le stock est remis à disposition
         if self.statut == 'annulee' and ancien not in (None, 'annulee'):
             self._remettre_en_stock()
+        # Le client est prévenu quand sa commande part et quand elle arrive
+        if statut_change and self.statut in ('expediee', 'livree'):
+            self._notifier_client()
         self._statut_initial = self.statut
 
     def _remettre_en_stock(self):
         for ligne in self.lignes.exclude(produit__isnull=True):
             Produit.objects.filter(pk=ligne.produit_id).update(stock=F('stock') + ligne.quantite)
+
+    def _notifier_client(self):
+        if self.statut == 'expediee':
+            sujet = f"Votre commande {self.reference} est en route"
+            corps = "Votre commande vient d'être confiée à notre livreur. Elle sera bientôt chez vous."
+        else:
+            sujet = f"Votre commande {self.reference} a été livrée"
+            corps = "Votre commande vient de vous être remise. Merci pour votre confiance !"
+        livreur = ""
+        if self.livreur and self.livreur.first_name:
+            livreur = f"\nVotre livreur : {self.livreur.first_name}\n"
+        message = (
+            f"Bonjour {self.utilisateur.first_name},\n\n{corps}\n{livreur}\n"
+            f"Référence : {self.reference}\n\nL'équipe Maison Lumière"
+        )
+        try:
+            send_mail(sujet, message, None, [self.utilisateur.email])
+        except Exception:
+            logger.exception("E-mail de suivi non envoyé pour la commande %s", self.reference)
 
     @property
     def en_cours(self):
@@ -79,6 +128,10 @@ class Commande(models.Model):
     @property
     def peut_annuler(self):
         return self.statut == 'en_attente'
+
+    @property
+    def est_payee(self):
+        return self.paiements.filter(statut='reussi').exists()
 
     @classmethod
     def creer_depuis_panier(cls, utilisateur, adresse):
