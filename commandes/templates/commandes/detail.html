@@ -4,7 +4,7 @@
 {% block titre_page %}{% if confirmation %}Commande confirmée{% else %}Ma commande{% endif %}{% endblock %}
 
 {% block contenu_compte %}
-{% if confirmation %}
+{% if confirmation and paiement %}
 <div class="confirmation">
     <div class="valeur-icone">
         <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true">
@@ -12,7 +12,7 @@
         </svg>
     </div>
     <h2>Merci pour votre commande</h2>
-    <p>Votre commande <strong>{{ commande.reference }}</strong> est enregistrée. Conservez ce numéro pour la suivre.</p>
+    <p>Votre commande <strong>{{ commande.reference }}</strong> est payée et en cours de préparation.</p>
 </div>
 {% endif %}
 
@@ -54,9 +54,28 @@
         <span class="etiquette">Adresse de livraison</span>
         <p>{{ commande.livraison_prenom }} {{ commande.livraison_nom }}<br>{{ commande.livraison_adresse }}<br>{{ commande.livraison_ville }} · {{ commande.livraison_telephone }}</p>
     </div>
+    <div class="carte-info">
+        <span class="etiquette">Paiement</span>
+        {% if paiement %}
+            <p>
+                Payé le {{ paiement.date_paiement|date:"d/m/Y à H:i" }}<br>
+                {{ paiement.get_methode_display }}{% if paiement.operateur %} · {{ paiement.get_operateur_display }}{% endif %}<br>
+                <small>Transaction {{ paiement.transaction_id }}</small>
+            </p>
+        {% elif commande.statut == 'en_attente' %}
+            <p>En attente de paiement.</p>
+        {% elif commande.statut == 'annulee' %}
+            <p>Aucun paiement : commande annulée.</p>
+        {% else %}
+            <p>Paiement non enregistré.</p>
+        {% endif %}
+    </div>
 </div>
 
 <div class="actions-commande">
+    {% if commande.statut == 'en_attente' and not paiement %}
+        <a href="{% url 'paiements:payer' commande.reference %}" class="bouton">Payer maintenant</a>
+    {% endif %}
     <a href="{% url 'commandes:liste' %}" class="bouton bouton-contour">Mes commandes</a>
     {% if commande.peut_annuler %}
     <form method="post" action="{% url 'commandes:annuler' commande.reference %}"

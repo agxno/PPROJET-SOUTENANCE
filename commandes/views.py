@@ -30,6 +30,16 @@ def _commande(request, reference):
     )
 
 
+def _page_commande(request, reference, **extra):
+    commande = _commande(request, reference)
+    contexte = {
+        'commande': commande,
+        'paiement': commande.paiements.filter(statut='reussi').first(),
+    }
+    contexte.update(extra)
+    return render(request, 'commandes/detail.html', contexte)
+
+
 @connexion_requise
 def valider(request):
     panier = Panier.objects.filter(utilisateur=request.user).first()
@@ -72,7 +82,8 @@ def valider(request):
                     )
                 except Exception:
                     messages.warning(request, "Votre commande est enregistrée, mais l'e-mail de confirmation n'a pas pu être envoyé.")
-                return redirect('commandes:confirmation', reference=commande.reference)
+                # Étape suivante : le paiement
+                return redirect('paiements:payer', reference=commande.reference)
 
     return render(request, 'commandes/valider.html', {
         'lignes': lignes,
@@ -96,15 +107,12 @@ def liste(request):
 
 @connexion_requise
 def detail(request, reference):
-    return render(request, 'commandes/detail.html', {'commande': _commande(request, reference)})
+    return _page_commande(request, reference)
 
 
 @connexion_requise
 def confirmation(request, reference):
-    return render(request, 'commandes/detail.html', {
-        'commande': _commande(request, reference),
-        'confirmation': True,
-    })
+    return _page_commande(request, reference, confirmation=True)
 
 
 @require_POST

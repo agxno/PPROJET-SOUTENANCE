@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'produits',
     'panier',
     'commandes',
+    'paiements',
 ]
 
 MIDDLEWARE = [
@@ -152,3 +153,5 @@ AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.AllowAllUsersModelBacke
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+# Paiement simulé (démonstration) : actif seulement en mode développement
+PAIEMENTS_SIMULATION = DEBUG
