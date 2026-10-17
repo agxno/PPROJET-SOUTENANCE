@@ -1,0 +1,24 @@
+{% load static %}
+{% if temoignages %}
+<link rel="stylesheet" href="{% static 'css/avis.css' %}">
+<section class="section bande">
+    <div class="conteneur">
+        <div class="section-titre">
+            <span class="etiquette">Avis clients</span>
+            <h2>Ils nous font confiance</h2>
+        </div>
+        <div class="temoignages">
+            {% for avis in temoignages %}
+            <figure class="temoignage">
+                <span class="etoiles">{{ avis.etoiles }}</span>
+                <blockquote>{{ avis.commentaire|truncatechars:170 }}</blockquote>
+                <figcaption>
+                    {{ avis.auteur }} ·
+                    <a href="{{ avis.produit.get_absolute_url }}">{{ avis.produit.nom }}</a>
+                </figcaption>
+            </figure>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}

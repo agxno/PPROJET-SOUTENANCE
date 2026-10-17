@@ -33,6 +33,9 @@
                 <td>
                     {% if ligne.produit %}<a href="{{ ligne.produit.get_absolute_url }}">{{ ligne.nom_produit }}</a>{% else %}{{ ligne.nom_produit }}{% endif %}
                     <br><small>Réf. {{ ligne.reference_produit }}</small>
+                    {% if commande.statut == 'livree' and ligne.produit %}
+                        <br><a href="{% url 'avis:laisser' ligne.produit.slug %}"><small>Donner mon avis</small></a>
+                    {% endif %}
                 </td>
                 <td>{{ ligne.prix_unitaire|floatformat:"0g" }} FCFA</td>
                 <td>{{ ligne.quantite }}</td>

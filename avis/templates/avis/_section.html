@@ -1,0 +1,45 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/avis.css' %}">
+<section class="avis-section" id="avis">
+    <div class="section-titre">
+        <span class="etiquette">Avis clients</span>
+        <h2>Ce que disent nos clients</h2>
+    </div>
+
+    <div class="avis-resume">
+        {% if avis_total %}
+            <span class="avis-moyenne">{{ avis_moyenne }}<small>/5</small></span>
+            <span class="etoiles">{{ avis_etoiles }}</span>
+            <span class="avis-compte">{{ avis_total }} avis</span>
+        {% else %}
+            <span class="avis-compte">Aucun avis pour le moment.</span>
+        {% endif %}
+    </div>
+
+    <div class="avis-action">
+        {% if peut_donner_avis %}
+            <a href="{% url 'avis:laisser' produit.slug %}" class="bouton bouton-contour">Donner mon avis</a>
+        {% elif avis_existant.statut == 'en_attente' %}
+            <p class="avis-note-perso">Votre avis a bien été reçu : il sera publié après modération.</p>
+        {% elif avis_existant.statut == 'publie' %}
+            <p class="avis-note-perso">Merci d'avoir donné votre avis sur ce produit.</p>
+        {% elif not avis_existant %}
+            <p class="avis-note-perso">Les avis sont réservés aux clients qui ont reçu cet article.</p>
+        {% endif %}
+    </div>
+
+    {% if avis_publies %}
+    <div class="avis-liste">
+        {% for avis in avis_publies %}
+        <article class="avis-carte">
+            <div class="avis-entete">
+                <span class="etoiles">{{ avis.etoiles }}</span>
+                <h3>{{ avis.titre }}</h3>
+            </div>
+            <p>{{ avis.commentaire|linebreaksbr }}</p>
+            <p class="avis-meta">{{ avis.auteur }} · {{ avis.date_creation|date:"d/m/Y" }} · Achat vérifié</p>
+        </article>
+        {% endfor %}
+    </div>
+    {% endif %}
+</section>

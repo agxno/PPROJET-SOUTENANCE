@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block titre %}Laisser un avis - Maison Lumière{% endblock %}
+
+{% block contenu %}
+<link rel="stylesheet" href="{% static 'css/avis.css' %}">
+<div class="conteneur">
+    <div class="page-formulaire">
+        <span class="etiquette">Votre avis</span>
+        <h1>Laisser un avis</h1>
+
+        <div class="produit-avis">
+            <div class="produit-avis-visuel">
+                {% if produit.image %}
+                    <img src="{{ produit.image.url }}" alt="{{ produit.nom }}">
+                {% else %}
+                    <span>Photo</span>
+                {% endif %}
+            </div>
+            <div>
+                <h3>{{ produit.nom }}</h3>
+                <p>Commande {{ commande.reference }}</p>
+            </div>
+        </div>
+
+        <form method="post" class="formulaire">
+            {% csrf_token %}
+
+            <p>
+                <label>Votre note</label>
+                <span class="notation">
+                    {% for i in "54321" %}
+                        <input type="radio" id="note{{ i }}" name="note" value="{{ i }}"{% if form.note.value|stringformat:"s" == i %} checked{% endif %}>
+                        <label for="note{{ i }}" title="{{ i }} sur 5">★</label>
+                    {% endfor %}
+                </span>
+                {% for erreur in form.note.errors %}<span class="erreur-champ">{{ erreur }}</span>{% endfor %}
+            </p>
+
+            <p>
+                <label for="{{ form.titre.id_for_label }}">{{ form.titre.label }}</label>
+                {{ form.titre }}
+                {% for erreur in form.titre.errors %}<span class="erreur-champ">{{ erreur }}</span>{% endfor %}
+            </p>
+
+            <p>
+                <label for="{{ form.commentaire.id_for_label }}">{{ form.commentaire.label }}</label>
+                {{ form.commentaire }}
+                {% for erreur in form.commentaire.errors %}<span class="erreur-champ">{{ erreur }}</span>{% endfor %}
+            </p>
+
+            <button type="submit" class="bouton bouton-plein">Publier mon avis</button>
+        </form>
+        <p class="liens-formulaire"><a href="{{ produit.get_absolute_url }}">&larr; Retour au produit</a></p>
+    </div>
+</div>
+{% endblock %}

@@ -1,14 +1,24 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block titre %}Accueil - Maison Lumière{% endblock %}
 
 {% block contenu %}
-<section class="heros heros-image">
-    <div class="conteneur">
+{% extends 'base.html' %}
+{% load static %}
+
+{% block titre %}Accueil - Maison Lumière{% endblock %}
+
+{% block contenu %}
+<section class="hero-split">
+    <div class="hero-split-texte">
         <span class="etiquette">Nouvelle collection</span>
         <h1>L'éclat qui vous ressemble</h1>
         <p>Découvrez nos bijoux et commandez en ligne, où que vous soyez, en toute simplicité.</p>
         <a href="{% url 'produits:liste' %}" class="bouton">Découvrir la boutique</a>
+    </div>
+    <div class="hero-split-image">
+        <img src="{% static 'img/hero.jpeg' %}" alt="Bijoux Maison Lumière">
     </div>
 </section>
 
@@ -61,23 +71,145 @@
     <div class="conteneur">
         <div class="valeurs">
             <div class="valeur">
-                <span class="etiquette">01</span>
+                <div class="valeur-icone">
+                    <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M1 6h13v10H1z"/>
+                        <path d="M14 9h4l3 3v4h-7z"/>
+                        <circle cx="6" cy="18" r="2"/>
+                        <circle cx="17" cy="18" r="2"/>
+                    </svg>
+                </div>
                 <h3>Livraison rapide</h3>
                 <p>Recevez vos commandes à domicile, suivies de A à Z.</p>
             </div>
             <div class="valeur">
-                <span class="etiquette">02</span>
+                <div class="valeur-icone">
+                    <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true">
+                        <rect x="5" y="11" width="14" height="10" rx="2"/>
+                        <path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+                    </svg>
+                </div>
                 <h3>Paiement sécurisé</h3>
                 <p>Réglez par carte bancaire ou mobile money en toute confiance.</p>
             </div>
             <div class="valeur">
-                <span class="etiquette">03</span>
+                <div class="valeur-icone">
+                    <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/>
+                    </svg>
+                </div>
                 <h3>Service client</h3>
                 <p>Une équipe à votre écoute pour répondre à vos questions.</p>
             </div>
         </div>
     </div>
 </section>
+
+{% include 'avis/_temoignages.html' %}
+
+<section class="section">
+    <div class="conteneur histoire">
+        <span class="etiquette">À propos</span>
+        <h2>Une maison, un savoir-faire</h2>
+        <p>Chaque pièce est choisie avec soin pour sa qualité et son élégance. Notre ambition : vous offrir des bijoux qui accompagnent vos plus beaux moments.</p>
+        <a href="{% url 'accueil:a_propos' %}" class="bouton bouton-contour">En savoir plus</a>
+    </div>
+</section>
+
+<section class="section appel">
+    <div class="conteneur">
+        <span class="etiquette">Service client</span>
+        <h2>Une question ?</h2>
+        <p>Notre équipe vous répond rapidement.</p>
+        <a href="{% url 'accueil:contact' %}" class="bouton">Nous contacter</a>
+    </div>
+</section>
+{% endblock %}
+
+{% if categories %}
+<section class="section" id="categories">
+    <div class="conteneur">
+        <div class="section-titre">
+            <span class="etiquette">Nos créations</span>
+            <h2>Parcourir par catégorie</h2>
+        </div>
+        <div class="grille-categories">
+            {% for categorie in categories %}
+            <a href="{% url 'produits:liste' %}?categorie={{ categorie.slug }}" class="categorie">
+                <div class="visuel">
+                    {% if categorie.image %}
+                        <img src="{{ categorie.image.url }}" alt="{{ categorie.nom }}">
+                    {% else %}
+                        Photo
+                    {% endif %}
+                </div>
+                <h3>{{ categorie.nom }}</h3>
+                <span>Découvrir</span>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if nouveautes %}
+<section class="section">
+    <div class="conteneur">
+        <div class="section-titre">
+            <span class="etiquette">Dernières créations</span>
+            <h2>Nouveautés</h2>
+        </div>
+        <div class="grille-produits">
+            {% for produit in nouveautes %}
+                {% include 'produits/_carte.html' %}
+            {% endfor %}
+        </div>
+        <p style="text-align:center; margin-top:40px;">
+            <a href="{% url 'produits:nouveautes' %}" class="bouton bouton-contour">Voir toutes les nouveautés</a>
+        </p>
+    </div>
+</section>
+{% endif %}
+
+<section class="section bande">
+    <div class="conteneur">
+        <div class="valeurs">
+            <div class="valeur">
+                <div class="valeur-icone">
+                    <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M1 6h13v10H1z"/>
+                        <path d="M14 9h4l3 3v4h-7z"/>
+                        <circle cx="6" cy="18" r="2"/>
+                        <circle cx="17" cy="18" r="2"/>
+                    </svg>
+                </div>
+                <h3>Livraison rapide</h3>
+                <p>Recevez vos commandes à domicile, suivies de A à Z.</p>
+            </div>
+            <div class="valeur">
+                <div class="valeur-icone">
+                    <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true">
+                        <rect x="5" y="11" width="14" height="10" rx="2"/>
+                        <path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+                    </svg>
+                </div>
+                <h3>Paiement sécurisé</h3>
+                <p>Réglez par carte bancaire ou mobile money en toute confiance.</p>
+            </div>
+            <div class="valeur">
+                <div class="valeur-icone">
+                    <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/>
+                    </svg>
+                </div>
+                <h3>Service client</h3>
+                <p>Une équipe à votre écoute pour répondre à vos questions.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% include 'avis/_temoignages.html' %}
 
 <section class="section">
     <div class="conteneur histoire">

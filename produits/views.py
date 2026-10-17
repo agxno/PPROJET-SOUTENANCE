@@ -2,6 +2,8 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, render
 
+from avis.services import contexte_avis
+
 from .models import Categorie, Produit
 
 PRODUITS_PAR_PAGE = 6
@@ -68,7 +70,6 @@ def detail(request, slug):
         .filter(categorie=produit.categorie)
         .exclude(pk=produit.pk)[:4]
     )
-    return render(request, 'produits/detail.html', {
-        'produit': produit,
-        'similaires': similaires,
-    })
+    contexte = {'produit': produit, 'similaires': similaires}
+    contexte.update(contexte_avis(produit, request.user))
+    return render(request, 'produits/detail.html', contexte)

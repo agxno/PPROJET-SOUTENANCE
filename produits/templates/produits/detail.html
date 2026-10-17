@@ -23,6 +23,9 @@
         <div class="detail-infos">
             <span class="etiquette">{{ produit.categorie.nom }}</span>
             <h1>{{ produit.nom }}</h1>
+            {% if avis_total %}
+                <p class="note-resume"><a href="#avis"><span class="etoiles">{{ avis_etoiles }}</span> {{ avis_moyenne }}/5 · {{ avis_total }} avis</a></p>
+            {% endif %}
             <p class="prix prix-grand">
                 {% if produit.en_promotion %}
                     <s>{{ produit.prix|floatformat:"0g" }} FCFA</s>
@@ -64,6 +67,8 @@
             <p class="reference">Réf. {{ produit.reference }}</p>
         </div>
     </div>
+
+    {% include 'avis/_section.html' %}
 
     {% if similaires %}
     <section class="section">

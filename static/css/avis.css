@@ -1,0 +1,84 @@
+/* ---------- Étoiles ---------- */
+.etoiles { color: #c9a46a; letter-spacing: .12em; white-space: nowrap; }
+
+/* ---------- Saisie de la note (étoiles cliquables) ---------- */
+.notation {
+    position: relative;
+    display: flex;
+    flex-direction: row-reverse;   /* 5 étoiles de gauche à droite : 1 à 5 */
+    justify-content: flex-end;
+    gap: 4px;
+    margin-bottom: 4px;
+}
+.formulaire .notation input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    border: 0;
+    opacity: 0;
+}
+.formulaire .notation label {
+    margin: 0;
+    font-size: 2.2rem;
+    line-height: 1;
+    letter-spacing: 0;
+    text-transform: none;
+    color: #d9ccb8;
+    cursor: pointer;
+    transition: color .15s ease, transform .15s ease;
+}
+.formulaire .notation label:hover { transform: scale(1.12); }
+.formulaire .notation input:checked ~ label,
+.formulaire .notation label:hover,
+.formulaire .notation label:hover ~ label { color: #c9a46a; }
+.formulaire .notation input:focus-visible + label { outline: 2px solid var(--accent); outline-offset: 2px; }
+.formulaire .erreur-champ { display: block; margin-top: 6px; color: var(--erreur); font-size: .85rem; }
+
+/* ---------- Produit concerné (formulaire) ---------- */
+.produit-avis {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--carte);
+    margin: 0 0 26px;
+}
+.produit-avis-visuel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: 82px;
+    aspect-ratio: 4 / 5;
+    background: #e0cfb4;
+    overflow: hidden;
+    font-size: .6rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--texte-doux);
+}
+.produit-avis-visuel img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.produit-avis h3 { font-size: 1.3rem; margin-bottom: 2px; }
+.produit-avis p { font-size: .82rem; color: var(--texte-doux); }
+
+/* ---------- Avis sur la fiche produit ---------- */
+.avis-section { margin-top: 30px; padding: 50px 0 20px; border-top: 1px solid var(--bordure); }
+.avis-resume { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: center; gap: 14px; }
+.avis-moyenne { font-family: var(--police-titre); font-size: 2.6rem; line-height: 1; }
+.avis-moyenne small { font-size: 1rem; color: var(--texte-doux); margin-left: 2px; }
+.avis-compte { font-size: .88rem; color: var(--texte-doux); }
+.avis-action { text-align: center; margin: 22px 0 8px; }
+.avis-note-perso { font-size: .88rem; color: var(--texte-doux); }
+.avis-liste { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 30px; }
+.avis-carte { background: var(--carte); padding: 24px; }
+.avis-entete { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin-bottom: 10px; }
+.avis-entete h3 { font-size: 1.2rem; }
+.avis-carte p { font-size: .92rem; }
+.avis-meta { margin-top: 12px; font-size: .75rem !important; color: var(--texte-doux); }
+
+/* ---------- Témoignages (accueil) ---------- */
+.temoignages { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 22px; }
+.temoignage { background: var(--fond); padding: 28px; text-align: center; }
+.temoignage blockquote { margin: 12px 0 16px; font-family: var(--police-titre); font-size: 1.2rem; line-height: 1.4; }
+.temoignage figcaption { font-size: .78rem; color: var(--texte-doux); }
+.temoignage figcaption a { text-decoration: underline; }
