@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block titre %}Paiement sécurisé - Maison Lumière{% endblock %}
+
+{% block contenu %}
+<link rel="stylesheet" href="{% static 'css/paiements.css' %}">
+<div class="conteneur">
+    <div class="passerelle">
+        <span class="etiquette">Paiement sécurisé · Kadev Pay</span>
+        <p class="montant">{{ paiement.montant|floatformat:"0g" }} FCFA</p>
+        <p class="details">Commande {{ commande.reference }}</p>
+        <p class="explication" id="message-paiement">La fenêtre de paiement va s'ouvrir…</p>
+        <button type="button" id="bouton-ouvrir" class="bouton bouton-plein">Ouvrir la fenêtre de paiement</button>
+        <p class="reference">
+            <a href="{% url 'paiements:payer' commande.reference %}" style="text-decoration:underline;">Changer de moyen de paiement</a>
+        </p>
+    </div>
+</div>
+
+{{ config|json_script:"config-kadev" }}
+<script src="https://pay.kadev.ci/js/v1/kadev-pay.js"></script>
+<script>
+(function () {
+    var config = JSON.parse(document.getElementById('config-kadev').textContent);
+    var message = document.getElementById('message-paiement');
+    var reussi = false;
+
+    function ouvrir() {
+        if (typeof KadevPay === 'undefined') {
+            message.textContent = "Le service de paiement est injoignable pour le moment. Réessayez dans quelques instants.";
+            return;
+        }
+        KadevPay.checkout({
+            public_key: config.public_key,
+            amount: config.amount,
+            email: config.email,
+            name: config.name,
+            phone: config.phone,
+            method: config.method,
+            metadata: config.metadata,
+            onSuccess: function (reponse) {
+                reussi = true;
+                message.textContent = "Paiement reçu, vérification en cours…";
+                fetch(config.confirm_url, {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    headers: {'Content-Type': 'application/json', 'X-CSRFToken': config.csrf},
+                    body: JSON.stringify({reference: reponse && reponse.reference})
+                }).catch(function () {}).then(function () {
+                    window.location.href = config.retour_url;
+                });
+            },
+            onClose: function () {
+                if (!reussi) {
+                    message.textContent = "Paiement interrompu. Vous pouvez relancer la fenêtre de paiement.";
+                }
+            }
+        });
+    }
+
+    document.getElementById('bouton-ouvrir').addEventListener('click', ouvrir);
+    ouvrir();
+})();
+</script>
+{% endblock %}

@@ -4,11 +4,27 @@ from django import forms
 
 from .models import Paiement
 
+METHODES_FORMULAIRE = [
+    ('mobile_money', 'Mobile money'),
+    ('carte', 'Carte bancaire'),
+]
 
-class PaiementForm(forms.Form):
+
+class MethodeForm(forms.Form):
+    """Choix du moyen de paiement avant d'ouvrir Kadev Pay."""
     methode = forms.ChoiceField(
         label="Moyen de paiement",
-        choices=Paiement.METHODES,
+        choices=METHODES_FORMULAIRE,
+        widget=forms.RadioSelect,
+        initial='mobile_money',
+    )
+
+
+class PaiementForm(forms.Form):
+    """Formulaire de la simulation (démonstration locale)."""
+    methode = forms.ChoiceField(
+        label="Moyen de paiement",
+        choices=METHODES_FORMULAIRE,
         widget=forms.RadioSelect,
         initial='mobile_money',
     )

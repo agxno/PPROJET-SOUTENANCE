@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block titre %}Paiement en cours - Maison Lumière{% endblock %}
+
+{% block contenu %}
+<link rel="stylesheet" href="{% static 'css/paiements.css' %}">
+<div class="conteneur">
+    <div class="passerelle">
+        <span class="etiquette">Paiement en cours</span>
+        <p class="montant">{{ paiement.montant|floatformat:"0g" }} FCFA</p>
+        <p class="details">Commande {{ commande.reference }}</p>
+        <p class="explication">
+            Nous attendons la confirmation de votre paiement. Cette page se met à jour toute seule :
+            patientez quelques secondes.
+        </p>
+        <a href="{% url 'paiements:retour' paiement.transaction_id %}" class="bouton bouton-plein">Actualiser</a>
+        <p class="reference"><a href="{% url 'commandes:detail' commande.reference %}" style="text-decoration:underline;">Retour à ma commande</a></p>
+    </div>
+</div>
+<script>
+(function () {
+    var n = parseInt(sessionStorage.getItem('paiement_essais') || '0', 10);
+    if (n < 20) {
+        sessionStorage.setItem('paiement_essais', String(n + 1));
+        setTimeout(function () { window.location.reload(); }, 6000);
+    }
+})();
+</script>
+{% endblock %}
