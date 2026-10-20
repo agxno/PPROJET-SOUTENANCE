@@ -53,6 +53,7 @@
             <a href="{% url 'accueil:accueil' %}" class="logo">Maison Lumière</a>
             <nav class="menu menu-droite">
                 <a href="{% url 'produits:liste' %}#recherche">Recherche</a>
+                {% if user.is_staff %}<a href="{% url 'admin:index' %}">Administration</a>{% endif %}
                 {% if user.est_livreur %}<a href="{% url 'livraisons:tableau' %}">Livraisons</a>{% endif %}
                 <a href="{% url 'utilisateurs:tableau_bord' %}">Compte</a>
                 <a href="#">Favoris</a>

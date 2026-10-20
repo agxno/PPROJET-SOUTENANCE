@@ -1,0 +1,131 @@
+{% extends "admin/index.html" %}
+
+{% block coltype %}colM{% endblock %}
+
+{% block sidebar %}{% endblock %}
+
+{% block content %}
+{% if tdb %}
+<div class="ml-tableau">
+
+    <div class="ml-kpis">
+        <div class="ml-kpi">
+            <span class="ml-etiquette">Chiffre d'affaires</span>
+            <span class="ml-kpi-valeur">{{ tdb.ca_total|floatformat:"0g" }} <small>FCFA</small></span>
+            <span class="ml-kpi-detail">{{ tdb.nb_payees }} commande{{ tdb.nb_payees|pluralize }} payée{{ tdb.nb_payees|pluralize }}</span>
+        </div>
+        <div class="ml-kpi">
+            <span class="ml-etiquette">Ce mois-ci</span>
+            <span class="ml-kpi-valeur">{{ tdb.ca_mois|floatformat:"0g" }} <small>FCFA</small></span>
+            <span class="ml-kpi-detail">{{ tdb.nb_mois }} commande{{ tdb.nb_mois|pluralize }}</span>
+        </div>
+        <div class="ml-kpi">
+            <span class="ml-etiquette">Panier moyen</span>
+            <span class="ml-kpi-valeur">{{ tdb.panier_moyen|floatformat:"0g" }} <small>FCFA</small></span>
+            <span class="ml-kpi-detail">par commande payée</span>
+        </div>
+        <div class="ml-kpi">
+            <span class="ml-etiquette">Clients</span>
+            <span class="ml-kpi-valeur">{{ tdb.nb_clients }}</span>
+            <span class="ml-kpi-detail">dont {{ tdb.nb_nouveaux }} nouveau{{ tdb.nb_nouveaux|pluralize:"x" }} sur 30 jours</span>
+        </div>
+    </div>
+
+    <div class="ml-duo">
+        <div class="ml-bloc">
+            <span class="ml-etiquette">Ventes des 30 derniers jours</span>
+            <div class="ml-barres">
+                {% for s in tdb.serie %}
+                <div class="ml-barre" title="{{ s.jour|date:'d/m' }} : {{ s.montant|floatformat:'0g' }} FCFA">
+                    <span style="height: {{ s.pct }}%"></span>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="ml-barres-legende">
+                <span>{{ tdb.serie.0.jour|date:"d/m" }}</span>
+                <span>{{ tdb.serie.29.jour|date:"d/m" }}</span>
+            </div>
+        </div>
+
+        <div class="ml-bloc">
+            <span class="ml-etiquette">Commandes par statut</span>
+            <ul class="ml-statuts">
+                {% for s in tdb.statuts %}
+                <li>
+                    <span class="ml-statut ml-statut-{{ s.code }}">{{ s.libelle }}</span>
+                    <span class="ml-jauge"><span style="width: {{ s.pct }}%"></span></span>
+                    <strong>{{ s.n }}</strong>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="ml-duo">
+        <div class="ml-bloc">
+            <span class="ml-etiquette">Top 5 des produits</span>
+            {% if tdb.top %}
+            <table class="ml-table">
+                <thead><tr><th>#</th><th>Produit</th><th>Vendus</th><th>Chiffre</th></tr></thead>
+                <tbody>
+                    {% for p in tdb.top %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ p.nom_produit }}<br><small>Réf. {{ p.reference_produit }}</small></td>
+                        <td>{{ p.total_vendu }}</td>
+                        <td>{{ p.chiffre|floatformat:"0g" }} FCFA</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+                <p class="ml-vide">Aucune vente pour le moment.</p>
+            {% endif %}
+        </div>
+
+        <div class="ml-bloc">
+            <span class="ml-etiquette">À traiter</span>
+            {% if tdb.alertes %}
+            <ul class="ml-alertes">
+                {% for a in tdb.alertes %}
+                <li><a href="{{ a.url }}"><span>{{ a.libelle }}</span><strong>{{ a.n }}</strong></a></li>
+                {% endfor %}
+            </ul>
+            {% else %}
+                <p class="ml-vide">Rien à signaler.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="ml-bloc ml-large">
+        <span class="ml-etiquette">Stock à surveiller</span>
+        {% if tdb.stock %}
+        <table class="ml-table">
+            <thead><tr><th>Produit</th><th>Réf.</th><th>Stock</th><th>Seuil</th><th>Statut</th><th></th></tr></thead>
+            <tbody>
+                {% for p in tdb.stock %}
+                <tr>
+                    <td>{{ p.nom }}</td>
+                    <td>{{ p.reference }}</td>
+                    <td>{{ p.stock }}</td>
+                    <td>{{ p.seuil_alerte }}</td>
+                    <td>
+                        {% if p.statut_stock == 'rupture' %}<span class="ml-statut ml-statut-annulee">Rupture</span>
+                        {% else %}<span class="ml-statut ml-statut-en_attente">Stock faible</span>{% endif %}
+                    </td>
+                    <td><a href="{% url 'admin:produits_produit_change' p.pk %}">Réapprovisionner</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <p class="ml-vide">Tous les stocks sont corrects.</p>
+        {% endif %}
+    </div>
+
+    <p class="ml-note">Chiffres calculés sur les commandes payées (hors annulées).</p>
+</div>
+{% endif %}
+
+{{ block.super }}
+{% endblock %}
