@@ -11,9 +11,9 @@ logger = logging.getLogger(__name__)
 
 class Paiement(models.Model):
     METHODES = [
+        ('en_ligne', 'Paiement en ligne'),
         ('mobile_money', 'Mobile money'),
         ('carte', 'Carte bancaire'),
-        ('en_ligne', 'Paiement en ligne'),
     ]
     OPERATEURS = [
         ('orange', 'Orange Money'),
@@ -28,13 +28,16 @@ class Paiement(models.Model):
         ('a_verifier', 'À vérifier'),
         ('a_rembourser', 'À rembourser'),
     ]
+    # Les deux derniers prestataires ne servent plus : on garde leur nom
+    # pour que les anciens paiements de test restent lisibles.
     FOURNISSEURS = [
-        ('simulation', 'Simulation'),
-        ('kadev', 'Kadev Pay'),
+        ('cinetpay', 'CinetPay'),
+        ('simulation', 'Simulation (ancien)'),
+        ('kadev', 'Kadev Pay (ancien)'),
     ]
 
     commande = models.ForeignKey(Commande, on_delete=models.PROTECT, related_name='paiements')
-    fournisseur = models.CharField(max_length=20, choices=FOURNISSEURS, default='simulation')
+    fournisseur = models.CharField(max_length=20, choices=FOURNISSEURS, default='cinetpay')
     methode = models.CharField("moyen de paiement", max_length=20, choices=METHODES)
     operateur = models.CharField("opérateur", max_length=20, choices=OPERATEURS, blank=True)
     telephone = models.CharField("téléphone", max_length=20, blank=True)
@@ -42,8 +45,8 @@ class Paiement(models.Model):
     statut = models.CharField(max_length=20, choices=STATUTS, default='en_attente')
     transaction_id = models.CharField(max_length=40, unique=True, editable=False)
     reference_externe = models.CharField(
-        "référence Kadev Pay", max_length=60, unique=True, null=True, blank=True,
-        help_text="Référence de la transaction chez Kadev Pay (ex. KDV-1775413916000).",
+        "référence du prestataire", max_length=60, unique=True, null=True, blank=True,
+        help_text="Référence chez un ancien prestataire (non utilisée par CinetPay).",
     )
     date_creation = models.DateTimeField(auto_now_add=True)
     date_paiement = models.DateTimeField(null=True, blank=True)
@@ -100,7 +103,7 @@ class Paiement(models.Model):
             self.save(update_fields=['statut'])
 
     def signaler_a_verifier(self):
-        """Paiement suspect (montant insuffisant, référence déjà utilisée) : à contrôler à la main."""
+        """Paiement suspect : à contrôler à la main."""
         if self.statut in ('en_attente', 'echoue'):
             self.statut = 'a_verifier'
             self.save(update_fields=['statut'])

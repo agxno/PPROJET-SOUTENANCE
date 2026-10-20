@@ -155,15 +155,20 @@ AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.AllowAllUsersModelBacke
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
-# Paiement simulé (démonstration) : actif seulement en mode développement
-PAIEMENTS_SIMULATION = DEBUG
-
-# Paiements : 'simulation' (démonstration locale) ou 'kadev' (Kadev Pay)
+# Paiements : 'simulation' (démo locale), 'cinetpay' ou 'kadev'
 PAIEMENTS_FOURNISSEUR = os.environ.get('PAIEMENTS_FOURNISSEUR', 'simulation')
 PAIEMENTS_SIMULATION = DEBUG and PAIEMENTS_FOURNISSEUR == 'simulation'
 
+# Adresse publique du site, en https (retours et notifications de paiement)
+SITE_URL = os.environ.get('SITE_URL', '').rstrip('/')
+
+# CinetPay (Côte d'Ivoire)
+CINETPAY_API_KEY_CI = os.environ.get('CINETPAY_API_KEY_CI', '')
+CINETPAY_API_PASSWORD_CI = os.environ.get('CINETPAY_API_PASSWORD_CI', '')
+CINETPAY_MODE_TEST = CINETPAY_API_KEY_CI.startswith('sk_test_')
+
+# Kadev Pay
 KADEV_PUBLIC_KEY = os.environ.get('KADEV_PUBLIC_KEY', '')
 KADEV_SECRET_KEY = os.environ.get('KADEV_SECRET_KEY', '')
 KADEV_WEBHOOK_SECRET = os.environ.get('KADEV_WEBHOOK_SECRET', '')
-# Vrai avec des clés de test : la vérification peut alors être déclenchée par le navigateur
 KADEV_MODE_TEST = KADEV_SECRET_KEY.startswith('kdvs_test_')

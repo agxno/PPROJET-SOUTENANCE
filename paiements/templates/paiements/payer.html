@@ -14,79 +14,36 @@
     <h1 class="titre-page">Paiement</h1>
     <p class="intro-page">Commande {{ commande.reference }}</p>
 
-    {% if mode_test %}
-        <p class="alerte">Mode démonstration : les paiements sont fictifs, aucun argent réel n'est prélevé.</p>
-    {% elif simulation %}
-        <p class="alerte">Mode démonstration : aucun argent réel n'est prélevé.</p>
-    {% elif not kadev_actif %}
+    {% if not configure %}
         <p class="alerte">Le paiement en ligne n'est pas disponible pour le moment.</p>
+        <p class="alerte" style="font-size:0.9em; opacity:0.85; margin-top:0.5rem;">
+            <strong>Diagnostic :</strong><br>
+            SITE_URL = {{ debug_site_url }}<br>
+            Clé API configurée = {{ debug_has_api_key }}<br>
+            Mot de passe configuré = {{ debug_has_api_password }}
+        </p>
+    {% elif mode_test %}
+        <p class="alerte">Mode démonstration : les paiements sont fictifs, aucun argent réel n'est prélevé.</p>
     {% endif %}
 
     <form method="post" class="panier">
         {% csrf_token %}
         <div>
-            {% if kadev_actif %}
-                <span class="etiquette">Moyen de paiement</span>
-                <div class="choix-paiement">
-                    {% for radio in form.methode %}
-                        <label class="option">{{ radio.tag }}<span>{{ radio.choice_label }}</span></label>
-                    {% endfor %}
-                </div>
-                <p class="note-securite">
-                    Vous allez payer dans une fenêtre sécurisée Kadev Pay. Vos informations bancaires
-                    ne passent jamais par ce site.
-                </p>
-            {% else %}
-                <span class="etiquette">Moyen de paiement</span>
-                <div class="choix-paiement">
-                    {% for radio in form.methode %}
-                        <label class="option">{{ radio.tag }}<span>{{ radio.choice_label }}</span></label>
-                    {% endfor %}
-                </div>
-
-                <div class="bloc-mobile" id="bloc-mobile">
-                    <span class="etiquette">Opérateur</span>
-                    <div class="grille-operateurs">
-                        {% for radio in form.operateur %}
-                            <label class="option">{{ radio.tag }}<span>{{ radio.choice_label }}</span></label>
-                        {% endfor %}
-                    </div>
-                    {% for erreur in form.operateur.errors %}<p class="erreur-champ">{{ erreur }}</p>{% endfor %}
-
-                    <div class="champ-paiement">
-                        <label for="{{ form.telephone.id_for_label }}">{{ form.telephone.label }}</label>
-                        {{ form.telephone }}
-                        {% for erreur in form.telephone.errors %}<p class="erreur-champ">{{ erreur }}</p>{% endfor %}
-                    </div>
-                </div>
-
-                <p class="note-securite">
-                    Vos informations bancaires ne sont jamais saisies ni conservées sur ce site :
-                    le règlement par carte se fait sur la page sécurisée du prestataire de paiement.
-                </p>
-            {% endif %}
+            <span class="etiquette">Paiement sécurisé</span>
+            <h2 class="sous-titre">Mobile money ou carte</h2>
+            <p class="note-securite" style="margin-top:0;">
+                Vous allez être redirigé vers la page de paiement sécurisée de notre prestataire
+                (CinetPay), où vous choisirez votre moyen de paiement : Orange Money, MTN MoMo,
+                Moov Money, Wave... Vos informations bancaires ne passent jamais par ce site.
+            </p>
         </div>
 
         <aside class="panier-resume">
             <span class="etiquette">À payer</span>
             <p class="resume-ligne resume-total"><span>Total</span><span>{{ commande.total|floatformat:"0g" }} FCFA</span></p>
-            <button type="submit" class="bouton bouton-plein"{% if not kadev_actif and not simulation %} disabled{% endif %}>Payer</button>
+            <button type="submit" class="bouton bouton-plein"{% if not configure %} disabled{% endif %}>Payer</button>
             <a href="{% url 'commandes:detail' commande.reference %}" class="lien-continuer">Payer plus tard</a>
         </aside>
     </form>
 </div>
-
-<script>
-(function () {
-    var bloc = document.getElementById('bloc-mobile');
-    if (!bloc) return;
-    var radios = document.querySelectorAll('input[name="methode"]');
-    function majBloc() {
-        var choix = document.querySelector('input[name="methode"]:checked');
-        bloc.hidden = !(choix && choix.value === 'mobile_money');
-    }
-    radios.forEach(function (r) { r.addEventListener('change', majBloc); });
-    majBloc();
-})();
-</script>
 {% endblock %}

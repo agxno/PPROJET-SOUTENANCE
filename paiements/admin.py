@@ -1,23 +1,22 @@
 from django.contrib import admin
 
-from . import kadev
+from . import cinetpay
 from .models import Paiement
 
 
 @admin.register(Paiement)
 class PaiementAdmin(admin.ModelAdmin):
     list_display = (
-        'transaction_id', 'commande', 'fournisseur', 'methode',
-        'montant', 'statut', 'reference_externe', 'date_creation',
+        'transaction_id', 'commande', 'fournisseur', 'montant', 'statut', 'date_creation',
     )
-    list_filter = ('statut', 'fournisseur', 'methode')
-    search_fields = ('transaction_id', 'reference_externe', 'commande__reference', 'telephone')
+    list_filter = ('statut', 'fournisseur')
+    search_fields = ('transaction_id', 'commande__reference')
     date_hierarchy = 'date_creation'
     readonly_fields = (
         'commande', 'fournisseur', 'methode', 'operateur', 'telephone', 'montant',
-        'statut', 'transaction_id', 'date_creation', 'date_paiement',
+        'statut', 'transaction_id', 'reference_externe', 'date_creation', 'date_paiement',
     )
-    actions = ['verifier_kadev', 'valider_manuellement']
+    actions = ['verifier_cinetpay', 'valider_manuellement']
 
     def has_add_permission(self, request):
         return False
@@ -25,13 +24,13 @@ class PaiementAdmin(admin.ModelAdmin):
     def has_delete_permission(self, request, obj=None):
         return False
 
-    @admin.action(description="Vérifier auprès de Kadev Pay (nécessite la référence KDV-...)")
-    def verifier_kadev(self, request, queryset):
+    @admin.action(description="Vérifier auprès de CinetPay")
+    def verifier_cinetpay(self, request, queryset):
         compteur = 0
-        for paiement in queryset.filter(fournisseur='kadev').exclude(reference_externe__isnull=True):
-            kadev.synchroniser(paiement)
+        for paiement in queryset.filter(fournisseur='cinetpay').exclude(statut__in=('reussi', 'a_rembourser')):
+            cinetpay.synchroniser(paiement)
             compteur += 1
-        self.message_user(request, f"{compteur} paiement(s) vérifié(s) auprès de Kadev Pay.")
+        self.message_user(request, f"{compteur} paiement(s) vérifié(s) auprès de CinetPay.")
 
     @admin.action(description="Valider manuellement (virement, paiement à la livraison...)")
     def valider_manuellement(self, request, queryset):
