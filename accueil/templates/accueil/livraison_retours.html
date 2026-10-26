@@ -1,0 +1,31 @@
+{% extends 'accueil/page_texte.html' %}
+
+{% block titre %}Livraison et retours - Maison Lumière{% endblock %}
+{% block fil %}Livraison et retours{% endblock %}
+{% block sujet %}Livraison et retours{% endblock %}
+
+{% block texte %}
+<!-- Modèle : adapter les zones, délais, frais et conditions à l'activité réelle. -->
+<h2>Livraison</h2>
+<p>Nous livrons à l'adresse que vous choisissez lors de la commande. Votre commande est préparée après confirmation du paiement, puis confiée à l'un de nos livreurs.</p>
+<ul>
+    <li>Zones desservies : <span class="a-completer">[villes ou communes livrées]</span></li>
+    <li>Délai de livraison : <span class="a-completer">[par exemple 24 à 72 h à Abidjan, autres villes : à préciser]</span></li>
+    <li>Frais de livraison : <span class="a-completer">[montant ou « offerts à partir de X FCFA »]</span></li>
+</ul>
+
+<h2>Suivre votre commande</h2>
+<p>Dans <a href="{% url 'commandes:liste' %}">Mes commandes</a>, le statut de chaque commande est mis à jour : <strong>en attente</strong> (paiement à effectuer), <strong>en préparation</strong>, <strong>expédiée</strong> (le livreur est en route) puis <strong>livrée</strong>. Un e-mail vous prévient au départ et à la livraison.</p>
+
+<h2>À la réception</h2>
+<p>Le livreur vous contactera au numéro indiqué sur votre adresse de livraison : pensez à le vérifier. Contrôlez le colis en sa présence. En cas de problème (colis abîmé, article manquant ou différent), signalez-le-nous dans les <span class="a-completer">[48 heures]</span> via notre page <a href="{% url 'accueil:contact' %}">Contact</a>, en indiquant la référence de votre commande.</p>
+
+<h2>Retours et échanges</h2>
+<ul>
+    <li>Délai : <span class="a-completer">[par exemple 7 jours]</span> après la livraison.</li>
+    <li>Conditions : article non porté, dans son emballage d'origine, accompagné de la référence de la commande. <span class="a-completer">[Préciser les exceptions : articles personnalisés, soldés...]</span></li>
+    <li>Marche à suivre : écrivez-nous depuis la page <a href="{% url 'accueil:contact' %}">Contact</a>, nous vous indiquerons comment nous retourner l'article.</li>
+    <li>Remboursement : par le moyen de paiement utilisé, sous <span class="a-completer">[délai]</span> après réception et contrôle de l'article.</li>
+</ul>
+<p class="maj">Dernière mise à jour : octobre 2026.</p>
+{% endblock %}

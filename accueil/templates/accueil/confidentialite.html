@@ -1,0 +1,43 @@
+{% extends 'accueil/page_texte.html' %}
+
+{% block titre %}Confidentialité - Maison Lumière{% endblock %}
+{% block fil %}Confidentialité{% endblock %}
+{% block sujet %}Politique de confidentialité{% endblock %}
+
+{% block texte %}
+<!-- Modèle : à faire relire et adapter à la réglementation applicable. -->
+<p>Cette page explique quelles données personnelles Maison Lumière collecte, pourquoi, et comment vous gardez la main dessus.</p>
+
+<h2>Données collectées</h2>
+<ul>
+    <li>Votre compte : nom, prénom, adresse e-mail, téléphone, mot de passe (stocké sous forme chiffrée).</li>
+    <li>Vos adresses de livraison et vos commandes.</li>
+    <li>Vos avis et les messages que vous nous envoyez via la page Contact.</li>
+</ul>
+<p>Nous ne collectons ni ne conservons vos données bancaires : le paiement se fait sur la page sécurisée de notre prestataire.</p>
+
+<h2>Pourquoi ces données ?</h2>
+<ul>
+    <li>Créer et sécuriser votre compte, traiter et livrer vos commandes.</li>
+    <li>Vous envoyer des e-mails de service : validation du compte, confirmation et suivi de commande, réinitialisation du mot de passe.</li>
+    <li>Répondre à vos messages et publier vos avis après vérification.</li>
+</ul>
+
+<h2>Qui y a accès ?</h2>
+<ul>
+    <li>L'équipe de Maison Lumière.</li>
+    <li>Le livreur chargé de votre commande : nom, téléphone et adresse de livraison, uniquement pour la livrer.</li>
+    <li>Nos prestataires techniques : paiement en ligne, envoi d'e-mails, hébergement <span class="a-completer">[préciser les noms]</span>.</li>
+</ul>
+<p>Vos données ne sont pas vendues.</p>
+
+<h2>Durée de conservation</h2>
+<p>Vos données sont conservées tant que votre compte est actif, puis pendant <span class="a-completer">[durée]</span> pour répondre aux obligations légales (factures, litiges).</p>
+
+<h2>Cookies</h2>
+<p>Ce site n'utilise que des cookies indispensables à son fonctionnement (session de connexion, sécurité des formulaires). Aucun traceur publicitaire n'est utilisé.</p>
+
+<h2>Vos droits</h2>
+<p>Vous pouvez consulter et modifier vos informations dans <a href="{% url 'utilisateurs:mes_informations' %}">Mes informations</a>. Pour demander la suppression de votre compte ou exercer vos droits d'accès, de rectification et d'opposition, écrivez-nous depuis la <a href="{% url 'accueil:contact' %}">page Contact</a>. Cadre applicable : <span class="a-completer">[réglementation sur la protection des données personnelles en Côte d'Ivoire et autorité compétente : à vérifier]</span>.</p>
+<p class="maj">Dernière mise à jour : octobre 2026.</p>
+{% endblock %}

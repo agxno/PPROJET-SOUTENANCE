@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block contenu %}
+<div class="conteneur">
+    <p class="fil"><a href="{% url 'accueil:accueil' %}">Accueil</a> / {% block fil %}{% endblock %}</p>
+    <h1 class="titre-page">{% block sujet %}{% endblock %}</h1>
+    <div class="page-texte">
+        {% block texte %}{% endblock %}
+    </div>
+</div>
+{% endblock %}

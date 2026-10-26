@@ -1,0 +1,42 @@
+{% extends 'accueil/page_texte.html' %}
+
+{% block titre %}Conditions générales de vente - Maison Lumière{% endblock %}
+{% block fil %}Conditions générales de vente{% endblock %}
+{% block sujet %}Conditions générales de vente{% endblock %}
+
+{% block texte %}
+<!-- Modèle à faire relire et adapter par un professionnel avant toute vente réelle. -->
+<h2>1. Objet</h2>
+<p>Les présentes conditions régissent les ventes de bijoux réalisées sur ce site entre Maison Lumière et toute personne disposant d'un compte client. Passer commande implique leur acceptation.</p>
+
+<h2>2. Vendeur</h2>
+<p>Maison Lumière, <span class="a-completer">[forme juridique]</span>, <span class="a-completer">[adresse]</span>, immatriculée sous le numéro <span class="a-completer">[RCCM ou autre]</span>. Contact : <a href="{% url 'accueil:contact' %}">page Contact</a>.</p>
+
+<h2>3. Produits et prix</h2>
+<p>Les produits sont décrits avec la plus grande exactitude possible ; les photos n'ont pas de valeur contractuelle. Les prix sont indiqués en francs CFA (FCFA), <span class="a-completer">[toutes taxes comprises ou hors taxes]</span>, hors frais de livraison. Maison Lumière peut modifier ses prix à tout moment, le prix applicable étant celui affiché au moment de la commande.</p>
+
+<h2>4. Compte et commande</h2>
+<p>Pour commander, le client crée un compte et valide son adresse e-mail. La commande est enregistrée lorsque le client confirme son panier et son adresse de livraison ; elle est définitivement prise en compte après réception du paiement. Dans la limite des stocks disponibles, les articles sont réservés dès l'enregistrement de la commande et remis en vente si elle est annulée.</p>
+
+<h2>5. Paiement</h2>
+<p>Le paiement s'effectue en ligne, par mobile money ou carte bancaire, sur la page sécurisée de notre prestataire de paiement. Maison Lumière ne conserve aucune donnée bancaire. Une commande non payée reste « En attente » et peut être annulée.</p>
+
+<h2>6. Livraison</h2>
+<p>Les zones, délais et frais de livraison sont indiqués sur la page <a href="{% url 'accueil:livraison_retours' %}">Livraison et retours</a>. Les délais sont donnés à titre indicatif.</p>
+
+<h2>7. Retours et remboursement</h2>
+<p>Les conditions de retour et de remboursement sont celles de la page <a href="{% url 'accueil:livraison_retours' %}">Livraison et retours</a>. <span class="a-completer">[Compléter selon la réglementation applicable à votre activité.]</span></p>
+
+<h2>8. Garanties</h2>
+<p>Les articles sont garantis contre les défauts de fabrication pendant <span class="a-completer">[durée]</span>. Cette garantie ne couvre pas l'usure normale ni les dommages liés à un mauvais usage.</p>
+
+<h2>9. Responsabilité</h2>
+<p>Maison Lumière ne saurait être tenue responsable des retards ou défauts de livraison dus à des événements extérieurs ou à une adresse ou un numéro de téléphone erroné fourni par le client.</p>
+
+<h2>10. Données personnelles</h2>
+<p>Les données collectées sont traitées comme indiqué dans notre <a href="{% url 'accueil:confidentialite' %}">politique de confidentialité</a>.</p>
+
+<h2>11. Droit applicable et litiges</h2>
+<p>Les présentes conditions sont soumises à <span class="a-completer">[droit applicable]</span>. En cas de litige, une solution amiable sera recherchée avant toute action ; à défaut, <span class="a-completer">[juridiction compétente]</span>.</p>
+<p class="maj">Dernière mise à jour : octobre 2026.</p>
+{% endblock %}

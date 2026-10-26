@@ -668,3 +668,36 @@ button.en-cours:not(.bouton) { opacity: .5; pointer-events: none; }
 @media (max-width: 700px) {
     .heros-image { padding: 90px 0 80px; }
 }
+
+/* ---------- Pages d'information (FAQ, CGV, mentions légales...) ---------- */
+.page-texte { max-width: 760px; padding: 6px 0 60px; }
+.page-texte h2 { font-size: 1.5rem; margin: 34px 0 10px; }
+.page-texte p,
+.page-texte li { color: var(--texte-doux); margin-bottom: 12px; }
+.page-texte ul { padding-left: 22px; margin-bottom: 12px; }
+.page-texte ul li { list-style: disc; }
+.page-texte a { text-decoration: underline; }
+.page-texte strong { color: var(--sombre); font-weight: 600; }
+.page-texte .maj { margin-top: 30px; font-size: .78rem; }
+
+/* Informations à compléter avant la mise en ligne */
+.a-completer { background: #f1e4c8; color: #6b4e1a; padding: 0 6px; }
+
+/* Questions dépliables */
+.faq details { border-bottom: 1px solid var(--bordure); padding: 18px 0; }
+.faq summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    list-style: none;
+    font-family: var(--police-titre);
+    font-size: 1.25rem;
+    color: var(--sombre);
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: '+'; flex: none; font-size: 1.5rem; line-height: 1; color: var(--accent); }
+.faq details[open] summary::after { content: '\2212'; }
+.faq summary:hover { color: var(--accent); }
+.faq details p { margin: 12px 0 0; }

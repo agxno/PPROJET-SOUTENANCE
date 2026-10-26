@@ -1,0 +1,52 @@
+{% extends 'accueil/page_texte.html' %}
+
+{% block titre %}FAQ - Maison Lumière{% endblock %}
+{% block fil %}FAQ{% endblock %}
+{% block sujet %}Questions fréquentes{% endblock %}
+
+{% block texte %}
+<div class="faq">
+    <details>
+        <summary>Faut-il un compte pour commander ?</summary>
+        <p>Oui. Le panier et la commande sont réservés aux clients connectés. Créez votre compte en quelques secondes : vous recevrez un e-mail de validation, à ouvrir pour activer votre compte.</p>
+    </details>
+    <details>
+        <summary>Comment passer commande ?</summary>
+        <p>Ajoutez vos articles au panier, cliquez sur « Passer la commande », choisissez (ou ajoutez) une adresse de livraison, puis réglez en ligne. Vous recevez un e-mail de confirmation.</p>
+    </details>
+    <details>
+        <summary>Quels moyens de paiement acceptez-vous ?</summary>
+        <p>Le mobile money (Orange Money, MTN MoMo, Moov Money, Wave) et la carte bancaire, sur la page sécurisée de notre prestataire de paiement. Nous ne voyons ni ne conservons vos données bancaires.</p>
+    </details>
+    <details>
+        <summary>Mon paiement a échoué, que faire ?</summary>
+        <p>Votre commande reste « En attente ». Ouvrez-la dans <a href="{% url 'commandes:liste' %}">Mes commandes</a> et cliquez sur « Payer maintenant ». Si votre compte a été débité sans que la commande soit confirmée, <a href="{% url 'accueil:contact' %}">contactez-nous</a> avec la référence de la commande.</p>
+    </details>
+    <details>
+        <summary>Quels sont les délais de livraison ?</summary>
+        <p>Ils dépendent de votre ville : toutes les informations sont sur la page <a href="{% url 'accueil:livraison_retours' %}">Livraison et retours</a>.</p>
+    </details>
+    <details>
+        <summary>Comment suivre ma commande ?</summary>
+        <p>Dans <a href="{% url 'commandes:liste' %}">Mes commandes</a>, chaque commande affiche son statut : en attente, en préparation, expédiée, livrée. Vous recevez aussi un e-mail quand elle part et quand elle est livrée.</p>
+    </details>
+    <details>
+        <summary>Puis-je annuler ma commande ?</summary>
+        <p>Oui, tant qu'elle est « En attente » : depuis la fiche de la commande, cliquez sur « Annuler la commande ». Une fois payée, <a href="{% url 'accueil:contact' %}">contactez-nous</a>.</p>
+    </details>
+    <details>
+        <summary>Puis-je retourner un article ?</summary>
+        <p>Les conditions de retour sont détaillées sur la page <a href="{% url 'accueil:livraison_retours' %}">Livraison et retours</a>.</p>
+    </details>
+    <details>
+        <summary>Comment donner mon avis sur un bijou ?</summary>
+        <p>Une fois l'article livré, un bouton « Donner mon avis » apparaît sur la fiche du produit et dans le détail de la commande. Les avis sont publiés après vérification.</p>
+    </details>
+    <details>
+        <summary>J'ai oublié mon mot de passe.</summary>
+        <p>Sur la page de connexion, cliquez sur « Mot de passe oublié ? » : vous recevrez un lien par e-mail pour en choisir un nouveau.</p>
+    </details>
+</div>
+
+<p style="margin-top:30px;">Vous ne trouvez pas la réponse ? <a href="{% url 'accueil:contact' %}">Écrivez-nous</a>, nous vous répondons rapidement.</p>
+{% endblock %}

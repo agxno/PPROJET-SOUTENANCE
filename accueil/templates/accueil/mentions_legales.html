@@ -1,0 +1,34 @@
+{% extends 'accueil/page_texte.html' %}
+
+{% block titre %}Mentions légales - Maison Lumière{% endblock %}
+{% block fil %}Mentions légales{% endblock %}
+{% block sujet %}Mentions légales{% endblock %}
+
+{% block texte %}
+<!-- Modèle : compléter avec les informations réelles de l'éditeur. -->
+<h2>Éditeur du site</h2>
+<ul>
+    <li>Dénomination : Maison Lumière</li>
+    <li>Forme juridique : <span class="a-completer">[forme juridique]</span></li>
+    <li>Numéro d'immatriculation : <span class="a-completer">[RCCM ou autre]</span></li>
+    <li>Siège : <span class="a-completer">[adresse complète]</span></li>
+    <li>Téléphone : <span class="a-completer">[numéro]</span></li>
+    <li>E-mail : <span class="a-completer">[adresse]</span>, ou via la <a href="{% url 'accueil:contact' %}">page Contact</a></li>
+</ul>
+
+<h2>Directeur de la publication</h2>
+<p><span class="a-completer">[nom et prénom]</span></p>
+
+<h2>Hébergement</h2>
+<p><span class="a-completer">[nom de l'hébergeur, adresse, site web]</span></p>
+
+<h2>Paiement en ligne</h2>
+<p>Les paiements sont traités par notre prestataire de paiement <span class="a-completer">[nom du prestataire]</span>. Maison Lumière ne conserve aucune donnée bancaire.</p>
+
+<h2>Propriété intellectuelle</h2>
+<p>Les textes, images, logos et éléments graphiques de ce site sont la propriété de Maison Lumière ou de ses partenaires. Toute reproduction sans autorisation écrite est interdite.</p>
+
+<h2>Données personnelles</h2>
+<p>Voir la <a href="{% url 'accueil:confidentialite' %}">politique de confidentialité</a>.</p>
+<p class="maj">Dernière mise à jour : octobre 2026.</p>
+{% endblock %}
