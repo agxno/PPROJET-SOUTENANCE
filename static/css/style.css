@@ -701,3 +701,32 @@ button.en-cours:not(.bouton) { opacity: .5; pointer-events: none; }
 .faq details[open] summary::after { content: '\2212'; }
 .faq summary:hover { color: var(--accent); }
 .faq details p { margin: 12px 0 0; }
+/* ---------- Favoris ---------- */
+.produit { position: relative; }
+.favori-form { position: absolute; top: 10px; right: 10px; z-index: 2; margin: 0; }
+.btn-favori {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(246, 239, 230, .92);
+    color: var(--sombre);
+    cursor: pointer;
+    transition: transform .2s ease, background .2s ease, color .2s ease;
+}
+.btn-favori svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+.btn-favori:hover { transform: scale(1.1); background: var(--fond); color: var(--erreur); }
+.btn-favori.actif { color: var(--erreur); }
+.btn-favori.actif svg { fill: currentColor; }
+.favori-detail { margin-top: 14px; text-align: center; }

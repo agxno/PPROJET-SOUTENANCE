@@ -56,7 +56,7 @@
                 {% if user.is_staff %}<a href="{% url 'admin:index' %}">Administration</a>{% endif %}
                 {% if user.est_livreur %}<a href="{% url 'livraisons:tableau' %}">Livraisons</a>{% endif %}
                 <a href="{% url 'utilisateurs:tableau_bord' %}">Compte</a>
-                <a href="#">Favoris</a>
+                <a href="{% url 'favoris:liste' %}">Favoris{% if favoris_quantite %} ({{ favoris_quantite }}){% endif %}</a>
                 <a href="{% url 'panier:voir' %}">Panier ({{ panier_quantite }})</a>
             </nav>
         </div>

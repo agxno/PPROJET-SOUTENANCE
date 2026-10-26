@@ -1,0 +1,17 @@
+{% extends 'utilisateurs/compte_base.html' %}
+
+{% block titre %}Mes favoris - Maison Lumière{% endblock %}
+{% block titre_page %}Mes favoris{% endblock %}
+
+{% block contenu_compte %}
+{% if produits %}
+<div class="grille-produits">
+    {% for produit in produits %}
+        {% include 'produits/_carte.html' %}
+    {% endfor %}
+</div>
+{% else %}
+    <p class="vide">Vous n'avez pas encore de favoris. Cliquez sur le cœur d'un bijou pour le retrouver ici.</p>
+    <p style="text-align:center;"><a href="{% url 'produits:liste' %}" class="bouton">Découvrir la boutique</a></p>
+{% endif %}
+{% endblock %}

@@ -39,6 +39,7 @@ class Commande(models.Model):
     )
     statut = models.CharField(max_length=20, choices=STATUTS, default='en_attente')
     total = models.DecimalField("total (FCFA)", max_digits=12, decimal_places=0, default=0)
+    cgv_acceptees_le = models.DateTimeField("CGV acceptées le", null=True, blank=True)
 
     # Livraison
     livreur = models.ForeignKey(

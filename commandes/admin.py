@@ -23,7 +23,7 @@ class CommandeAdmin(admin.ModelAdmin):
     date_hierarchy = 'date_creation'
     inlines = [LigneCommandeInline]
     readonly_fields = (
-        'reference', 'utilisateur', 'total', 'date_creation', 'date_modification',
+        'reference', 'utilisateur', 'total', 'cgv_acceptees_le', 'date_creation', 'date_modification',
         'date_expedition', 'date_livraison',
         'livraison_prenom', 'livraison_nom', 'livraison_adresse',
         'livraison_ville', 'livraison_telephone',

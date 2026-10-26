@@ -1,7 +1,19 @@
-<article class="produit">
+<article class="produit" id="produit-{{ produit.pk }}">
+    <form method="post" action="{% url 'favoris:basculer' produit.pk %}" class="favori-form">
+        {% csrf_token %}
+        <input type="hidden" name="suivant" value="{{ request.get_full_path }}#produit-{{ produit.pk }}">
+        <button type="submit" class="btn-favori{% if produit.pk in favoris_ids %} actif{% endif %}"
+                aria-label="{% if produit.pk in favoris_ids %}Retirer {{ produit.nom }} des favoris{% else %}Ajouter {{ produit.nom }} aux favoris{% endif %}"
+                title="{% if produit.pk in favoris_ids %}Retirer des favoris{% else %}Ajouter aux favoris{% endif %}">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21.2l7.8-7.7 1-1.1a5.5 5.5 0 0 0 0-7.8z"/>
+            </svg>
+        </button>
+    </form>
+
     <a href="{{ produit.get_absolute_url }}" class="produit-visuel">
         {% if produit.image %}
-            <img src="{{ produit.image.url }}" alt="{{ produit.nom }}">
+            <img src="{{ produit.image.url }}" alt="{{ produit.nom }}" loading="lazy" decoding="async">
         {% else %}
             <span>Photo</span>
         {% endif %}

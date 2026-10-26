@@ -14,7 +14,7 @@
                 <li><a href="{% url 'utilisateurs:tableau_bord' %}"{% if page == 'tableau_bord' %} class="actif"{% endif %}>Tableau de bord</a></li>
                 <li><a href="{% url 'commandes:liste' %}"{% if app == 'commandes' %} class="actif"{% endif %}>Mes commandes</a></li>
                 <li><a href="{% url 'utilisateurs:mes_adresses' %}"{% if page == 'mes_adresses' or page == 'modifier_adresse' %} class="actif"{% endif %}>Mes adresses</a></li>
-                <li><a href="#">Mes favoris</a></li>
+                <li><a href="{% url 'favoris:liste' %}"{% if app == 'favoris' %} class="actif"{% endif %}>Mes favoris</a></li>
                 <li><a href="{% url 'utilisateurs:mes_informations' %}"{% if page == 'mes_informations' %} class="actif"{% endif %}>Mes informations</a></li>
                 <li>
                     <form method="post" action="{% url 'utilisateurs:deconnexion' %}">

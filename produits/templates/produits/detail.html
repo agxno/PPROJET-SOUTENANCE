@@ -64,6 +64,15 @@
                 <a href="{% url 'utilisateurs:connexion' %}?next={{ produit.get_absolute_url|urlencode }}" class="bouton bouton-plein">Se connecter pour commander</a>
                 <p class="note-connexion">Pas encore de compte ? <a href="{% url 'utilisateurs:inscription' %}">Créer un compte</a></p>
             {% endif %}
+
+            <form method="post" action="{% url 'favoris:basculer' produit.pk %}" class="favori-detail">
+                {% csrf_token %}
+                <input type="hidden" name="suivant" value="{{ request.get_full_path }}">
+                <button type="submit" class="lien-souligne">
+                    {% if produit.pk in favoris_ids %}♥ Retirer des favoris{% else %}♡ Ajouter aux favoris{% endif %}
+                </button>
+            </form>
+
             <p class="reference">Réf. {{ produit.reference }}</p>
         </div>
     </div>

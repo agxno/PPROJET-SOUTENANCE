@@ -35,6 +35,10 @@
         </div>
         <aside class="panier-resume">
             {% include 'commandes/_recap.html' %}
+            <label class="case-cgv">
+                <input type="checkbox" name="accepte_cgv" required>
+                <span>J'ai lu et j'accepte les <a href="{% url 'accueil:cgv' %}" target="_blank" rel="noopener">conditions générales de vente</a>.</span>
+            </label>
             <button type="submit" class="bouton bouton-plein"{% if probleme_stock %} disabled{% endif %}>Confirmer la commande</button>
             <a href="{% url 'panier:voir' %}" class="lien-continuer">Retour au panier</a>
         </aside>

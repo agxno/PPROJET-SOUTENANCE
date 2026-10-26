@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils import timezone
 from django.views.decorators.http import require_POST
 
 from panier.models import Panier
@@ -64,6 +65,10 @@ def valider(request):
             adresse = request.user.adresses.filter(pk=_entier(request.POST.get('adresse'))).first()
             if adresse is None:
                 messages.error(request, "Choisissez une adresse de livraison.")
+            elif request.POST.get('accepte_cgv') != 'on':
+                messages.error(
+                    request, "Vous devez accepter les conditions générales de vente pour commander."
+                )
             else:
                 try:
                     commande = Commande.creer_depuis_panier(request.user, adresse)
@@ -74,6 +79,10 @@ def valider(request):
                     for probleme in erreur.problemes:
                         messages.error(request, probleme)
                     return redirect('panier:voir')
+
+                # Preuve de l'acceptation des CGV
+                commande.cgv_acceptees_le = timezone.now()
+                commande.save(update_fields=['cgv_acceptees_le'])
 
                 try:
                     envoyer_confirmation(request, commande)

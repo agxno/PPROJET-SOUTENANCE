@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'livraisons',
     'avis',
     'statistiques',
+    'favoris',
 ]
 
 MIDDLEWARE = [
@@ -72,7 +73,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'panier.context_processors.panier',     
+                'panier.context_processors.panier', 
+                'favoris.context_processors.favoris',    
             ],
                             
         },
