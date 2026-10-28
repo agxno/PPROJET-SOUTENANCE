@@ -27,7 +27,7 @@
 <p>L'assistant vocal est facultatif. Lorsque vous l'utilisez :</p>
 <ul>
     <li>votre voix est transformée en texte par le service de reconnaissance vocale de votre navigateur (par exemple Google pour Chrome) ;</li>
-    <li>ce texte est envoyé à notre serveur, puis au service d'intelligence artificielle Grok (xAI) pour préparer la réponse ;</li>
+    <li>ce texte est envoyé à notre serveur, qui prépare la réponse{% if assistant_mode == 'grok' %} avec le service d'intelligence artificielle Grok (xAI){% endif %} ;</li>
     <li>la réponse est transformée en voix par un service de synthèse vocale de Microsoft (Edge).</li>
 </ul>
 <p>Notre site ne conserve pas vos conversations avec l'assistant. Ne dictez jamais de données bancaires ni de mot de passe. Vous pouvez aussi écrire votre message au lieu de parler, ou ne pas utiliser l'assistant.</p>
@@ -36,7 +36,7 @@
 <ul>
     <li>L'équipe de Maison Lumière.</li>
     <li>Le livreur chargé de votre commande : nom, téléphone et adresse de livraison, uniquement pour la livrer.</li>
-    <li>Nos prestataires techniques : paiement en ligne, envoi d'e-mails, hébergement, et pour l'assistant vocal, xAI et Microsoft <span class="a-completer">[compléter les noms des autres prestataires]</span>.</li>
+    <li>Nos prestataires techniques : paiement en ligne, envoi d'e-mails, hébergement, et pour l'assistant vocal, Microsoft{% if assistant_mode == 'grok' %} et xAI{% endif %} <span class="a-completer">[compléter les noms des autres prestataires]</span>.</li>
 </ul>
 <p>Vos données ne sont pas vendues.</p>
 
