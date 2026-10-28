@@ -1,0 +1,150 @@
+/* ---------- Assistant vocal ---------- */
+.assistant {
+    position: fixed;
+    right: 22px;
+    bottom: calc(22px + env(safe-area-inset-bottom, 0px));
+    z-index: 900;
+    font-family: var(--police-texte);
+}
+
+.assistant-bouton {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 58px;
+    height: 58px;
+    border: none;
+    border-radius: 50%;
+    background: var(--sombre);
+    color: var(--fond);
+    cursor: pointer;
+    box-shadow: 0 6px 22px rgba(43, 33, 24, .35);
+    transition: transform .2s ease, background .2s ease;
+}
+.assistant-bouton:hover { transform: scale(1.06); background: var(--accent); }
+.assistant-bouton svg {
+    width: 24px;
+    height: 24px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* États : écoute (rouge qui pulse), réflexion (anneau qui tourne), parole (doré) */
+@keyframes assistant-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(139, 58, 46, .55); }
+    100% { box-shadow: 0 0 0 20px rgba(139, 58, 46, 0); }
+}
+@keyframes assistant-tourne { to { transform: rotate(360deg); } }
+
+.assistant[data-etat="ecoute"] .assistant-bouton { background: var(--erreur); animation: assistant-pulse 1.4s ease-out infinite; }
+.assistant[data-etat="parole"] .assistant-bouton { background: var(--accent); }
+.assistant[data-etat="reflexion"] .assistant-bouton::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border: 2px solid transparent;
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: assistant-tourne .8s linear infinite;
+}
+
+/* Panneau */
+.assistant-panneau {
+    position: absolute;
+    right: 0;
+    bottom: 74px;
+    display: flex;
+    flex-direction: column;
+    width: min(370px, calc(100vw - 32px));
+    max-height: min(72vh, 540px);
+    background: var(--fond);
+    border: 1px solid var(--bordure);
+    box-shadow: 0 14px 44px rgba(43, 33, 24, .28);
+}
+.assistant-panneau[hidden] { display: none; }
+
+.assistant-entete {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    background: var(--sombre);
+    color: var(--fond);
+    font-family: var(--police-titre);
+    font-size: 1.05rem;
+    letter-spacing: .06em;
+}
+.assistant-entete strong { font-weight: 400; }
+.assistant-entete button {
+    border: none;
+    background: none;
+    color: inherit;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.assistant-info { padding: 16px; background: var(--carte); font-size: .8rem; color: var(--texte-doux); }
+.assistant-info[hidden] { display: none; }
+.assistant-info p { margin-bottom: 12px; }
+.assistant-info .bouton { padding: 10px 16px; }
+
+.assistant-journal {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px;
+    overflow-y: auto;
+    min-height: 60px;
+}
+.assistant-msg { max-width: 88%; padding: 10px 14px; font-size: .88rem; line-height: 1.45; }
+.assistant-msg-user { align-self: flex-end; background: var(--sombre); color: var(--fond); }
+.assistant-msg-assistant { align-self: flex-start; background: var(--carte); color: var(--sombre); }
+
+.assistant-suggestions { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 14px 12px; }
+.assistant-suggestions[hidden] { display: none; }
+.assistant-suggestions button {
+    padding: 7px 12px;
+    border: 1px solid var(--bordure);
+    background: transparent;
+    font: inherit;
+    font-size: .76rem;
+    color: var(--sombre);
+    cursor: pointer;
+    transition: background .2s, color .2s;
+}
+.assistant-suggestions button:hover { background: var(--sombre); color: var(--fond); }
+
+.assistant-statut { min-height: 22px; padding: 0 16px; font-size: .78rem; color: var(--texte-doux); }
+
+.assistant-formulaire { display: flex; gap: 8px; padding: 10px 14px 14px; border-top: 1px solid var(--bordure); }
+.assistant-formulaire input {
+    flex: 1;
+    min-width: 0;
+    padding: 10px 12px;
+    border: 1px solid var(--sombre);
+    border-radius: 0;
+    background: transparent;
+    font: inherit;
+    font-size: .88rem;
+    color: var(--sombre);
+}
+.assistant-formulaire button {
+    padding: 0 16px;
+    border: none;
+    background: var(--sombre);
+    color: var(--fond);
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+@media (max-width: 520px) {
+    .assistant { right: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .assistant-bouton, .assistant-bouton::after { animation: none !important; transition: none; }
+}

@@ -14,6 +14,7 @@ urlpatterns = [
     path('', include('livraisons.urls')),
     path('', include('avis.urls')),
     path('', include('favoris.urls')),
+    path('', include('assistant.urls')),
 ]
 
 if settings.DEBUG:

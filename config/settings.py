@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'avis',
     'statistiques',
     'favoris',
+    'assistant',
 ]
 
 MIDDLEWARE = [
@@ -74,7 +75,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'panier.context_processors.panier', 
-                'favoris.context_processors.favoris',    
+                'favoris.context_processors.favoris',   
+                'assistant.context_processors.assistant', 
             ],
                             
         },
@@ -174,8 +176,10 @@ CINETPAY_API_KEY_CI = os.environ.get('CINETPAY_API_KEY_CI', '')
 CINETPAY_API_PASSWORD_CI = os.environ.get('CINETPAY_API_PASSWORD_CI', '')
 CINETPAY_MODE_TEST = CINETPAY_API_KEY_CI.startswith('sk_test_')
 
-# Kadev Pay
-KADEV_PUBLIC_KEY = os.environ.get('KADEV_PUBLIC_KEY', '')
-KADEV_SECRET_KEY = os.environ.get('KADEV_SECRET_KEY', '')
-KADEV_WEBHOOK_SECRET = os.environ.get('KADEV_WEBHOOK_SECRET', '')
-KADEV_MODE_TEST = KADEV_SECRET_KEY.startswith('kdvs_test_')
+# Assistant vocal
+# 'regles' : gratuit, sans IA, sans clé (par défaut) ; 'grok' : IA Grok (xAI), payante
+ASSISTANT_MODE = os.environ.get('ASSISTANT_MODE', 'regles')
+XAI_API_KEY = os.environ.get('XAI_API_KEY', '')
+XAI_MODEL = os.environ.get('XAI_MODEL', 'grok-4.7')
+ASSISTANT_VOIX = os.environ.get('ASSISTANT_VOIX', 'fr-FR-DeniseNeural')
+ASSISTANT_ACTIF = ASSISTANT_MODE == 'regles' or bool(XAI_API_KEY)

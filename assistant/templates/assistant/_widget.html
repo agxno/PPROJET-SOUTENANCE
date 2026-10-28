@@ -1,0 +1,58 @@
+{% load static %}
+{% if assistant_actif %}
+<link rel="stylesheet" href="{% static 'css/assistant.css' %}">
+<div id="assistant" class="assistant" data-etat="repos"
+     data-csrf="{{ csrf_token }}"
+     data-url-message="{% url 'assistant:message' %}"
+     data-url-voix="{% url 'assistant:voix' %}">
+
+    <section id="assistant-panneau" class="assistant-panneau" role="dialog" aria-label="Assistant vocal" hidden>
+        <header class="assistant-entete">
+            <strong>Assistant Maison Lumière</strong>
+            <button type="button" id="assistant-fermer" aria-label="Fermer l'assistant">&times;</button>
+        </header>
+
+        <div id="assistant-info" class="assistant-info" hidden>
+            <p>
+                {% if assistant_mode == 'grok' %}
+                Pour vous répondre, l'assistant utilise la reconnaissance vocale de votre navigateur,
+                l'IA Grok (xAI) et une voix Microsoft Edge. Ce que vous dites, transcrit en texte, est envoyé
+                à ces services.
+                {% else %}
+                Pour vous répondre, l'assistant utilise la reconnaissance vocale de votre navigateur
+                et une voix Microsoft Edge. Ce que vous dites, transcrit en texte, est envoyé à ces services
+                et à notre site.
+                {% endif %}
+                Aucune donnée bancaire ne doit être dictée.
+            </p>
+            <button type="button" id="assistant-info-ok" class="bouton">J'ai compris, continuer</button>
+        </div>
+
+        <div id="assistant-journal" class="assistant-journal" aria-live="polite"></div>
+
+        <div id="assistant-suggestions" class="assistant-suggestions">
+            <button type="button" data-texte="Quelles sont les promotions ?">Quelles sont les promotions ?</button>
+            <button type="button" data-texte="Montre-moi les nouveautés">Montre-moi les nouveautés</button>
+            <button type="button" data-texte="Où en est ma commande ?">Où en est ma commande ?</button>
+        </div>
+
+        <p id="assistant-statut" class="assistant-statut" aria-live="polite"></p>
+
+        <form id="assistant-formulaire" class="assistant-formulaire" autocomplete="off">
+            <input type="text" id="assistant-texte" placeholder="Ou écrivez ici…" maxlength="300" aria-label="Votre message">
+            <button type="submit" aria-label="Envoyer">&rarr;</button>
+        </form>
+    </section>
+
+    <button type="button" id="assistant-bouton" class="assistant-bouton"
+            aria-label="Parler à l'assistant vocal" title="Assistant vocal">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+            <line x1="12" y1="19" x2="12" y2="23"/>
+            <line x1="8" y1="23" x2="16" y2="23"/>
+        </svg>
+    </button>
+</div>
+<script src="{% static 'js/assistant.js' %}" defer></script>
+{% endif %}
