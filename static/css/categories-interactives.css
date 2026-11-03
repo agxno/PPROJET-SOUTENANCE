@@ -1,0 +1,762 @@
+
+/* ==========================================================
+   MAISON LUMIÈRE — CATÉGORIES INTERACTIVES
+   Design : luxe minimaliste / ivoire / champagne / doré
+========================================================== */
+
+.categories-interactives {
+    --ci-fond: #f8f5ef;
+    --ci-texte: #30251c;
+    --ci-secondaire: #968878;
+    --ci-or: #ad8b58;
+    --ci-champagne: #e9dfd0;
+
+    position: relative;
+    isolation: isolate;
+
+    width: 100%;
+    height: 100vh;
+    height: 100svh;
+    min-height: 620px;
+    max-height: 100vh;
+
+    box-sizing: border-box;
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+
+    padding: 45px 0;
+
+    background: var(--ci-fond);
+    color: var(--ci-texte);
+}
+
+/* ==========================================================
+   CONTENEUR GÉNÉRAL
+========================================================== */
+
+.ci-conteneur {
+    width: min(1320px, calc(100% - 100px));
+    height: 100%;
+    min-height: 0;
+
+    margin: 0 auto;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* ==========================================================
+   EN-TÊTE
+========================================================== */
+
+.ci-entete {
+    flex: 0 0 auto;
+    margin-bottom: clamp(20px, 3vh, 35px);
+}
+
+.ci-etiquette {
+    display: inline-block;
+    margin-bottom: 13px;
+
+    color: var(--ci-or);
+
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+.ci-entete h2 {
+    margin: 0 0 12px;
+
+    color: var(--ci-texte);
+
+    font-family: "Instrument Serif", Georgia, serif;
+    font-size: clamp(38px, 4vw, 55px);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -1px;
+}
+
+.ci-entete p {
+    max-width: 440px;
+    margin: 0;
+
+    color: var(--ci-secondaire);
+
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+/* ==========================================================
+   COMPOSITION
+   Gauche : 40 %
+   Droite : 60 %
+========================================================== */
+
+.ci-composition {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    align-items: center;
+    gap: 35px;
+
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+}
+
+/* ==========================================================
+   MENU DES CATÉGORIES
+========================================================== */
+
+.ci-menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+
+    gap: clamp(18px, 3.2vh, 34px);
+
+    min-width: 0;
+    border: 0;
+}
+
+/* Boutons */
+
+.ci-categorie {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    width: fit-content;
+    max-width: 100%;
+    min-height: 45px;
+
+    padding: 0;
+    border: 0;
+    outline: none;
+
+    background: transparent;
+    color: #a99d8e;
+
+    text-align: left;
+    cursor: pointer;
+
+    transition: color 0.4s ease;
+}
+
+/* Numérotation */
+
+.ci-numero {
+    flex-shrink: 0;
+
+    color: var(--ci-or);
+
+    font-family: Georgia, serif;
+    font-size: 11px;
+
+    opacity: 0.65;
+
+    transition: opacity 0.4s ease;
+}
+
+/* Nom */
+
+.ci-nom {
+    display: block;
+
+    font-family: "Instrument Serif", Georgia, serif;
+    font-size: clamp(29px, 3.2vw, 45px);
+    font-weight: 400;
+    line-height: 1.1;
+
+    transition:
+        transform 0.45s ease,
+        color 0.4s ease;
+}
+
+/* Indicateur */
+
+.ci-categorie::before {
+    content: "";
+
+    position: absolute;
+    left: -22px;
+    top: 50%;
+
+    width: 3px;
+    height: 0;
+
+    border-radius: 5px;
+    background: var(--ci-or);
+
+    transform: translateY(-50%);
+
+    transition: height 0.35s ease;
+}
+
+/* Catégorie active */
+
+.ci-categorie.ci-active {
+    color: var(--ci-texte);
+}
+
+.ci-categorie.ci-active .ci-nom {
+    transform: translateX(8px);
+}
+
+.ci-categorie.ci-active .ci-numero {
+    opacity: 1;
+}
+
+.ci-categorie.ci-active::before {
+    height: 30px;
+}
+
+/* Survol */
+
+.ci-categorie:hover {
+    color: var(--ci-texte);
+}
+
+.ci-categorie:hover .ci-nom {
+    transform: translateX(8px);
+}
+
+.ci-categorie:hover::before {
+    height: 25px;
+}
+
+/* Navigation clavier */
+
+.ci-categorie:focus-visible {
+    outline: 1px solid var(--ci-or);
+    outline-offset: 8px;
+}
+
+/* Suppression des flèches */
+
+.ci-fleche {
+    display: none !important;
+}
+
+/* ==========================================================
+   ZONE DES PHOTOS
+========================================================== */
+
+.ci-visuel {
+    position: relative;
+    isolation: isolate;
+
+    width: 100%;
+    height: min(64vh, 620px);
+    min-height: 0;
+
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: transparent;
+}
+
+/* ==========================================================
+   CONTENEURS DES IMAGES
+========================================================== */
+
+.ci-image {
+    position: absolute;
+    inset: 0;
+
+    z-index: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+
+    visibility: hidden;
+    opacity: 0;
+
+    clip-path: none !important;
+
+    transform: scale(0.97);
+
+    transition:
+        opacity 0.65s ease,
+        visibility 0.65s ease,
+        transform 0.75s ease;
+}
+
+/* Fond décoratif derrière la photo */
+
+.ci-image::before {
+    content: "";
+
+    position: absolute;
+    z-index: 0;
+
+    background: linear-gradient(
+        145deg,
+        #eee5d8,
+        #e5d8c7
+    );
+
+    box-shadow: 0 20px 60px rgba(72, 52, 29, 0.06);
+}
+
+/* ==========================================================
+   FORMES DÉCORATIVES
+   Ordre actuel Django :
+   1. Bagues
+   2. Boucles d'oreilles
+   3. Bracelets
+   4. Collier
+
+   Les formes ne découpent PAS les photos.
+========================================================== */
+
+/* Bagues : grand cercle */
+
+.ci-image:nth-child(1)::before {
+    width: 72%;
+    aspect-ratio: 1 / 1;
+
+    border-radius: 50%;
+}
+
+/* Boucles d'oreilles : carré */
+
+.ci-image:nth-child(2)::before {
+    width: 65%;
+    height: 82%;
+
+    border-radius: 8px;
+}
+
+/* Bracelets : rectangle vertical */
+
+.ci-image:nth-child(3)::before {
+    width: 52%;
+    height: 90%;
+
+    border-radius: 48% 48% 8px 8px;
+}
+
+/* Collier : rectangle horizontal */
+
+.ci-image:nth-child(4)::before {
+    width: 92%;
+    height: 65%;
+
+    border-radius: 8px;
+}
+
+/* ==========================================================
+   PHOTOGRAPHIES
+   Les images sont entièrement visibles.
+========================================================== */
+
+.ci-image img {
+    position: relative;
+    z-index: 1;
+
+    display: block;
+
+    width: 82%;
+    height: 82%;
+
+    max-width: 100%;
+    max-height: 100%;
+
+    object-fit: contain;
+    object-position: center;
+
+    transition: transform 0.7s ease;
+}
+
+/* Image active */
+
+.ci-image.ci-image-active {
+    z-index: 2;
+
+    visibility: visible;
+    opacity: 1;
+
+    transform: scale(1);
+}
+
+/* Légère animation au survol */
+
+.ci-visuel:hover .ci-image-active img {
+    transform: scale(1.025);
+}
+
+/* ==========================================================
+   PLACEHOLDER SI AUCUNE PHOTO
+========================================================== */
+
+.ci-placeholder {
+    position: relative;
+    z-index: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 75%;
+    height: 75%;
+
+    color: var(--ci-or);
+
+    font-family: "Instrument Serif", Georgia, serif;
+    font-size: clamp(28px, 3vw, 42px);
+    text-align: center;
+}
+
+/* ==========================================================
+   LÉGENDE
+========================================================== */
+
+.ci-image-legende {
+    position: absolute;
+    z-index: 3;
+
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+
+    padding: 16px 18px;
+
+    background: linear-gradient(
+        to top,
+        rgba(38, 29, 21, 0.72),
+        rgba(38, 29, 21, 0)
+    );
+
+    color: #fff;
+
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.ci-image-legende a {
+    color: #fff;
+    text-decoration: none;
+
+    font-size: 9px;
+
+    transition: color 0.3s ease;
+}
+
+.ci-image-legende a:hover {
+    color: #e9d2a6;
+}
+
+/* ==========================================================
+   BAS DE SECTION
+========================================================== */
+
+.ci-bas {
+    flex: 0 0 auto;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+
+    margin-top: 18px;
+
+    color: var(--ci-secondaire);
+
+    font-size: 9px;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+}
+
+/* ==========================================================
+   TABLETTES
+========================================================== */
+
+@media (max-width: 900px) {
+
+    .categories-interactives {
+        height: auto;
+        max-height: none;
+        min-height: 100vh;
+
+        padding: 60px 0;
+        overflow: visible;
+    }
+
+    .ci-conteneur {
+        width: calc(100% - 60px);
+        height: auto;
+    }
+
+    .ci-composition {
+        grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr);
+        gap: 20px;
+    }
+
+    .ci-nom {
+        font-size: clamp(25px, 3.5vw, 35px);
+    }
+
+    .ci-visuel {
+        height: 55vh;
+        min-height: 380px;
+    }
+
+    .ci-image img {
+        width: 85%;
+        height: 85%;
+    }
+}
+
+/* ==========================================================
+   MOBILES
+========================================================== */
+
+@media (max-width: 650px) {
+
+    .categories-interactives {
+        height: auto;
+        min-height: auto;
+        max-height: none;
+
+        padding: 55px 0 40px;
+    }
+
+    .ci-conteneur {
+        width: calc(100% - 36px);
+    }
+
+    .ci-entete {
+        margin-bottom: 28px;
+    }
+
+    .ci-entete h2 {
+        font-size: clamp(36px, 9vw, 45px);
+    }
+
+    .ci-entete p {
+        font-size: 12px;
+    }
+
+    .ci-composition {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+
+        gap: 22px;
+    }
+
+    /* Menu en deux colonnes */
+
+    .ci-menu {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+        gap: 12px 15px;
+
+        width: 100%;
+    }
+
+    .ci-categorie {
+        width: 100%;
+        min-width: 0;
+        min-height: 42px;
+
+        gap: 8px;
+    }
+
+    .ci-categorie::before {
+        left: -8px;
+        width: 2px;
+    }
+
+    .ci-categorie.ci-active::before {
+        height: 22px;
+    }
+
+    .ci-categorie.ci-active .ci-nom {
+        transform: translateX(4px);
+    }
+
+    .ci-nom {
+        font-size: clamp(20px, 5vw, 27px);
+    }
+
+    .ci-numero {
+        font-size: 9px;
+    }
+
+    /* Photos */
+
+    .ci-visuel {
+        width: 100%;
+        height: auto;
+        min-height: 0;
+
+        aspect-ratio: 1 / 1;
+    }
+
+    .ci-image img {
+        width: 82%;
+        height: 82%;
+    }
+
+    .ci-image:nth-child(1)::before {
+        width: 75%;
+    }
+
+    .ci-image:nth-child(2)::before {
+        width: 70%;
+        height: 85%;
+    }
+
+    .ci-image:nth-child(3)::before {
+        width: 55%;
+        height: 90%;
+    }
+
+    .ci-image:nth-child(4)::before {
+        width: 95%;
+        height: 65%;
+    }
+
+    .ci-image-legende {
+        padding: 12px;
+        gap: 7px;
+
+        font-size: 8px;
+        letter-spacing: 1px;
+    }
+
+    .ci-image-legende a {
+        width: 100%;
+        font-size: 8px;
+    }
+
+    /* Bas */
+
+    .ci-bas {
+        flex-direction: column;
+        align-items: flex-start;
+
+        gap: 8px;
+        margin-top: 22px;
+
+        font-size: 8px;
+    }
+}
+
+/* ==========================================================
+   PETITS MOBILES
+========================================================== */
+
+@media (max-width: 380px) {
+
+    .ci-conteneur {
+        width: calc(100% - 28px);
+    }
+
+    .ci-menu {
+        column-gap: 10px;
+    }
+
+    .ci-categorie {
+        gap: 6px;
+    }
+
+    .ci-nom {
+        font-size: 19px;
+    }
+
+    .ci-visuel {
+        aspect-ratio: 0.9 / 1;
+    }
+
+    .ci-image-legende {
+        padding: 10px;
+    }
+}
+
+/* ==========================================================
+   ORDINATEURS À FAIBLE HAUTEUR
+========================================================== */
+
+@media (min-width: 901px) and (max-height: 720px) {
+
+    .categories-interactives {
+        min-height: 0;
+        padding: 22px 0;
+    }
+
+    .ci-entete {
+        margin-bottom: 16px;
+    }
+
+    .ci-entete h2 {
+        font-size: 40px;
+    }
+
+    .ci-composition {
+        gap: 25px;
+    }
+
+    .ci-menu {
+        gap: 13px;
+    }
+
+    .ci-categorie {
+        min-height: 36px;
+    }
+
+    .ci-nom {
+        font-size: 30px;
+    }
+
+    .ci-visuel {
+        height: 53vh;
+    }
+
+    .ci-bas {
+        margin-top: 12px;
+    }
+}
+
+/* ==========================================================
+   ACCESSIBILITÉ
+========================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .ci-categorie,
+    .ci-categorie::before,
+    .ci-nom,
+    .ci-image,
+    .ci-image img,
+    .ci-image-legende a {
+        transition: none !important;
+    }
+}

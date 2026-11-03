@@ -3,10 +3,14 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>{% block titre %}Maison Lumière{% endblock %}</title>
     <script>document.documentElement.classList.add('js');</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/nav-verre.css' %}">
     <style>
         /* Icônes dans un cercle, utilisées sur tout le site */
         .valeur-icone {
@@ -40,26 +44,65 @@
         }
     </style>
     <script src="{% static 'js/site.js' %}" defer></script>
+    <script src="{% static 'js/nav-verre.js' %}" defer></script>
 </head>
-<body>
-    <header class="entete">
-        <div class="conteneur">
-            <nav class="menu">
-                <a href="{% url 'produits:liste' %}">Boutique</a>
-                <a href="{% url 'produits:nouveautes' %}">Nouveautés</a>
-                <a href="{% url 'produits:promotions' %}">Promotions</a>
-                <a href="{% url 'accueil:a_propos' %}">À propos</a>
-            </nav>
-            <a href="{% url 'accueil:accueil' %}" class="logo">Maison Lumière</a>
-            <nav class="menu menu-droite">
-                <a href="{% url 'produits:liste' %}#recherche">Recherche</a>
-                {% if user.is_staff %}<a href="{% url 'admin:index' %}">Administration</a>{% endif %}
-                {% if user.est_livreur %}<a href="{% url 'livraisons:tableau' %}">Livraisons</a>{% endif %}
-                <a href="{% url 'utilisateurs:tableau_bord' %}">Compte</a>
-                <a href="{% url 'favoris:liste' %}">Favoris{% if favoris_quantite %} ({{ favoris_quantite }}){% endif %}</a>
-                <a href="{% url 'panier:voir' %}">Panier ({{ panier_quantite }})</a>
-            </nav>
+<body class="{% block classe_body %}{% endblock %}">
+    <header class="verre-entete">
+        <a href="{% url 'accueil:accueil' %}" class="verre-logo">Maison Lumière</a>
+
+        {% with app=request.resolver_match.app_name page=request.resolver_match.url_name %}
+        <nav class="verre" data-verre aria-label="Navigation principale">
+            <span class="verre-bulle" aria-hidden="true"></span>
+
+            <a href="{% url 'accueil:accueil' %}" class="verre-lien{% if app == 'accueil' and page == 'accueil' %} actif{% endif %}"{% if app == 'accueil' and page == 'accueil' %} aria-current="page"{% endif %}>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>
+                <span>Accueil</span>
+            </a>
+            <a href="{% url 'produits:liste' %}" class="verre-lien{% if app == 'produits' and page != 'nouveautes' and page != 'promotions' %} actif{% endif %}"{% if app == 'produits' and page != 'nouveautes' and page != 'promotions' %} aria-current="page"{% endif %}>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 7h12l1 13H5L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+                <span>Boutique</span>
+            </a>
+            <a href="{% url 'produits:nouveautes' %}" class="verre-lien{% if app == 'produits' and page == 'nouveautes' %} actif{% endif %}"{% if app == 'produits' and page == 'nouveautes' %} aria-current="page"{% endif %}>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 3l1.8 4.7 4.7 1.8-4.7 1.8L11 16l-1.8-4.7L4.5 9.5l4.7-1.8z"/><path d="M19 15l.8 2.2 2.2.8-2.2.8L19 21l-.8-2.2-2.2-.8 2.2-.8z"/></svg>
+                <span>Nouveautés</span>
+            </a>
+            <a href="{% url 'produits:promotions' %}" class="verre-lien{% if app == 'produits' and page == 'promotions' %} actif{% endif %}"{% if app == 'produits' and page == 'promotions' %} aria-current="page"{% endif %}>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.2"/></svg>
+                <span>Promos</span>
+            </a>
+            <a href="{% url 'accueil:a_propos' %}" class="verre-lien{% if app == 'accueil' and page == 'a_propos' %} actif{% endif %}"{% if app == 'accueil' and page == 'a_propos' %} aria-current="page"{% endif %}>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5"/><path d="M12 7.6v.1"/></svg>
+                <span>À propos</span>
+            </a>
+        </nav>
+
+        <div class="verre-outils">
+            <a href="{% url 'produits:liste' %}#recherche" class="verre-icone verre-icone--recherche" aria-label="Recherche" title="Recherche">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            </a>
+            {% if user.is_staff %}
+            <a href="{% url 'admin:index' %}" class="verre-icone" aria-label="Administration" title="Administration">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.2 8.2-8 9-4.8-.8-8-4.5-8-9V6z"/></svg>
+            </a>
+            {% endif %}
+            {% if user.est_livreur %}
+            <a href="{% url 'livraisons:tableau' %}" class="verre-icone{% if app == 'livraisons' %} actif{% endif %}" aria-label="Livraisons" title="Livraisons">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M1 6h13v10H1z"/><path d="M14 9h4l3 3v4h-7z"/><circle cx="6" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>
+            </a>
+            {% endif %}
+            <a href="{% url 'favoris:liste' %}" class="verre-icone{% if app == 'favoris' %} actif{% endif %}" aria-label="Favoris" title="Favoris">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21.2l7.8-7.7 1-1.1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+                <span class="verre-badge" data-favoris-compteur{% if not favoris_quantite %} hidden{% endif %}>{{ favoris_quantite }}</span>
+            </a>
+            <a href="{% url 'panier:voir' %}" class="verre-icone{% if app == 'panier' %} actif{% endif %}" aria-label="Panier" title="Panier">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h3l2.6 12.4a1 1 0 0 0 1 .8h8.8a1 1 0 0 0 1-.8L20 8H6"/></svg>
+                <span class="verre-badge" data-panier-compteur{% if not panier_quantite %} hidden{% endif %}>{{ panier_quantite }}</span>
+            </a>
+            <a href="{% url 'utilisateurs:tableau_bord' %}" class="verre-icone{% if app == 'utilisateurs' or app == 'commandes' %} actif{% endif %}" aria-label="Compte" title="Compte">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+            </a>
         </div>
+        {% endwith %}
     </header>
 
     {% if messages %}

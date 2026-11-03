@@ -1,0 +1,281 @@
+/* ==========================================================
+   Hero de l'accueil : bague et diamant sous les projecteurs
+   ========================================================== */
+.hero {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    align-items: center;
+    min-height: 100vh;
+    padding: 124px 0 96px;
+    overflow: hidden;
+    color: #f6efe6;
+    background: radial-gradient(90% 85% at 70% 46%, #3d2e21 0%, #1c140e 52%, #0b0805 100%);
+    touch-action: pan-y;
+}
+
+/* ---------- Décor : projecteurs, filigrane, poussière ---------- */
+.hero-scene {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.hero-projecteurs { position: absolute; inset: 0; }
+.faisceau {
+    position: absolute;
+    top: -12%;
+    width: 62%;
+    height: 135%;
+    filter: blur(18px);
+    mix-blend-mode: screen;
+    transform-origin: 50% 0;
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, .55) 55%, transparent 92%);
+    mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, .55) 55%, transparent 92%);
+    animation: balayage 11s ease-in-out infinite alternate;
+}
+.faisceau.f1 {
+    left: 24%;
+    background: conic-gradient(from 152deg at 50% 0%, transparent 0deg, rgba(255, 226, 170, .34) 17deg, transparent 34deg);
+}
+.faisceau.f2 {
+    left: 50%;
+    background: conic-gradient(from 174deg at 50% 0%, transparent 0deg, rgba(255, 226, 170, .3) 17deg, transparent 34deg);
+    animation-delay: -4s;
+    animation-direction: alternate-reverse;
+}
+.faisceau.f3 {
+    left: 37%;
+    width: 46%;
+    background: conic-gradient(from 163deg at 50% 0%, transparent 0deg, rgba(255, 246, 225, .38) 9deg, transparent 18deg);
+    animation-duration: 14s;
+    animation-delay: -7s;
+}
+@keyframes balayage {
+    from { transform: rotate(-3.5deg); }
+    to { transform: rotate(3.5deg); }
+}
+
+.hero-filigrane {
+    position: absolute;
+    left: 50%;
+    bottom: 3%;
+    transform: translateX(-50%);
+    font-family: var(--police-texte);
+    font-size: clamp(7rem, 24vw, 24rem);
+    font-weight: 800;
+    letter-spacing: -.05em;
+    line-height: .8;
+    white-space: nowrap;
+    color: rgba(246, 239, 230, .05);
+    user-select: none;
+}
+
+.hero-poussiere {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* ---------- Mise en page ---------- */
+.hero-grille {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    align-items: center;
+    gap: 40px;
+    width: min(1180px, 92%);
+    margin-inline: auto;
+}
+
+.hero-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 22px;
+    font-size: .72rem;
+    font-weight: 500;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: #d8bd8c;
+}
+.hero-eyebrow span { width: 42px; height: 1px; background: currentColor; opacity: .7; }
+
+.hero h1 {
+    margin: 0 0 22px;
+    font-family: var(--police-texte);
+    font-size: clamp(3.1rem, 7.2vw, 6.4rem);
+    font-weight: 700;
+    line-height: .98;
+    letter-spacing: -.035em;
+    color: #f8f1e7;
+}
+.hero h1 em {
+    display: block;
+    font-family: var(--police-titre);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -.01em;
+    color: #f0cf94;
+}
+
+.hero-intro {
+    max-width: 470px;
+    margin: 0;
+    font-size: 1.02rem;
+    line-height: 1.65;
+    color: rgba(246, 239, 230, .74);
+}
+
+.hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 24px; margin-top: 32px; }
+.bouton-hero {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 30px;
+    border-radius: 999px;
+    background: #f6efe6;
+    color: #1c140e;
+    font-size: .74rem;
+    font-weight: 600;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
+}
+.bouton-hero:hover { transform: translateY(-2px); background: #fff; box-shadow: 0 12px 32px rgba(255, 214, 150, .28); }
+.lien-hero {
+    padding-bottom: 4px;
+    border-bottom: 1px solid rgba(246, 239, 230, .4);
+    font-size: .76rem;
+    font-weight: 500;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: #f6efe6;
+    transition: color .2s ease, border-color .2s ease;
+}
+.lien-hero:hover { color: #f0cf94; border-color: #f0cf94; }
+
+/* ---------- La bague ---------- */
+.hero-bague {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 440px;
+}
+
+.bague-socle {
+    position: absolute;
+    left: 50%;
+    bottom: 3%;
+    width: 86%;
+    height: 17%;
+    transform: translateX(-50%);
+    background: radial-gradient(ellipse at center, rgba(255, 214, 150, .5), transparent 70%);
+    filter: blur(12px);
+}
+
+.bague {
+    --rx: 0deg;
+    --ry: 0deg;
+    --tx: 0px;
+    --ty: 0px;
+    --lx: 50%;
+    --ly: 36%;
+    --eclat: 0;
+    --diamant-x: 50%;
+    --diamant-y: 27%;
+    position: relative;
+    width: min(74vw, 500px);
+    transform: perspective(900px) translate3d(var(--tx), var(--ty), 0) rotateX(var(--rx)) rotateY(var(--ry));
+    transform-style: preserve-3d;
+    will-change: transform;
+    -webkit-box-reflect: below -4px linear-gradient(to bottom, transparent 66%, rgba(255, 255, 255, .2));
+}
+
+.bague-visuel {
+    position: relative;
+    filter: drop-shadow(0 28px 36px rgba(0, 0, 0, .55)) drop-shadow(0 0 38px rgba(255, 214, 150, .16));
+}
+.bague-visuel img,
+.bague-visuel svg { display: block; width: 100%; height: auto; }
+
+/* Reflet de lumière qui suit le curseur (uniquement sur la photo, limité à la bague par un masque) */
+.bague-reflet {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(circle at var(--lx) var(--ly), rgba(255, 255, 255, .85), rgba(255, 255, 255, 0) 42%);
+    -webkit-mask-image: var(--masque);
+    mask-image: var(--masque);
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    mix-blend-mode: overlay;
+}
+
+/* Éclat du diamant : grandit et brille quand le curseur s'approche */
+.bague-eclat {
+    position: absolute;
+    left: var(--diamant-x);
+    top: var(--diamant-y);
+    width: 64px;
+    height: 64px;
+    margin: -32px 0 0 -32px;
+    pointer-events: none;
+    opacity: calc(.28 + var(--eclat) * .72);
+    transform: scale(calc(.7 + var(--eclat) * .95)) rotate(calc(var(--eclat) * 45deg));
+    background:
+        radial-gradient(circle, #fff 0 7%, transparent 9%),
+        linear-gradient(90deg, transparent 44%, #fff 50%, transparent 56%),
+        linear-gradient(0deg, transparent 44%, #fff 50%, transparent 56%);
+    -webkit-mask-image: radial-gradient(circle, #000 18%, transparent 68%);
+    mask-image: radial-gradient(circle, #000 18%, transparent 68%);
+    filter: drop-shadow(0 0 8px #fff);
+    mix-blend-mode: screen;
+}
+
+/* Les facettes de l'image de remplacement scintillent doucement */
+.bague-visuel .facette { animation: scintille 3.8s ease-in-out infinite; }
+.bague-visuel .facette:nth-child(3n) { animation-delay: -1.3s; }
+.bague-visuel .facette:nth-child(3n + 1) { animation-delay: -2.4s; }
+@keyframes scintille {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .68; }
+}
+
+.bague-indice {
+    position: absolute;
+    left: 50%;
+    bottom: -6px;
+    transform: translateX(-50%);
+    font-size: .66rem;
+    letter-spacing: .24em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: rgba(246, 239, 230, .5);
+}
+.bague-indice .tactile { display: none; }
+@media (hover: none) {
+    .bague-indice .souris { display: none; }
+    .bague-indice .tactile { display: inline; }
+}
+
+/* ---------- Téléphone et tablette ---------- */
+@media (max-width: 1000px) {
+    .hero { padding: 96px 0 118px; align-items: flex-start; }
+    .hero-grille { grid-template-columns: 1fr; gap: 6px; }
+    .hero-bague { order: -1; min-height: 340px; }
+    .bague { width: min(72vw, 360px); }
+    .hero h1 { font-size: clamp(2.9rem, 13vw, 4.6rem); }
+    .hero-intro { font-size: .96rem; }
+}
+@media (max-width: 520px) {
+    .hero-actions { gap: 18px; }
+    .bouton-hero { padding: 15px 26px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .faisceau,
+    .bague-visuel .facette { animation: none; }
+}
