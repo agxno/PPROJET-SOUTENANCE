@@ -182,3 +182,77 @@
         }, 8000);
     });
 })();
+
+/* ==========================================
+   FALLBACK ANIMATIONS SCROLL — Firefox
+   Active les animations au scroll sur les
+   navigateurs qui ne supportent pas
+   animation-timeline: view().
+========================================== */
+(function () {
+    'use strict';
+
+    // Si le navigateur supporte les view timelines, pas besoin du fallback
+    if (CSS.supports && CSS.supports('animation-timeline: view()')) return;
+
+    // Respect de la préférence "réduire les animations"
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const selecteurs = [
+        '.pieces-item',
+        '.nouveautes .grille-produits > *',
+        '.gold-row',
+        '.stories .story-card',
+        '.contact-info',
+        '.section-title'
+    ].join(', ');
+
+    const elements = document.querySelectorAll(selecteurs);
+    if (!elements.length) return;
+
+    const observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-in');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.15,
+        rootMargin: '0px 0px -10% 0px'
+    });
+
+    elements.forEach(function (el) {
+        observer.observe(el);
+    });
+})();
+/* ==========================================
+   NAVBAR — Ajoute .est-scrolled au scroll
+========================================== */
+(function () {
+    'use strict';
+
+    const nav = document.querySelector('.verre-entete');
+    if (!nav) return;
+
+    // Seuil de scroll à partir duquel la nav devient blanche
+    const SCROLL_THRESHOLD = 50;
+
+    let ticking = false;
+
+    const updateNav = () => {
+        const scrolled = window.scrollY > SCROLL_THRESHOLD;
+        nav.classList.toggle('est-scrolled', scrolled);
+        ticking = false;
+    };
+
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            window.requestAnimationFrame(updateNav);
+            ticking = true;
+        }
+    }, { passive: true });
+
+    // État initial
+    updateNav();
+})();

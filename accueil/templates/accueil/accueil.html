@@ -1,190 +1,73 @@
-
 {% extends 'base.html' %}
 {% load static %}
 
 {% block titre %}Accueil - Maison Lumière{% endblock %}
 {% block classe_body %}avec-hero{% endblock %}
 
+{% block css_page %}
+<link rel="stylesheet" href="{% static 'css/hero-slider.css' %}">
+{% endblock %}
+
 {% block contenu %}
 
-<link rel="stylesheet" href="{% static 'css/hero.css' %}">
-<link rel="stylesheet" href="{% static 'css/categories-interactives.css' %}">
+<!-- HERO SLIDER -->
+<section class="hero-slider" id="hero">
+    <canvas class="webgl-canvas"></canvas>
 
-<!-- HERO -->
-<section class="hero" data-hero>
-    <div class="hero-scene" aria-hidden="true">
-        <div class="hero-projecteurs">
-            <span class="faisceau f1"></span>
-            <span class="faisceau f2"></span>
-            <span class="faisceau f3"></span>
-        </div>
-        <span class="hero-filigrane">lumière</span>
-        <canvas class="hero-poussiere" data-poussiere></canvas>
+    <div class="hero-fallback">
+        <img src="{% static 'img/fallback1.jpeg' %}" alt="Maison Lumière">
     </div>
 
-    <div class="hero-grille">
-        <div class="hero-texte">
-            <p class="hero-eyebrow"><span></span>Bijouterie · Côte d'Ivoire</p>
+    <span class="slide-number" id="slideNumber">01</span>
+    <span class="slide-total" id="slideTotal">06</span>
 
-            <h1>L'éclat <em>qui vous ressemble.</em></h1>
-
-            <p class="hero-intro">
-                Des bijoux choisis avec soin pour leur finition et leur élégance,
-                à offrir ou à s'offrir. Commandez en ligne, où que vous soyez,
-                et recevez-les chez vous.
-            </p>
-
-            <div class="hero-actions">
-                <a href="{% url 'produits:liste' %}" class="bouton-hero">
-                    Découvrir la boutique <span aria-hidden="true">&rarr;</span>
-                </a>
-
-                <a href="{% url 'produits:nouveautes' %}" class="lien-hero">
-                    Nos nouveautés <span aria-hidden="true">&rarr;</span>
-                </a>
-            </div>
-        </div>
-
-        <div class="hero-bague" data-scene>
-            <div class="bague-socle" aria-hidden="true"></div>
-
-            <div class="bague" data-bague>
-                <div class="bague-visuel"{% if bague_image %} style="--masque: url('{{ bague_image }}');"{% endif %}>
-                    {% if bague_image %}
-                        <img
-                            src="{{ bague_image }}" 
-                            alt="Bague en or ornée d'un diamant"
-                            decoding="async"
-                            fetchpriority="high"
-                        >
-                        <span class="bague-reflet" aria-hidden="true"></span>
-                    {% else %}
-                        <svg viewBox="0 0 400 440" role="img" aria-label="Bague en or ornée d'un diamant">
-                            <defs>
-                                <linearGradient id="or" x1="0" y1="0" x2="1" y2="1">
-                                    <stop offset="0" stop-color="#fbe9bd"/>
-                                    <stop offset=".35" stop-color="#d9b06a"/>
-                                    <stop offset=".65" stop-color="#8f6a35"/>
-                                    <stop offset="1" stop-color="#f1d79a"/>
-                                </linearGradient>
-                                <linearGradient id="orSombre" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="0" stop-color="#e9c887"/>
-                                    <stop offset="1" stop-color="#7a5a2c"/>
-                                </linearGradient>
-                            </defs>
-
-                            <circle cx="200" cy="272" r="117" fill="none" stroke="url(#or)" stroke-width="26"/>
-                            <circle cx="200" cy="272" r="104" fill="none" stroke="rgba(60,38,12,.35)" stroke-width="2"/>
-                            <path d="M105 192A124 124 0 0 1 168 152" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="3" stroke-linecap="round"/>
-                            <path d="M150 128h100l-12 26h-76z" fill="url(#orSombre)"/>
-                            <rect x="123" y="106" width="10" height="34" rx="5" fill="url(#or)"/>
-                            <rect x="267" y="106" width="10" height="34" rx="5" fill="url(#or)"/>
-
-                            <g stroke="rgba(255,255,255,.8)" stroke-width="1" stroke-linejoin="round">
-                                <polygon points="162,88 238,88 226,102 174,102" fill="#ffffff"/>
-                                <polygon points="162,88 174,102 128,116" fill="#d6e9ff"/>
-                                <polygon points="238,88 226,102 272,116" fill="#ffe0f0"/>
-                                <polygon points="174,102 128,116 164,116" fill="#b6d4fa"/>
-                                <polygon points="174,102 164,116 200,116" fill="#f6fbff"/>
-                                <polygon points="174,102 226,102 200,116" fill="#e4f1ff"/>
-                                <polygon points="226,102 200,116 236,116" fill="#ffffff"/>
-                                <polygon points="226,102 236,116 272,116" fill="#c8def9"/>
-                                <polygon points="128,116 164,116 200,176" fill="#9fc0ec"/>
-                                <polygon points="164,116 200,116 200,176" fill="#e2f0ff"/>
-                                <polygon points="200,116 236,116 200,176" fill="#bcd6f8"/>
-                                <polygon points="236,116 272,116 200,176" fill="#86aadf"/>
-                            </g>
-                        </svg>
-                    {% endif %}
-                </div>
-
-                <span class="bague-eclat" data-eclat aria-hidden="true"></span>
-            </div>
-
-            <p class="bague-indice" aria-hidden="true">
-                <span class="souris">Survolez la bague</span>
-                <span class="tactile">Glissez le doigt sur la bague</span>
-            </p>
-        </div>
+    <div class="slide-content">
+        <h1 class="slide-title" id="mainTitle"></h1>
+        <p class="slide-description" id="mainDesc"></p>
     </div>
+
+    <nav class="slides-navigation" id="slidesNav"></nav>
 </section>
 
-<!-- ANIMATION DU HERO -->
-<script src="{% static 'js/hero.js' %}" defer></script>
 
-
-<!-- CATÉGORIES INTERACTIVES -->
+<!-- CATÉGORIES -->
 {% if categories %}
-<section class="categories-interactives" id="categories-interactives">
-    <div class="ci-conteneur">
+<section class="pieces" id="categories">
+    <div class="pieces-stage">
+        <header class="pieces-head">
+            <h2 class="section-title">
+                <span>Collections</span>
+                <span class="section-title-serif">Quatre univers, une maison.</span>
+            </h2>
+            <p class="pieces-intro">
+                Bagues, colliers, bracelets et boucles d'oreilles : chaque pièce
+                est choisie pour sa finition et sa provenance.
+            </p>
+        </header>
 
-        <div class="ci-entete">
-            <span class="ci-etiquette">L'art du détail</span>
-            <h2>Découvrez nos créations</h2>
-            <p>Des pièces délicates pour révéler votre élégance.</p>
-        </div>
-
-        <div class="ci-composition">
-
-            <!-- MENU DES CATÉGORIES -->
-            <div class="ci-menu" role="group" aria-label="Choisir une catégorie">
-
-                {% for categorie in categories %}
-                <button
-                    type="button"
-                    class="ci-categorie{% if forloop.first %} ci-active{% endif %}"
-                    data-ci-index="{{ forloop.counter0 }}"
-                    aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"
-                >
-                    <span class="ci-numero">0{{ forloop.counter }}</span>
-                    <span class="ci-nom">{{ categorie.nom }}</span>
-                    <span class="ci-fleche" aria-hidden="true">↗</span>
-                </button>
-                {% endfor %}
-
-            </div>
-
-            <!-- PHOTOS DES CATÉGORIES -->
-            <div class="ci-visuel" aria-live="polite">
-
-                {% for categorie in categories %}
-                <div
-                    class="ci-image{% if forloop.first %} ci-image-active{% endif %}"
-                    data-ci-image="{{ forloop.counter0 }}"
-                    aria-hidden="{% if forloop.first %}false{% else %}true{% endif %}"
-                >
-                    {% if categorie.image %}
-                        <img
-                            src="{{ categorie.image.url }}"
-                            alt="{{ categorie.nom }}"
-                            {% if not forloop.first %}loading="lazy"{% endif %}
-                        >
-                    {% else %}
-                        <div class="ci-placeholder">
-                            <span>{{ categorie.nom }}</span>
-                        </div>
-                    {% endif %}
-
-                    <div class="ci-image-legende">
-                        <span>Maison Lumière</span>
-                        <span>{{ categorie.nom }}</span>
-
-                        <a href="{% url 'produits:liste' %}?categorie={{ categorie.slug }}">
-                            Découvrir cette catégorie ↗
-                        </a>
+        <ul class="pieces-track">
+            {% for categorie in categories %}
+            <li class="pieces-item">
+                <a href="{% url 'produits:liste' %}?categorie={{ categorie.slug }}" class="pieces-link">
+                    <figure class="pieces-frame">
+                        {% if categorie.image %}
+                            <img src="{{ categorie.image.url }}"
+                                 alt="{{ categorie.nom }}"
+                                 loading="lazy">
+                        {% else %}
+                            <div class="pieces-placeholder">
+                                <span>{{ categorie.nom }}</span>
+                            </div>
+                        {% endif %}
+                    </figure>
+                    <div class="pieces-text">
+                        <h3>{{ categorie.nom }}</h3>
+                        <p>{{ categorie.produits.count }} pièce{{ categorie.produits.count|pluralize }}</p>
                     </div>
-                </div>
-                {% endfor %}
-
-            </div>
-
-        </div>
-
-        <div class="ci-bas">
-            <span>Une élégance qui traverse le temps</span>
-            <span>Explorez notre univers ↗</span>
-        </div>
-
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
     </div>
 </section>
 {% endif %}
@@ -192,72 +75,85 @@
 
 <!-- NOUVEAUTÉS -->
 {% if nouveautes %}
-<section class="section">
-    <div class="conteneur">
-
-        <div class="section-titre">
-            <span class="etiquette">Dernières créations</span>
-            <h2>Nouveautés</h2>
-        </div>
+<section class="nouveautes" id="nouveautes">
+    <div class="nouveautes-inner">
+        <header class="nouveautes-head">
+            <h2 class="section-title">
+                <span>Nouvelles pièces</span>
+                <span class="section-title-serif">Arrivées à l'atelier.</span>
+            </h2>
+            <div>
+                <p class="nouveautes-intro">
+                    Les dernières créations disponibles en boutique.
+                    Chaque pièce est unique ou produite en petite série.
+                </p>
+                <a href="{% url 'produits:nouveautes' %}" class="nouveautes-link">
+                    Voir toutes les nouveautés →
+                </a>
+            </div>
+        </header>
 
         <div class="grille-produits">
             {% for produit in nouveautes %}
                 {% include 'produits/_carte.html' %}
             {% endfor %}
         </div>
-
-        <p style="text-align:center; margin-top:40px;">
-            <a href="{% url 'produits:nouveautes' %}" class="bouton bouton-contour">
-                Voir toutes les nouveautés
-            </a>
-        </p>
-
     </div>
 </section>
 {% endif %}
 
 
 <!-- ENGAGEMENTS -->
-<section class="section bande">
-    <div class="conteneur">
-        <div class="valeurs">
-
-            <div class="valeur">
-                <div class="valeur-icone">
-                    <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M1 6h13v10H1z"/>
-                        <path d="M14 9h4l3 3v4h-7z"/>
-                        <circle cx="6" cy="18" r="2"/>
-                        <circle cx="17" cy="18" r="2"/>
-                    </svg>
-                </div>
-                <h3>Livraison rapide</h3>
-                <p>Recevez vos commandes à domicile, suivies de A à Z.</p>
-            </div>
-
-            <div class="valeur">
-                <div class="valeur-icone">
-                    <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true">
-                        <rect x="5" y="11" width="14" height="10" rx="2"/>
-                        <path d="M8 11V7a4 4 0 0 1 8 0v4"/>
-                    </svg>
-                </div>
-                <h3>Paiement sécurisé</h3>
-                <p>Réglez par carte bancaire ou mobile money en toute confiance.</p>
-            </div>
-
-            <div class="valeur">
-                <div class="valeur-icone">
-                    <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/>
-                    </svg>
-                </div>
-                <h3>Service client</h3>
-                <p>Une équipe à votre écoute pour répondre à vos questions.</p>
-            </div>
-
-        </div>
+<section class="gold" id="engagements">
+    <div class="gold-intro">
+        <h2 class="section-title">
+            <span>Nos engagements</span>
+            <span class="section-title-serif">Ce que nous garantissons.</span>
+        </h2>
+        <p class="gold-lead">
+            Chaque commande est suivie, chaque pièce est vérifiée avant l'envoi.
+            Voici ce à quoi vous vous engagez en commandant chez nous.
+        </p>
     </div>
+    <ul class="gold-list">
+        <li class="gold-row">
+            <div class="gold-orb" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+                    <path d="M1 6h13v10H1z"/>
+                    <path d="M14 9h4l3 3v4h-7z"/>
+                    <circle cx="6" cy="18" r="2"/>
+                    <circle cx="17" cy="18" r="2"/>
+                </svg>
+            </div>
+            <div class="gold-pill">
+                <h3>Livraison suivie</h3>
+                <p>Chaque commande est expédiée avec un numéro de suivi. Livraison à domicile ou en point relais.</p>
+            </div>
+        </li>
+        <li class="gold-row">
+            <div class="gold-orb" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+                    <rect x="5" y="11" width="14" height="10" rx="2"/>
+                    <path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+                </svg>
+            </div>
+            <div class="gold-pill">
+                <h3>Paiement sécurisé</h3>
+                <p>Carte bancaire ou mobile money. Transactions chiffrées, aucune donnée conservée.</p>
+            </div>
+        </li>
+        <li class="gold-row">
+            <div class="gold-orb" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+                    <path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/>
+                </svg>
+            </div>
+            <div class="gold-pill">
+                <h3>Service après-vente</h3>
+                <p>Une équipe joignable par téléphone et par e-mail, du lundi au samedi.</p>
+            </div>
+        </li>
+    </ul>
 </section>
 
 
@@ -265,39 +161,73 @@
 {% include 'avis/_temoignages.html' %}
 
 
-<!-- À PROPOS -->
-<section class="section">
-    <div class="conteneur histoire">
-        <span class="etiquette">À propos</span>
-        <h2>Une maison, un savoir-faire</h2>
-        <p>
-            Chaque pièce est choisie avec soin pour sa qualité et son élégance.
-            Notre ambition : vous offrir des bijoux qui accompagnent vos plus beaux moments.
-        </p>
-        <a href="{% url 'accueil:a_propos' %}" class="bouton bouton-contour">
-            En savoir plus
-        </a>
+<!-- HISTOIRE -->
+<section class="stories" id="histoire">
+    <div class="stories-inner">
+        <div class="story-card">
+            <div class="story-text">
+                <h2 class="section-title">
+                    <span>Notre maison</span>
+                    <span class="section-title-serif">Un savoir-faire, une exigence.</span>
+                </h2>
+                <p>
+                    Maison Lumière sélectionne et façonne des bijoux destinés à durer.
+                    Chaque pierre est choisie pour sa qualité, chaque monture pour sa solidité.
+                    Nous ne vendons pas de tendances : nous vendons des pièces.
+                </p>
+                <a href="{% url 'accueil:a_propos' %}" class="btn-luxe" style="margin-top: 24px;">
+                    En savoir plus <span aria-hidden="true">→</span>
+                </a>
+            </div>
+        </div>
     </div>
 </section>
 
 
-<!-- CONTACT -->
-<section class="section appel">
-    <div class="conteneur">
-        <span class="etiquette">Service client</span>
-        <h2>Une question ?</h2>
-        <p>Notre équipe vous répond rapidement.</p>
-        <a href="{% url 'accueil:contact' %}" class="bouton">
-            Nous contacter
-        </a>
+<!-- CONTACT / SERVICE CLIENT -->
+<section class="contact" id="contact-accueil">
+    <div class="contact-inner">
+        <div class="contact-info">
+            <p class="contact-etiquette">
+                <span></span>Service client
+            </p>
+            <h2 class="contact-titre">
+                Une question ?
+                <em>Nous vous répondons.</em>
+            </h2>
+            <p class="contact-lead">
+                Notre équipe est disponible du lundi au samedi, de 9h à 18h.
+                Nous répondons aux e-mails sous 24 heures ouvrées.
+            </p>
+            <ul class="contact-facts">
+                <li>
+                    <strong>Téléphone</strong>
+                    <a href="tel:+33100000000">01 00 00 00 00</a>
+                </li>
+                <li>
+                    <strong>E-mail</strong>
+                    <a href="mailto:contact@maison-lumiere.fr">contact@maison-lumiere.fr</a>
+                </li>
+                <li>
+                    <strong>Adresse</strong>
+                    <span>12 rue de la Paix, 75002 Paris</span>
+                </li>
+            </ul>
+            <div class="contact-actions">
+                <a href="{% url 'accueil:contact' %}" class="contact-bouton">
+                    Écrire à l'équipe <span aria-hidden="true">→</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="contact-visuel">
+            <div class="contact-image">
+                <img src="{% static 'img/fallback2.jpeg' %}" alt="Atelier Maison Lumière">
+            </div>
+            <span class="contact-decor contact-decor--1" aria-hidden="true"></span>
+            <span class="contact-decor contact-decor--2" aria-hidden="true"></span>
+        </div>
     </div>
 </section>
-
-
-<!-- GSAP : chargé uniquement sur cette page -->
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
-
-<!-- JAVASCRIPT DES CATÉGORIES -->
-<script src="{% static 'js/categories-interactives.js' %}"></script>
 
 {% endblock %}

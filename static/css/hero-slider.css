@@ -1,0 +1,272 @@
+/* ==========================================
+   HERO SLIDER — Effet glass Three.js
+   Hauteur : 100vh - nav (pas de chevauchement)
+========================================== */
+
+.hero-slider {
+    position: relative;
+    width: 100%;
+    /* Hauteur totale - hauteur de la nav */
+    height: 100vh;
+    height: 100svh;
+    min-height: 500px;
+    background: var(--noir, #171717);
+    overflow: hidden;
+    color: var(--blanc, #FFFFFF);
+}
+
+/* Canvas WebGL en fond */
+.hero-slider canvas.webgl-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    z-index: 0;
+}
+
+/* Overlay dégradé pour lisibilité */
+.hero-slider::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+        linear-gradient(to bottom, rgba(23, 23, 23, 0.35) 0%, transparent 30%),
+        linear-gradient(to top, rgba(23, 23, 23, 0.8) 0%, transparent 55%);
+    pointer-events: none;
+}
+
+/* ─── Numérotation slide (01 / 06) ─── */
+.hero-slider .slide-number,
+.hero-slider .slide-total {
+    position: absolute;
+    z-index: 2;
+    font-family: var(--sans, 'Montserrat', sans-serif);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    color: var(--blanc, #FFFFFF);
+    opacity: 0.75;
+}
+
+.hero-slider .slide-number {
+    bottom: 40px;
+    left: 40px;
+}
+
+.hero-slider .slide-total {
+    bottom: 40px;
+    left: 90px;
+    opacity: 0.4;
+}
+
+.hero-slider .slide-total::before {
+    content: "/ ";
+}
+
+/* ─── Contenu texte ─── */
+.hero-slider .slide-content {
+    position: absolute;
+    bottom: 100px;
+    left: 40px;
+    z-index: 2;
+    max-width: 600px;
+}
+
+.hero-slider .slide-title {
+    font-family: var(--serif, 'Playfair Display', serif);
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin: 0 0 20px;
+    color: var(--blanc, #FFFFFF);
+    display: block;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+}
+
+.hero-slider .slide-title span {
+    display: inline-block;
+    will-change: transform, opacity;
+}
+
+.hero-slider .slide-description {
+    font-family: var(--sans, 'Montserrat', sans-serif);
+    font-size: clamp(14px, 1.1vw, 16px);
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0;
+    max-width: 46ch;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* ─── Navigation slides (bas droite) ─── */
+.hero-slider .slides-navigation {
+    position: absolute;
+    right: 40px;
+    bottom: 40px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-end;
+    max-width: 300px;
+}
+
+.hero-slider .slide-nav-item {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+    user-select: none;
+}
+
+.hero-slider .slide-nav-item:hover,
+.hero-slider .slide-nav-item.active {
+    opacity: 1;
+}
+
+.hero-slider .slide-progress-line {
+    width: 80px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.2);
+    overflow: hidden;
+    position: relative;
+}
+
+.hero-slider .slide-progress-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0%;
+    background: var(--or-champagne, #C6A15B);
+    transition: width 0.1s linear, opacity 0.3s ease;
+}
+
+.hero-slider .slide-nav-title {
+    font-family: var(--sans, 'Montserrat', sans-serif);
+    font-size: 0.625rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--blanc, #FFFFFF);
+}
+
+/* ─── Fallback ─── */
+.hero-slider .hero-fallback {
+    position: absolute;
+    inset: 0;
+    background: var(--noir, #171717);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+
+.hero-slider .hero-fallback img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.hero-slider.no-webgl .hero-fallback {
+    display: flex;
+}
+
+.hero-slider.no-webgl canvas.webgl-canvas {
+    display: none;
+}
+
+.hero-slider.no-webgl .slides-navigation {
+    display: none;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 1024px) {
+    .hero-slider .slide-content {
+        bottom: 120px;
+        max-width: 500px;
+    }
+    .hero-slider .slide-title {
+        font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-slider {
+        height: calc(100svh - var(--header-height, 70px));
+        min-height: 500px;
+    }
+
+    .hero-slider .slide-content {
+        bottom: 120px;
+        left: 24px;
+        right: 24px;
+        max-width: none;
+    }
+
+    .hero-slider .slide-title {
+        font-size: clamp(2rem, 9vw, 2.8rem);
+        margin-bottom: 14px;
+    }
+
+    .hero-slider .slide-description {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .hero-slider .slide-number {
+        bottom: 24px;
+        left: 24px;
+    }
+
+    .hero-slider .slide-total {
+        bottom: 24px;
+        left: 74px;
+    }
+
+    .hero-slider .slides-navigation {
+        right: 24px;
+        bottom: 24px;
+        flex-direction: row;
+        gap: 10px;
+    }
+
+    .hero-slider .slide-progress-line {
+        width: 30px;
+    }
+
+    .hero-slider .slide-nav-title {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-slider .slide-title {
+        font-size: clamp(1.8rem, 8.5vw, 2.4rem);
+    }
+
+    .hero-slider .slide-description {
+        font-size: 13px;
+    }
+
+    .hero-slider .slide-content {
+        bottom: 100px;
+    }
+}
+
+/* ─── Accessibilité ─── */
+@media (prefers-reduced-motion: reduce) {
+    .hero-slider .slide-title span {
+        transition: none !important;
+    }
+    .hero-slider .slide-progress-fill {
+        transition: none !important;
+    }
+}
