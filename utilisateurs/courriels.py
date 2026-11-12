@@ -5,13 +5,14 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 
 from .jetons import jeton_activation
+from .liens import adresse_absolue
 
 
 def envoyer_mail_activation(request, utilisateur):
     uid = urlsafe_base64_encode(force_bytes(utilisateur.pk))
     jeton = jeton_activation.make_token(utilisateur)
-    lien = request.build_absolute_uri(
-        reverse('utilisateurs:activation', kwargs={'uidb64': uid, 'token': jeton})
+    lien = adresse_absolue(
+        request, reverse('utilisateurs:activation', kwargs={'uidb64': uid, 'token': jeton})
     )
     sujet = render_to_string('utilisateurs/emails/sujet_activation.txt').strip()
     message = render_to_string('utilisateurs/emails/activation.txt', {

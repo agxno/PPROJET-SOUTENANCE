@@ -1,67 +1,196 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block titre %}Mon panier - Maison Lumière{% endblock %}
+{% block classe_body %}page-panier{% endblock %}
+
+{% block css_page %}
+<link rel="stylesheet" href="{% static 'css/panier.css' %}">
+{% endblock %}
 
 {% block contenu %}
-<div class="conteneur">
-    <p class="fil"><a href="{% url 'accueil:accueil' %}">Accueil</a> / Panier</p>
-    <h1 class="titre-page">Mon panier</h1>
 
-    {% if lignes %}
+<section class="panier-page">
+    <div class="panier-inner">
+
+        {# Fil d'Ariane #}
+        <nav class="panier-fil" aria-label="Fil d'Ariane">
+            <a href="{% url 'accueil:accueil' %}">Accueil</a>
+            <span aria-hidden="true">/</span>
+            <span class="panier-fil-actuel">Panier</span>
+        </nav>
+
+        {# En-tête #}
+        <header class="panier-head">
+            <span class="panier-eyebrow">Votre sélection</span>
+            <h1 class="panier-titre">
+                Votre <em>panier.</em>
+            </h1>
+            {% if lignes %}
+            <p class="panier-sous-titre">
+                {{ quantite_totale }} article{{ quantite_totale|pluralize }} dans votre sélection
+            </p>
+            {% endif %}
+        </header>
+
         {% if probleme_stock %}
-            <p class="alerte">Certains articles dépassent le stock disponible. Ajustez les quantités ou retirez-les pour continuer.</p>
+        <div class="panier-alerte" role="alert">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M12 2L2 22h20L12 2z"/>
+                <path d="M12 9v5"/>
+                <path d="M12 18v.01"/>
+            </svg>
+            <span>Certains articles dépassent le stock disponible. Ajustez les quantités ou retirez-les pour continuer.</span>
+        </div>
         {% endif %}
-        <div class="panier">
+
+        {% if lignes %}
+        <div class="panier-layout">
+
+            {# Colonne articles #}
             <div class="panier-lignes">
                 {% for ligne in lignes %}
-                <article class="ligne">
-                    <a href="{{ ligne.produit.get_absolute_url }}" class="ligne-visuel">
+                <article class="panier-ligne">
+
+                    {# Image #}
+                    <a href="{{ ligne.produit.get_absolute_url }}" class="panier-ligne-image">
                         {% if ligne.produit.image %}
-                            <img src="{{ ligne.produit.image.url }}" alt="{{ ligne.produit.nom }}" loading="lazy">
+                        <img src="{{ ligne.produit.image.url }}" alt="{{ ligne.produit.nom }}" loading="lazy">
                         {% else %}
-                            <span>Photo</span>
+                        <span>Photo</span>
                         {% endif %}
                     </a>
-                    <div class="ligne-infos">
-                        <h3><a href="{{ ligne.produit.get_absolute_url }}">{{ ligne.produit.nom }}</a></h3>
-                        <p class="prix">{{ ligne.produit.prix_actuel|floatformat:"0g" }} FCFA</p>
+
+                    {# Infos #}
+                    <div class="panier-ligne-infos">
+                        <p class="panier-ligne-categorie">{{ ligne.produit.categorie.nom }}</p>
+                        <h3 class="panier-ligne-nom">
+                            <a href="{{ ligne.produit.get_absolute_url }}">{{ ligne.produit.nom }}</a>
+                        </h3>
+                        <p class="panier-ligne-ref">Réf. {{ ligne.produit.reference }}</p>
+
                         {% if ligne.produit.en_rupture %}
-                            <p class="stock stock-rupture">Épuisé</p>
+                        <p class="panier-ligne-stock panier-ligne-stock--rupture">Épuisé</p>
                         {% elif not ligne.disponible %}
-                            <p class="stock stock-faible">Stock disponible : {{ ligne.produit.stock }}</p>
+                        <p class="panier-ligne-stock panier-ligne-stock--faible">
+                            Plus que {{ ligne.produit.stock }} en stock
+                        </p>
                         {% endif %}
-                        <div class="ligne-actions">
-                            <form method="post" action="{% url 'panier:modifier' ligne.pk %}" class="quantite-form">
+
+                        {# Contrôles quantité + retirer #}
+                        <div class="panier-ligne-actions">
+                            <form method="post" action="{% url 'panier:modifier' ligne.pk %}" class="panier-quantite-form">
                                 {% csrf_token %}
-                                <input type="number" name="quantite" value="{{ ligne.quantite }}" min="0" max="{{ ligne.produit.stock }}" aria-label="Quantité">
-                                <button type="submit" class="lien-souligne">Mettre à jour</button>
+                                <div class="panier-quantite">
+                                    <button type="submit" name="quantite" value="{{ ligne.quantite|add:'-1' }}" class="panier-quantite-btn" aria-label="Diminuer">−</button>
+                                    <input type="number"
+                                           name="quantite"
+                                           value="{{ ligne.quantite }}"
+                                           min="0"
+                                           max="{{ ligne.produit.stock }}"
+                                           class="panier-quantite-input"
+                                           onchange="this.form.submit()">
+                                    <button type="submit" name="quantite" value="{{ ligne.quantite|add:'1' }}" class="panier-quantite-btn" aria-label="Augmenter">+</button>
+                                </div>
                             </form>
-                            <form method="post" action="{% url 'panier:retirer' ligne.pk %}">
+
+                            <form method="post" action="{% url 'panier:retirer' ligne.pk %}" class="panier-ligne-retirer">
                                 {% csrf_token %}
-                                <button type="submit" class="lien-souligne danger">Retirer</button>
+                                <button type="submit" class="panier-retirer-btn" aria-label="Retirer du panier">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                                        <path d="M3 6h18"/>
+                                        <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                                        <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                                    </svg>
+                                    Retirer
+                                </button>
                             </form>
                         </div>
                     </div>
-                    <p class="ligne-total">{{ ligne.sous_total|floatformat:"0g" }} FCFA</p>
+
+                    {# Prix #}
+                    <div class="panier-ligne-prix-col">
+                        <p class="panier-ligne-prix-unitaire">{{ ligne.produit.prix_actuel|floatformat:0 }} FCFA</p>
+                        <p class="panier-ligne-sous-total">{{ ligne.sous_total|floatformat:0 }} FCFA</p>
+                    </div>
                 </article>
                 {% endfor %}
+
+                <a href="{% url 'produits:liste' %}" class="panier-continuer">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                    Continuer mes achats
+                </a>
             </div>
 
+            {# Colonne récapitulatif #}
             <aside class="panier-resume">
-                <span class="etiquette">Récapitulatif</span>
-                <p class="resume-ligne"><span>Articles</span><span>{{ quantite_totale }}</span></p>
-                <p class="resume-ligne resume-total"><span>Total</span><span>{{ total|floatformat:"0g" }} FCFA</span></p>
+                <h2 class="panier-resume-titre">Récapitulatif</h2>
+
+                <div class="panier-resume-ligne">
+                    <span>Sous-total ({{ quantite_totale }} article{{ quantite_totale|pluralize }})</span>
+                    <span>{{ total|floatformat:0 }} FCFA</span>
+                </div>
+
+                <div class="panier-resume-ligne">
+                    <span>Livraison</span>
+                    <span class="panier-resume-gratuit">Offerte</span>
+                </div>
+
+                <div class="panier-resume-ligne panier-resume-total">
+                    <span>Total</span>
+                    <span>{{ total|floatformat:0 }} FCFA</span>
+                </div>
+
                 {% if probleme_stock %}
-                    <button type="button" class="bouton bouton-plein" disabled>Passer la commande</button>
+                <button type="button" class="panier-btn panier-btn--disabled" disabled>
+                    Vérifiez votre panier
+                </button>
                 {% else %}
-                    <a href="{% url 'commandes:valider' %}" class="bouton bouton-plein">Passer la commande</a>
+                <a href="{% url 'commandes:valider' %}" class="panier-btn panier-btn--principal">
+                    Passer la commande
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
                 {% endif %}
-                <a href="{% url 'produits:liste' %}" class="lien-continuer">Continuer mes achats</a>
+
+                <ul class="panier-avantages">
+                    <li>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                        Paiement sécurisé
+                    </li>
+                    <li>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                        Livraison suivie
+                    </li>
+                    <li>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                        Retours gratuits 30 jours
+                    </li>
+                </ul>
             </aside>
         </div>
-    {% else %}
-        <p class="vide">Votre panier est vide.</p>
-        <p style="text-align:center;"><a href="{% url 'produits:liste' %}" class="bouton">Découvrir la boutique</a></p>
-    {% endif %}
-</div>
+
+        {% else %}
+        {# Panier vide #}
+        <div class="panier-vide">
+            <div class="panier-vide-icone">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+                    <circle cx="9" cy="20" r="1.4"/>
+                    <circle cx="18" cy="20" r="1.4"/>
+                    <path d="M2 3h3l2.6 12.4a1 1 0 0 0 1 .8h8.8a1 1 0 0 0 1-.8L20 8H6"/>
+                </svg>
+            </div>
+            <h2 class="panier-vide-titre">Votre panier est vide</h2>
+            <p class="panier-vide-texte">
+                Découvrez nos créations et trouvez la pièce qui vous ressemble.
+            </p>
+            <a href="{% url 'produits:liste' %}" class="panier-btn panier-btn--principal">
+                Découvrir la boutique
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+        </div>
+        {% endif %}
+
+    </div>
+</section>
+
 {% endblock %}

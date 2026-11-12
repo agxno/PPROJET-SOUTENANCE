@@ -3,7 +3,7 @@ from django.urls import path, reverse_lazy
 from django.views.generic import TemplateView
 
 from . import views
-from .connexion import ConnexionView
+from .connexion import ConnexionView, ReinitialisationView
 from .forms import ConnexionForm
 
 app_name = 'utilisateurs'
@@ -23,7 +23,7 @@ urlpatterns = [
     path('activation/renvoyer/', views.renvoyer_activation, name='renvoyer_activation'),
     path('activation/<uidb64>/<token>/', views.activation, name='activation'),
 
-    path('mot-de-passe-oublie/', auth_views.PasswordResetView.as_view(
+    path('mot-de-passe-oublie/', ReinitialisationView.as_view(
         template_name='utilisateurs/mot_de_passe_oublie.html',
         email_template_name='utilisateurs/emails/reinitialisation.txt',
         subject_template_name='utilisateurs/emails/sujet_reinitialisation.txt',

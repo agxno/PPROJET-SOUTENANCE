@@ -2,48 +2,168 @@
 {% load static %}
 
 {% block titre %}Paiement - Maison Lumière{% endblock %}
+{% block classe_body %}page-paiement{% endblock %}
+
+{% block css_page %}
+<link rel="stylesheet" href="{% static 'css/paiements.css' %}">
+{% endblock %}
 
 {% block contenu %}
-<link rel="stylesheet" href="{% static 'css/commandes.css' %}">
-<link rel="stylesheet" href="{% static 'css/paiements.css' %}">
-<div class="conteneur">
-    <p class="fil">
-        <a href="{% url 'accueil:accueil' %}">Accueil</a> /
-        <a href="{% url 'commandes:liste' %}">Mes commandes</a> / Paiement
-    </p>
-    <h1 class="titre-page">Paiement</h1>
-    <p class="intro-page">Commande {{ commande.reference }}</p>
 
-    {% if not configure %}
-        <p class="alerte">Le paiement en ligne n'est pas disponible pour le moment.</p>
-        <p class="alerte" style="font-size:0.9em; opacity:0.85; margin-top:0.5rem;">
-            <strong>Diagnostic :</strong><br>
-            SITE_URL = {{ debug_site_url }}<br>
-            Clé API configurée = {{ debug_has_api_key }}<br>
-            Mot de passe configuré = {{ debug_has_api_password }}
-        </p>
-    {% elif mode_test %}
-        <p class="alerte">Mode démonstration : les paiements sont fictifs, aucun argent réel n'est prélevé.</p>
-    {% endif %}
+<section class="paiement-page">
+    <div class="paiement-inner">
 
-    <form method="post" class="panier">
-        {% csrf_token %}
-        <div>
-            <span class="etiquette">Paiement sécurisé</span>
-            <h2 class="sous-titre">Mobile money ou carte</h2>
-            <p class="note-securite" style="margin-top:0;">
-                Vous allez être redirigé vers la page de paiement sécurisée de notre prestataire
-                (CinetPay), où vous choisirez votre moyen de paiement : Orange Money, MTN MoMo,
-                Moov Money, Wave... Vos informations bancaires ne passent jamais par ce site.
+        {# Fil d'Ariane #}
+        <nav class="paiement-fil" aria-label="Fil d'Ariane">
+            <a href="{% url 'accueil:accueil' %}">Accueil</a>
+            <span aria-hidden="true">/</span>
+            <a href="{% url 'commandes:liste' %}">Mes commandes</a>
+            <span aria-hidden="true">/</span>
+            <span class="paiement-fil-actuel">Paiement</span>
+        </nav>
+
+        {# En-tête #}
+        <header class="paiement-head">
+            <span class="paiement-eyebrow">Dernière étape</span>
+            <h1 class="paiement-titre">
+                Paiement <em>sécurisé.</em>
+            </h1>
+            <p class="paiement-sous-titre">
+                Commande <strong>{{ commande.reference }}</strong>
             </p>
-        </div>
+        </header>
 
-        <aside class="panier-resume">
-            <span class="etiquette">À payer</span>
-            <p class="resume-ligne resume-total"><span>Total</span><span>{{ commande.total|floatformat:"0g" }} FCFA</span></p>
-            <button type="submit" class="bouton bouton-plein"{% if not configure %} disabled{% endif %}>Payer</button>
-            <a href="{% url 'commandes:detail' commande.reference %}" class="lien-continuer">Payer plus tard</a>
-        </aside>
-    </form>
-</div>
+        {# Alerte config #}
+        {% if not configure %}
+        <div class="paiement-alerte" role="alert">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2L2 22h20L12 2z"/><path d="M12 9v5"/><path d="M12 18v.01"/></svg>
+            <div>
+                <p>Le paiement en ligne n'est pas disponible pour le moment.</p>
+                <details class="paiement-debug">
+                    <summary>Détails techniques</summary>
+                    <p>SITE_URL = {{ debug_site_url }}</p>
+                    <p>Clé API configurée = {{ debug_has_api_key }}</p>
+                    <p>Mot de passe configuré = {{ debug_has_api_password }}</p>
+                </details>
+            </div>
+        </div>
+        {% endif %}
+
+        {# Alerte mode test #}
+        {% if mode_test %}
+        <div class="paiement-info" role="status">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+            <span>Mode démonstration : les paiements sont fictifs, aucun argent réel n'est prélevé.</span>
+        </div>
+        {% endif %}
+
+        {# Layout 2 colonnes #}
+        <form method="post" class="paiement-layout">
+            {% csrf_token %}
+
+            {# Colonne gauche : moyens de paiement #}
+            <div class="paiement-form">
+
+                <section class="paiement-section">
+                    <h2 class="paiement-section-titre">
+                        <span class="paiement-section-num">01</span>
+                        Moyens de paiement acceptés
+                    </h2>
+
+                    <div class="paiement-moyens">
+                        <div class="paiement-moyen">
+                            <div class="paiement-moyen-logo">📱</div>
+                            <div class="paiement-moyen-texte">
+                                <p class="paiement-moyen-titre">Mobile Money</p>
+                                <p class="paiement-moyen-desc">Orange Money, MTN MoMo, Moov Money, Wave</p>
+                            </div>
+                        </div>
+                        <div class="paiement-moyen">
+                            <div class="paiement-moyen-logo">💳</div>
+                            <div class="paiement-moyen-texte">
+                                <p class="paiement-moyen-titre">Carte bancaire</p>
+                                <p class="paiement-moyen-desc">Visa, Mastercard</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="paiement-section paiement-section--securite">
+                    <h2 class="paiement-section-titre">
+                        <span class="paiement-section-num">02</span>
+                        Paiement 100 % sécurisé
+                    </h2>
+                    <p class="paiement-texte">
+                        Vous allez être redirigé vers la page de paiement sécurisée de notre
+                        prestataire <strong>CinetPay</strong>, où vous choisirez votre moyen
+                        de paiement. Vos informations bancaires ne passent jamais par ce site.
+                    </p>
+
+                    <ul class="paiement-garanties">
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l8 3v6c0 4.5-3.2 8.2-8 9-4.8-.8-8-4.5-8-9V6z"/></svg>
+                            <div>
+                                <strong>Transaction chiffrée</strong>
+                                <span>SSL/TLS de bout en bout</span>
+                            </div>
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                            <div>
+                                <strong>Prestataire agréé</strong>
+                                <span>Conforme PCI-DSS</span>
+                            </div>
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                            <div>
+                                <strong>Confirmation immédiate</strong>
+                                <span>Vous recevez un e-mail</span>
+                            </div>
+                        </li>
+                    </ul>
+                </section>
+
+            </div>
+
+            {# Colonne droite : récap #}
+            <aside class="paiement-resume">
+                <h2 class="paiement-resume-titre">À payer</h2>
+
+                <div class="paiement-recap-ligne">
+                    <span>Commande</span>
+                    <span class="paiement-recap-ref">{{ commande.reference }}</span>
+                </div>
+
+                <div class="paiement-recap-ligne">
+                    <span>Livraison</span>
+                    <span class="paiement-recap-gratuit">Offerte</span>
+                </div>
+
+                <div class="paiement-recap-ligne paiement-recap-total">
+                    <span>Total</span>
+                    <span>{{ commande.total|floatformat:0 }} FCFA</span>
+                </div>
+
+                <button type="submit" class="paiement-btn paiement-btn--principal"{% if not configure %} disabled{% endif %}>
+                    Payer {{ commande.total|floatformat:0 }} FCFA
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </button>
+
+                <a href="{% url 'commandes:detail' commande.reference %}" class="paiement-retour">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                    Payer plus tard
+                </a>
+
+                <ul class="paiement-avantages">
+                    <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Paiement sécurisé</li>
+                    <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Livraison suivie</li>
+                    <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Retours 30 jours</li>
+                </ul>
+            </aside>
+        </form>
+
+    </div>
+</section>
+
 {% endblock %}

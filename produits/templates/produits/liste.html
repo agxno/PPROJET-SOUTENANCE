@@ -1,55 +1,289 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block titre %}{{ titre }} - Maison Lumière{% endblock %}
+{% block classe_body %}page-boutique page-{{ page_type|default:'boutique' }}{% endblock %}
+
+{% block css_page %}
+<link rel="stylesheet" href="{% static 'css/boutique.css' %}">
+{% endblock %}
 
 {% block contenu %}
-<div class="conteneur">
-    <p class="fil"><a href="{% url 'accueil:accueil' %}">Accueil</a> / {{ titre }}</p>
-    <h1 class="titre-page">{{ titre }}</h1>
-    <p class="intro-page">{{ intro }}</p>
 
-    {% if recherche %}
-    <form method="get" class="recherche" id="recherche">
-        {% if categorie_active %}<input type="hidden" name="categorie" value="{{ categorie_active.slug }}">{% endif %}
-        <input type="search" name="q" value="{{ q }}" placeholder="Rechercher un bijou">
-        <button type="submit" class="bouton">Rechercher</button>
-    </form>
-    {% endif %}
+{# En-tête commun #}
+<header class="catalogue-head catalogue-head--{{ page_type|default:'boutique' }}">
+    <span class="catalogue-eyebrow">{{ titre }}</span>
+    <h1 class="catalogue-titre">
+        {% if page_type == 'nouveautes' %}
+            Fraîchement sorties <em>de l'atelier.</em>
+        {% elif page_type == 'promotions' %}
+            Nos plus belles <em>remises.</em>
+        {% else %}
+            Toutes nos <em>pièces.</em>
+        {% endif %}
+    </h1>
+    <p class="catalogue-intro">{{ intro }}</p>
+</header>
 
-    <div class="filtres">
-        <a href="?{% if q %}q={{ q|urlencode }}{% endif %}" class="filtre{% if not categorie_active %} actif{% endif %}">Tout</a>
-        {% for categorie in categories %}
-            <a href="?categorie={{ categorie.slug }}{% if q %}&amp;q={{ q|urlencode }}{% endif %}"
-               class="filtre{% if categorie_active == categorie %} actif{% endif %}">{{ categorie.nom }}</a>
-        {% endfor %}
+
+{# ═══════════════════════════════════════════ #}
+{# PAGE BOUTIQUE — Grille + filtres            #}
+{# ═══════════════════════════════════════════ #}
+{% if page_type == 'boutique' %}
+
+<section class="boutique">
+    <div class="boutique-inner">
+        <div class="boutique-layout">
+
+            {# Filtres #}
+            <aside class="boutique-filtres" id="filtres" aria-label="Filtres">
+                <header class="boutique-filtres-head">
+                    <span>Filtres</span>
+                    {% if categorie_active or q or prix_actif or stock_actif or promo_actif %}
+                    <a href="{% url 'produits:liste' %}" class="boutique-filtres-clear">Tout effacer</a>
+                    {% endif %}
+                </header>
+
+                {# Recherche #}
+                {% if recherche %}
+                <form class="boutique-recherche" method="get" action="{% url 'produits:liste' %}">
+                    {% if categorie_active %}<input type="hidden" name="categorie" value="{{ categorie_active.slug }}">{% endif %}
+                    {% if prix_actif %}<input type="hidden" name="prix" value="{{ prix_actif }}">{% endif %}
+                    {% if stock_actif %}<input type="hidden" name="stock" value="1">{% endif %}
+                    {% if promo_actif %}<input type="hidden" name="promo" value="1">{% endif %}
+                    <input type="search" name="q" value="{{ q }}" placeholder="Rechercher une pièce...">
+                    <button type="submit" aria-label="Rechercher">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <circle cx="11" cy="11" r="7"/>
+                            <path d="m20 20-3.5-3.5"/>
+                        </svg>
+                    </button>
+                </form>
+                {% endif %}
+
+                {# Catégories #}
+                {% if categories %}
+                <fieldset class="boutique-filtre">
+                    <legend>Catégories</legend>
+                    <div class="boutique-filtre-options">
+                        {% for cat in categories %}
+                        <a href="?{% if q %}q={{ q }}&{% endif %}{% if prix_actif %}prix={{ prix_actif }}&{% endif %}{% if stock_actif %}stock=1&{% endif %}{% if promo_actif %}promo=1&{% endif %}categorie={{ cat.slug }}"
+                           class="boutique-cat-link{% if categorie_active.slug == cat.slug %} est-actif{% endif %}">
+                            <span>{{ cat.nom }}</span>
+                            <span class="boutique-check-count">{{ cat.produits.count }}</span>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </fieldset>
+                {% endif %}
+
+                {# Prix #}
+                <fieldset class="boutique-filtre">
+                    <legend>Prix</legend>
+                    <div class="boutique-filtre-options">
+                        <a href="?{% if q %}q={{ q }}&{% endif %}{% if categorie_active %}categorie={{ categorie_active.slug }}&{% endif %}{% if stock_actif %}stock=1&{% endif %}{% if promo_actif %}promo=1&{% endif %}"
+                           class="boutique-cat-link{% if not prix_actif %} est-actif{% endif %}">
+                            <span>Tous les prix</span>
+                        </a>
+                        <a href="?{% if q %}q={{ q }}&{% endif %}{% if categorie_active %}categorie={{ categorie_active.slug }}&{% endif %}{% if stock_actif %}stock=1&{% endif %}{% if promo_actif %}promo=1&{% endif %}prix=0-100000"
+                           class="boutique-cat-link{% if prix_actif == '0-100000' %} est-actif{% endif %}">
+                            <span>Moins de 100 000 FCFA</span>
+                        </a>
+                        <a href="?{% if q %}q={{ q }}&{% endif %}{% if categorie_active %}categorie={{ categorie_active.slug }}&{% endif %}{% if stock_actif %}stock=1&{% endif %}{% if promo_actif %}promo=1&{% endif %}prix=100000-500000"
+                           class="boutique-cat-link{% if prix_actif == '100000-500000' %} est-actif{% endif %}">
+                            <span>100 000 à 500 000 FCFA</span>
+                        </a>
+                        <a href="?{% if q %}q={{ q }}&{% endif %}{% if categorie_active %}categorie={{ categorie_active.slug }}&{% endif %}{% if stock_actif %}stock=1&{% endif %}{% if promo_actif %}promo=1&{% endif %}prix=500000-2000000"
+                           class="boutique-cat-link{% if prix_actif == '500000-2000000' %} est-actif{% endif %}">
+                            <span>500 000 à 2 000 000 FCFA</span>
+                        </a>
+                        <a href="?{% if q %}q={{ q }}&{% endif %}{% if categorie_active %}categorie={{ categorie_active.slug }}&{% endif %}{% if stock_actif %}stock=1&{% endif %}{% if promo_actif %}promo=1&{% endif %}prix=2000000%2B"
+                           class="boutique-cat-link{% if prix_actif == '2000000+' %} est-actif{% endif %}">
+                            <span>Plus de 2 000 000 FCFA</span>
+                        </a>
+                    </div>
+                </fieldset>
+
+                {# Disponibilité #}
+                <fieldset class="boutique-filtre">
+                    <legend>Disponibilité</legend>
+                    <div class="boutique-filtre-options">
+                        <a href="?{% if q %}q={{ q }}&{% endif %}{% if categorie_active %}categorie={{ categorie_active.slug }}&{% endif %}{% if prix_actif %}prix={{ prix_actif }}&{% endif %}{% if promo_actif %}promo=1&{% endif %}{% if not stock_actif %}stock=1{% endif %}"
+                           class="boutique-cat-link{% if stock_actif %} est-actif{% endif %}">
+                            <span>En stock uniquement</span>
+                            {% if stock_actif %}<span class="boutique-filter-check">✓</span>{% endif %}
+                        </a>
+                        <a href="?{% if q %}q={{ q }}&{% endif %}{% if categorie_active %}categorie={{ categorie_active.slug }}&{% endif %}{% if prix_actif %}prix={{ prix_actif }}&{% endif %}{% if stock_actif %}stock=1&{% endif %}{% if not promo_actif %}promo=1{% endif %}"
+                           class="boutique-cat-link{% if promo_actif %} est-actif{% endif %}">
+                            <span>En promotion</span>
+                            {% if promo_actif %}<span class="boutique-filter-check">✓</span>{% endif %}
+                        </a>
+                    </div>
+                </fieldset>
+            </aside>
+
+            {# Résultats #}
+            <div class="boutique-resultats">
+                <header class="boutique-resultats-head">
+                    <p class="boutique-compteur" aria-live="polite">
+                        <strong>{{ page_obj.paginator.count }}</strong> pièce{{ page_obj.paginator.count|pluralize }}
+                    </p>
+                </header>
+
+                <div class="boutique-grid">
+                    {% for produit in page_obj %}
+                        {% include 'produits/_carte-boutique.html' %}
+                    {% empty %}
+                    <div class="boutique-empty">
+                        <h2>Aucun produit trouvé</h2>
+                        <p>Essayez d'autres filtres ou une autre recherche.</p>
+                        <a href="{% url 'produits:liste' %}" class="boutique-btn">Voir toute la boutique</a>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                {# Pagination #}
+                {% if page_obj.has_other_pages %}
+                <nav class="pagination" aria-label="Pagination">
+                    {% if page_obj.has_previous %}
+                    <a href="?{% if qs %}{{ qs }}&{% endif %}page={{ page_obj.previous_page_number }}">← Précédent</a>
+                    {% endif %}
+                    <span class="pagination-info">Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }}</span>
+                    {% if page_obj.has_next %}
+                    <a href="?{% if qs %}{{ qs }}&{% endif %}page={{ page_obj.next_page_number }}">Suivant →</a>
+                    {% endif %}
+                </nav>
+                {% endif %}
+            </div>
+        </div>
     </div>
+</section>
 
+{% endif %}
+
+
+{# ═══════════════════════════════════════════ #}
+{# PAGE NOUVEAUTÉS — Carrousel squeeze         #}
+{# ═══════════════════════════════════════════ #}
+{% if page_type == 'nouveautes' %}
+
+<section class="nouveautes-page">
     {% if page_obj %}
-        <div class="grille-produits">
+
+    <div class="squeeze-carousel" id="squeeze-carousel">
+        <div class="squeeze-track">
             {% for produit in page_obj %}
-                {% include 'produits/_carte.html' %}
+            <button type="button"
+                    class="squeeze-panel{% if forloop.first %} is-open{% endif %}"
+                    data-index="{{ forloop.counter0 }}"
+                    aria-label="{{ produit.nom }} — {{ produit.prix_actuel|floatformat:0 }} FCFA">
+                <div class="squeeze-panel-bg">
+                    {% if produit.image %}
+                    <img src="{{ produit.image.url }}" alt="{{ produit.nom }}" loading="lazy" draggable="false">
+                    {% endif %}
+                </div>
+
+                <div class="squeeze-panel-overlay">
+                    <div class="squeeze-panel-meta">
+                        <p class="squeeze-panel-cat">{{ produit.categorie.nom }}</p>
+                        <h3 class="squeeze-panel-title">{{ produit.nom }}</h3>
+                        <p class="squeeze-panel-prix">{{ produit.prix_actuel|floatformat:0 }} FCFA</p>
+                        <a href="{{ produit.get_absolute_url }}" class="squeeze-panel-cta">
+                            Voir la pièce
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        </a>
+                    </div>
+                    {% if produit.est_nouveau %}
+                    <span class="squeeze-panel-badge">Nouveau</span>
+                    {% endif %}
+                </div>
+
+                <span class="squeeze-panel-num">{{ forloop.counter|stringformat:"02d" }}</span>
+            </button>
             {% endfor %}
         </div>
 
-        {% if page_obj.has_other_pages %}
-        <nav class="pagination">
-            {% if page_obj.has_previous %}
-                <a href="?{% if qs %}{{ qs }}&amp;{% endif %}page={{ page_obj.previous_page_number }}">Précédent</a>
-            {% endif %}
-            {% for n in page_obj.paginator.page_range %}
-                {% if n == page_obj.number %}
-                    <span class="actif">{{ n }}</span>
-                {% else %}
-                    <a href="?{% if qs %}{{ qs }}&amp;{% endif %}page={{ n }}">{{ n }}</a>
-                {% endif %}
+        <div class="squeeze-nav">
+            <button type="button" class="squeeze-nav-btn" data-squeeze-prev aria-label="Précédent">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <button type="button" class="squeeze-nav-btn" data-squeeze-next aria-label="Suivant">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 6l6 6-6 6"/></svg>
+            </button>
+        </div>
+    </div>
+
+    {% else %}
+    <div class="catalogue-empty">
+        <p>Aucune nouveauté pour le moment. Revenez bientôt.</p>
+    </div>
+    {% endif %}
+
+    {% if page_obj.has_other_pages %}
+    <nav class="pagination pagination--light">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">← Précédent</a>
+        {% endif %}
+        <span>Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }}</span>
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">Suivant →</a>
+        {% endif %}
+    </nav>
+    {% endif %}
+</section>
+
+{% endif %}
+
+
+{# ═══════════════════════════════════════════ #}
+{# PAGE PROMOTIONS — Grille éditoriale         #}
+{# ═══════════════════════════════════════════ #}
+{% if page_type == 'promotions' %}
+
+<section class="promos-page">
+    <div class="promos-page-inner">
+        {% if page_obj %}
+        <div class="promos-grid">
+            {% for produit in page_obj %}
+            <a href="{{ produit.get_absolute_url }}" class="promos-card">
+                <div class="promos-card-image">
+                    {% if produit.image %}
+                    <img src="{{ produit.image.url }}" alt="{{ produit.nom }}" loading="lazy">
+                    {% endif %}
+                    <span class="promos-card-remise">-{{ produit.remise }}%</span>
+                </div>
+                <div class="promos-card-info">
+                    <p class="promos-card-cat">{{ produit.categorie.nom }}</p>
+                    <h3 class="promos-card-nom">{{ produit.nom }}</h3>
+                    <div class="promos-card-prix">
+                        <span class="promos-card-prix-promo">{{ produit.prix_promo|floatformat:0 }} FCFA</span>
+                        <s class="promos-card-prix-barre">{{ produit.prix|floatformat:0 }} FCFA</s>
+                    </div>
+                </div>
+            </a>
             {% endfor %}
+        </div>
+        {% else %}
+        <div class="catalogue-empty catalogue-empty--dark">
+            <p>Aucune promotion en cours. Revenez bientôt.</p>
+        </div>
+        {% endif %}
+
+        {% if page_obj.has_other_pages %}
+        <nav class="pagination pagination--light">
+            {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}">← Précédent</a>
+            {% endif %}
+            <span>Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }}</span>
             {% if page_obj.has_next %}
-                <a href="?{% if qs %}{{ qs }}&amp;{% endif %}page={{ page_obj.next_page_number }}">Suivant</a>
+            <a href="?page={{ page_obj.next_page_number }}">Suivant →</a>
             {% endif %}
         </nav>
         {% endif %}
-    {% else %}
-        <p class="vide">Aucun produit ne correspond à votre sélection.</p>
-    {% endif %}
-</div>
+    </div>
+</section>
+
+{% endif %}
+
+<script src="{% static 'js/boutique.js' %}" defer></script>
 {% endblock %}

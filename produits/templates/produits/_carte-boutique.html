@@ -1,0 +1,86 @@
+<article class="boutique-card">
+    <a href="{{ produit.get_absolute_url }}" class="boutique-card-link">
+        <div class="boutique-card-image">
+            {% if produit.image %}
+            <img src="{{ produit.image.url }}" alt="{{ produit.nom }}" loading="lazy">
+            {% endif %}
+
+            {# Badges #}
+            <div class="boutique-badges">
+                {% if produit.en_rupture %}
+                <span class="boutique-badge boutique-badge--rupture">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                    Épuisé
+                </span>
+                {% elif produit.en_promotion %}
+                <span class="boutique-badge boutique-badge--promo">
+                    -{{ produit.remise }}%
+                </span>
+                {% elif produit.est_nouveau %}
+                <span class="boutique-badge boutique-badge--nouveau">
+                    Nouveau
+                </span>
+                {% endif %}
+            </div>
+
+            {# Bouton "Voir la pièce" au hover #}
+            <span class="boutique-card-voir">
+                Voir la pièce <span aria-hidden="true">→</span>
+            </span>
+        </div>
+    </a>
+
+    {# Favori EN DEHORS du lien (formulaire POST) #}
+    <form method="post"
+          action="{% url 'favoris:basculer' produit.id %}"
+          class="boutique-favori-form">
+        {% csrf_token %}
+        <input type="hidden" name="suivant" value="{{ request.get_full_path }}">
+        <button type="submit"
+                class="boutique-favori"
+                aria-label="Ajouter aux favoris"
+                title="Ajouter aux favoris">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21.2l7.8-7.7 1-1.1a5.5 5.5 0 0 0 0-7.8z"/>
+            </svg>
+        </button>
+    </form>
+
+    {# Infos EN DEHORS du lien pour permettre les interactions #}
+    <div class="boutique-card-info">
+        <p class="boutique-card-categorie">{{ produit.categorie.nom }}</p>
+        <h3 class="boutique-card-nom">
+            <a href="{{ produit.get_absolute_url }}">{{ produit.nom }}</a>
+        </h3>
+
+        {# Étoiles + avis (si annotation) #}
+        {% if produit.note_moyenne %}
+        <div class="boutique-card-note">
+            <span class="boutique-card-etoiles">
+                {% for i in "12345" %}
+                    {% if forloop.counter <= produit.note_moyenne %}★{% else %}☆{% endif %}
+                {% endfor %}
+            </span>
+            <span class="boutique-card-note-val">{{ produit.note_moyenne|floatformat:1 }}</span>
+            <span class="boutique-card-note-count">({{ produit.nombre_avis }})</span>
+        </div>
+        {% endif %}
+
+        {# Prix #}
+        <p class="boutique-card-prix">
+            {% if produit.en_promotion %}
+                <span class="boutique-card-prix-actuel">{{ produit.prix_promo|floatformat:0 }} FCFA</span>
+                <s class="boutique-card-prix-barre">{{ produit.prix|floatformat:0 }} FCFA</s>
+            {% else %}
+                <span class="boutique-card-prix-actuel">{{ produit.prix|floatformat:0 }} FCFA</span>
+            {% endif %}
+        </p>
+
+        {# Stock faible / rupture #}
+        {% if produit.en_rupture %}
+        <p class="boutique-card-stock boutique-card-stock--rupture">Épuisé</p>
+        {% elif produit.stock > 0 and produit.stock <= produit.seuil_alerte %}
+        <p class="boutique-card-stock">Plus que {{ produit.stock }} en stock</p>
+        {% endif %}
+    </div>
+</article>

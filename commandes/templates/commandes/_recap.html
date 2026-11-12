@@ -1,10 +1,33 @@
-<span class="etiquette">Récapitulatif</span>
-<ul class="recap-liste">
+{# Récapitulatif des articles #}
+<ul class="checkout-recap-lignes">
     {% for ligne in lignes %}
-    <li>
-        <span>{{ ligne.produit.nom }} <small>x {{ ligne.quantite }}</small></span>
-        <span>{{ ligne.sous_total|floatformat:"0g" }} FCFA</span>
+    <li class="checkout-recap-ligne">
+        <div class="checkout-recap-image">
+            {% if ligne.produit.image %}
+            <img src="{{ ligne.produit.image.url }}" alt="{{ ligne.produit.nom }}">
+            {% endif %}
+            <span class="checkout-recap-qte">{{ ligne.quantite }}</span>
+        </div>
+        <div class="checkout-recap-infos">
+            <p class="checkout-recap-nom">{{ ligne.produit.nom }}</p>
+            <p class="checkout-recap-cat">{{ ligne.produit.categorie.nom }}</p>
+        </div>
+        <p class="checkout-recap-prix">{{ ligne.sous_total|floatformat:0 }} FCFA</p>
     </li>
     {% endfor %}
 </ul>
-<p class="resume-ligne resume-total"><span>Total</span><span>{{ total|floatformat:"0g" }} FCFA</span></p>
+
+<div class="checkout-recap-totaux">
+    <div class="checkout-recap-ligne-total">
+        <span>Sous-total</span>
+        <span>{{ total|floatformat:0 }} FCFA</span>
+    </div>
+    <div class="checkout-recap-ligne-total">
+        <span>Livraison</span>
+        <span class="checkout-recap-gratuit">Offerte</span>
+    </div>
+    <div class="checkout-recap-ligne-total checkout-recap-ligne-total--grand">
+        <span>Total</span>
+        <span>{{ total|floatformat:0 }} FCFA</span>
+    </div>
+</div>

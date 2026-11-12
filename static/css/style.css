@@ -2128,8 +2128,83 @@ section.bande {
 }
 
 /* Effet de grain subtil sur les sections sombres */
-.pieces::after,
-.nouveautes::before,
-.pied::before {
-    /* déjà utilisé, donc pas de grain ici pour éviter conflit */
+
+/* ==========================================
+   NAVBAR — Comportement par page
+========================================== */
+
+/* ─── ACCUEIL : nav transparente au top, blanche au scroll ─── */
+body.avec-hero .verre-entete {
+    position: fixed;
+    background: transparent;
+    border-bottom: 1px solid transparent;
+}
+
+body.avec-hero .verre-entete.est-scrolled {
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--bordure);
+    box-shadow: 0 4px 20px rgba(23, 23, 23, 0.06);
+}
+
+/* Accueil : liens BLANCS quand transparent */
+body.avec-hero .verre-entete:not(.est-scrolled) .verre-logo,
+body.avec-hero .verre-entete:not(.est-scrolled) .verre-lien,
+body.avec-hero .verre-entete:not(.est-scrolled) .verre-icone {
+    color: rgba(255, 255, 255, 0.95);
+}
+body.avec-hero .verre-entete:not(.est-scrolled) .verre-lien:hover,
+body.avec-hero .verre-entete:not(.est-scrolled) .verre-lien.actif,
+body.avec-hero .verre-entete:not(.est-scrolled) .verre-icone:hover,
+body.avec-hero .verre-entete:not(.est-scrolled) .verre-icone.actif {
+    color: var(--or-champagne);
+}
+body.avec-hero .verre-entete:not(.est-scrolled) .verre-lien::after {
+    background: var(--or-champagne);
+}
+
+/* Accueil : liens NOIRS quand scrollé */
+body.avec-hero .verre-entete.est-scrolled .verre-logo,
+body.avec-hero .verre-entete.est-scrolled .verre-lien,
+body.avec-hero .verre-entete.est-scrolled .verre-icone {
+    color: var(--noir);
+}
+body.avec-hero .verre-entete.est-scrolled .verre-lien:hover,
+body.avec-hero .verre-entete.est-scrolled .verre-lien.actif,
+body.avec-hero .verre-entete.est-scrolled .verre-icone:hover,
+body.avec-hero .verre-entete.est-scrolled .verre-icone.actif {
+    color: var(--or-rose);
+}
+body.avec-hero .verre-entete.est-scrolled .verre-lien::after {
+    background: var(--or-rose);
+}
+
+/* ─── AUTRES PAGES : nav toujours blanche, liens noirs ─── */
+body:not(.avec-hero) .verre-entete {
+    position: fixed;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--bordure);
+    box-shadow: 0 4px 20px rgba(23, 23, 23, 0.06);
+}
+
+body:not(.avec-hero) .verre-entete::after {
+    opacity: 0.35;
+}
+
+body:not(.avec-hero) .verre-logo,
+body:not(.avec-hero) .verre-lien,
+body:not(.avec-hero) .verre-icone {
+    color: var(--noir);
+}
+body:not(.avec-hero) .verre-lien:hover,
+body:not(.avec-hero) .verre-lien.actif,
+body:not(.avec-hero) .verre-icone:hover,
+body:not(.avec-hero) .verre-icone.actif {
+    color: var(--or-rose);
+}
+body:not(.avec-hero) .verre-lien::after {
+    background: var(--or-rose);
 }

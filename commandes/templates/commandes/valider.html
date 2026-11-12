@@ -2,75 +2,155 @@
 {% load static %}
 
 {% block titre %}Valider ma commande - Maison Lumière{% endblock %}
+{% block classe_body %}page-checkout{% endblock %}
+
+{% block css_page %}
+<link rel="stylesheet" href="{% static 'css/commandes.css' %}">
+{% endblock %}
 
 {% block contenu %}
-<link rel="stylesheet" href="{% static 'css/commandes.css' %}">
-<div class="conteneur">
-    <p class="fil">
-        <a href="{% url 'accueil:accueil' %}">Accueil</a> /
-        <a href="{% url 'panier:voir' %}">Panier</a> / Commande
-    </p>
-    <h1 class="titre-page">Valider ma commande</h1>
 
-    {% if probleme_stock %}
-        <p class="alerte">Certains articles dépassent le stock disponible. <a href="{% url 'panier:voir' %}" style="text-decoration:underline;">Modifier mon panier</a></p>
-    {% endif %}
+<section class="checkout">
+    <div class="checkout-inner">
 
-    {% if adresses %}
-    <form method="post" class="panier">
-        {% csrf_token %}
-        <div>
-            <span class="etiquette">Adresse de livraison</span>
-            <div class="choix-adresse">
-                {% for a in adresses %}
-                <label>
-                    <input type="radio" name="adresse" value="{{ a.pk }}"{% if forloop.first %} checked{% endif %}>
-                    <span>
-                        {{ a.prenom }} {{ a.nom }}<br>{{ a.adresse }}<br>{{ a.ville }} · {{ a.telephone }}
-                        {% if a.par_defaut %}<em class="badge-inline">Par défaut</em>{% endif %}
-                    </span>
-                </label>
-                {% endfor %}
-            </div>
+        <nav class="checkout-fil" aria-label="Fil d'Ariane">
+            <a href="{% url 'accueil:accueil' %}">Accueil</a>
+            <span aria-hidden="true">/</span>
+            <a href="{% url 'panier:voir' %}">Panier</a>
+            <span aria-hidden="true">/</span>
+            <span class="checkout-fil-actuel">Commande</span>
+        </nav>
+
+        <header class="checkout-head">
+            <span class="checkout-eyebrow">Dernière étape</span>
+            <h1 class="checkout-titre">
+                Valider ma <em>commande.</em>
+            </h1>
+        </header>
+
+        {% if probleme_stock %}
+        <div class="checkout-alerte" role="alert">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2L2 22h20L12 2z"/><path d="M12 9v5"/><path d="M12 18v.01"/></svg>
+            <span>Certains articles dépassent le stock disponible. <a href="{% url 'panier:voir' %}">Modifier mon panier</a></span>
         </div>
-        <aside class="panier-resume">
-            {% include 'commandes/_recap.html' %}
-            <label class="case-cgv">
-                <input type="checkbox" name="accepte_cgv" required>
-                <span>J'ai lu et j'accepte les <a href="{% url 'accueil:cgv' %}" target="_blank" rel="noopener">conditions générales de vente</a>.</span>
-            </label>
-            <button type="submit" class="bouton bouton-plein"{% if probleme_stock %} disabled{% endif %}>Confirmer la commande</button>
-            <a href="{% url 'panier:voir' %}" class="lien-continuer">Retour au panier</a>
-        </aside>
-    </form>
+        {% endif %}
 
-    <details class="nouvelle-adresse"{% if form.errors %} open{% endif %}>
-        <summary>Ajouter une nouvelle adresse</summary>
-        <form method="post" class="formulaire">
+        {% if adresses %}
+        {# FORMULAIRE PRINCIPAL (adresses + CGV + bouton confirmer) #}
+        <form method="post" class="checkout-layout">
             {% csrf_token %}
-            <input type="hidden" name="action" value="ajouter_adresse">
-            {{ form.as_p }}
-            <button type="submit" class="bouton bouton-contour">Enregistrer l'adresse</button>
+
+            {# Colonne gauche : adresse #}
+            <div class="checkout-form">
+                <section class="checkout-section">
+                    <h2 class="checkout-section-titre">
+                        <span class="checkout-section-num">01</span>
+                        Adresse de livraison
+                    </h2>
+
+                    <div class="checkout-adresses">
+                        {% for a in adresses %}
+                        <label class="checkout-adresse">
+                            <input type="radio" name="adresse" value="{{ a.pk }}"{% if forloop.first %} checked{% endif %}>
+                            <div class="checkout-adresse-card">
+                                <p class="checkout-adresse-nom">{{ a.prenom }} {{ a.nom }}</p>
+                                <p class="checkout-adresse-ligne">{{ a.adresse }}</p>
+                                <p class="checkout-adresse-ligne">{{ a.ville }} · {{ a.telephone }}</p>
+                                {% if a.par_defaut %}
+                                <span class="checkout-adresse-badge">Par défaut</span>
+                                {% endif %}
+                            </div>
+                        </label>
+                        {% endfor %}
+                    </div>
+                </section>
+            </div>
+
+            {# Colonne droite : récap + CGV + bouton #}
+            <aside class="checkout-resume">
+                <h2 class="checkout-resume-titre">Récapitulatif</h2>
+
+                {% include 'commandes/_recap.html' %}
+
+                <label class="checkout-cgv">
+                    <input type="checkbox" name="accepte_cgv" required>
+                    <span>J'ai lu et j'accepte les <a href="{% url 'accueil:cgv' %}" target="_blank" rel="noopener">conditions générales de vente</a>.</span>
+                </label>
+
+                <button type="submit" class="checkout-btn checkout-btn--principal"{% if probleme_stock %} disabled{% endif %}>
+                    Confirmer la commande
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </button>
+
+                <a href="{% url 'panier:voir' %}" class="checkout-retour">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                    Retour au panier
+                </a>
+
+                <ul class="checkout-avantages">
+                    <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Paiement sécurisé</li>
+                    <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Livraison suivie</li>
+                    <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Retours 30 jours</li>
+                </ul>
+            </aside>
         </form>
-    </details>
-    {% else %}
-    <div class="panier">
-        <div>
-            <span class="etiquette">Adresse de livraison</span>
-            <h2 class="sous-titre">Ajoutez une adresse pour continuer</h2>
-            <form method="post" class="formulaire">
+
+        {# FORMULAIRE SÉPARÉ : ajouter une nouvelle adresse (HORS du form principal) #}
+        <details class="checkout-nouvelle-adresse"{% if form.errors %} open{% endif %}>
+            <summary>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                Ajouter une nouvelle adresse
+            </summary>
+            <form method="post" class="checkout-adresse-form">
                 {% csrf_token %}
                 <input type="hidden" name="action" value="ajouter_adresse">
-                {{ form.as_p }}
-                <button type="submit" class="bouton">Enregistrer l'adresse</button>
+                <div class="checkout-fields">
+                    {{ form.as_p }}
+                </div>
+                <button type="submit" class="checkout-btn checkout-btn--contour">
+                    Enregistrer l'adresse
+                </button>
             </form>
+        </details>
+
+        {% else %}
+        {# Pas d'adresse encore : formulaire unique pour ajouter #}
+        <div class="checkout-layout">
+            <div class="checkout-form">
+                <section class="checkout-section">
+                    <h2 class="checkout-section-titre">
+                        <span class="checkout-section-num">01</span>
+                        Adresse de livraison
+                    </h2>
+                    <p class="checkout-vide-texte">Ajoutez une adresse pour continuer.</p>
+                    <form method="post" class="checkout-adresse-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="ajouter_adresse">
+                        <div class="checkout-fields">
+                            {{ form.as_p }}
+                        </div>
+                        <button type="submit" class="checkout-btn checkout-btn--principal">
+                            Enregistrer l'adresse
+                        </button>
+                    </form>
+                </section>
+            </div>
+
+            <aside class="checkout-resume">
+                <h2 class="checkout-resume-titre">Récapitulatif</h2>
+                {% include 'commandes/_recap.html' %}
+                <button type="button" class="checkout-btn checkout-btn--principal" disabled>
+                    Confirmer la commande
+                </button>
+                <a href="{% url 'panier:voir' %}" class="checkout-retour">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                    Retour au panier
+                </a>
+            </aside>
         </div>
-        <aside class="panier-resume">
-            {% include 'commandes/_recap.html' %}
-            <button type="button" class="bouton bouton-plein" disabled>Confirmer la commande</button>
-            <a href="{% url 'panier:voir' %}" class="lien-continuer">Retour au panier</a>
-        </aside>
+        {% endif %}
+
     </div>
-    {% endif %}
-</div>
+</section>
+
 {% endblock %}

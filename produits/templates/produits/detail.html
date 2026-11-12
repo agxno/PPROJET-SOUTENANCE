@@ -1,96 +1,180 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block titre %}{{ produit.nom }} - Maison Lumière{% endblock %}
+{% block classe_body %}page-produit{% endblock %}
+
+{% block css_page %}
+<link rel="stylesheet" href="{% static 'css/produit.css' %}">
+{% endblock %}
 
 {% block contenu %}
-<div class="conteneur">
-    <p class="fil">
-        <a href="{% url 'accueil:accueil' %}">Accueil</a> /
-        <a href="{% url 'produits:liste' %}">Boutique</a> /
-        <a href="{% url 'produits:liste' %}?categorie={{ produit.categorie.slug }}">{{ produit.categorie.nom }}</a> /
-        {{ produit.nom }}
-    </p>
 
-    <div class="detail">
-        <div class="detail-visuel">
-            {% if produit.image %}
-                <img src="{{ produit.image.url }}" alt="{{ produit.nom }}">
-            {% else %}
-                <span>Photo</span>
-            {% endif %}
-        </div>
+<section class="produit-page">
+    <div class="produit-inner">
 
-        <div class="detail-infos">
-            <span class="etiquette">{{ produit.categorie.nom }}</span>
-            <h1>{{ produit.nom }}</h1>
-            {% if avis_total %}
-                <p class="note-resume"><a href="#avis"><span class="etoiles">{{ avis_etoiles }}</span> {{ avis_moyenne }}/5 · {{ avis_total }} avis</a></p>
-            {% endif %}
-            <p class="prix prix-grand">
-                {% if produit.en_promotion %}
-                    <s>{{ produit.prix|floatformat:"0g" }} FCFA</s>
-                    <span class="prix-promo">{{ produit.prix_promo|floatformat:"0g" }} FCFA</span>
-                    <span class="pastille pastille-fixe">-{{ produit.remise }}%</span>
-                {% else %}
-                    {{ produit.prix|floatformat:"0g" }} FCFA
+        {# Fil d'Ariane #}
+        <nav class="produit-fil" aria-label="Fil d'Ariane">
+            <a href="{% url 'accueil:accueil' %}">Accueil</a>
+            <span aria-hidden="true">/</span>
+            <a href="{% url 'produits:liste' %}">Boutique</a>
+            <span aria-hidden="true">/</span>
+            <a href="{% url 'produits:liste' %}?categorie={{ produit.categorie.slug }}">{{ produit.categorie.nom }}</a>
+            <span aria-hidden="true">/</span>
+            <span class="produit-fil-actuel">{{ produit.nom }}</span>
+        </nav>
+
+        {# Layout : image + infos #}
+        <div class="produit-layout">
+
+            {# Colonne gauche : image #}
+            <div class="produit-visuel">
+                <div class="produit-image-wrap">
+                    {% if produit.image %}
+                        <img src="{{ produit.image.url }}" alt="{{ produit.nom }}" class="produit-image">
+                    {% else %}
+                        <div class="produit-image-placeholder">
+                            <span>Photo à venir</span>
+                        </div>
+                    {% endif %}
+
+                    <div class="produit-badges">
+                        {% if produit.en_promotion %}
+                        <span class="produit-badge produit-badge--promo">-{{ produit.remise }}%</span>
+                        {% endif %}
+                        {% if produit.est_nouveau %}
+                        <span class="produit-badge produit-badge--nouveau">Nouveau</span>
+                        {% endif %}
+                        {% if produit.en_rupture %}
+                        <span class="produit-badge produit-badge--rupture">Épuisé</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            {# Colonne droite : infos #}
+            <div class="produit-infos">
+
+                <a href="{% url 'produits:liste' %}?categorie={{ produit.categorie.slug }}" class="produit-categorie">
+                    {{ produit.categorie.nom }}
+                </a>
+
+                <h1 class="produit-titre">{{ produit.nom }}</h1>
+
+                {% if avis_total %}
+                <a href="#avis" class="produit-note">
+                    <span class="produit-etoiles">{{ avis_etoiles }}</span>
+                    <span class="produit-note-val">{{ avis_moyenne }}/5</span>
+                    <span class="produit-note-count">· {{ avis_total }} avis</span>
+                </a>
                 {% endif %}
-            </p>
 
-            {% if produit.description %}
-                <p class="detail-description">{{ produit.description|linebreaksbr }}</p>
-            {% endif %}
+                <div class="produit-prix">
+                    {% if produit.en_promotion %}
+                        <span class="produit-prix-actuel">{{ produit.prix_promo|floatformat:0 }} FCFA</span>
+                        <s class="produit-prix-barre">{{ produit.prix|floatformat:0 }} FCFA</s>
+                    {% else %}
+                        <span class="produit-prix-actuel">{{ produit.prix|floatformat:0 }} FCFA</span>
+                    {% endif %}
+                </div>
 
-            <p class="stock stock-{{ produit.statut_stock }}">
-                {% if produit.statut_stock == 'rupture' %}
-                    Épuisé
-                {% elif produit.statut_stock == 'faible' %}
-                    Plus que {{ produit.stock }} en stock
-                {% else %}
-                    En stock
+                {% if produit.description %}
+                <p class="produit-description">{{ produit.description|linebreaksbr }}</p>
                 {% endif %}
-            </p>
 
-            {% if produit.en_rupture %}
-                <button type="button" class="bouton bouton-plein" disabled>Épuisé</button>
-            {% elif user.is_authenticated %}
-                <form method="post" action="{% url 'panier:ajouter' produit.pk %}" class="ajout-panier">
+                <p class="produit-stock produit-stock--{{ produit.statut_stock }}">
+                    {% if produit.statut_stock == 'rupture' %}
+                        <span class="produit-stock-dot"></span> Épuisé
+                    {% elif produit.statut_stock == 'faible' %}
+                        <span class="produit-stock-dot"></span> Plus que {{ produit.stock }} en stock
+                    {% else %}
+                        <span class="produit-stock-dot"></span> En stock
+                    {% endif %}
+                </p>
+
+                {% if produit.en_rupture %}
+                    <button type="button" class="produit-btn produit-btn--disabled" disabled>
+                        Épuisé
+                    </button>
+                {% elif user.is_authenticated %}
+                    <form method="post" action="{% url 'panier:ajouter' produit.pk %}" class="produit-form-panier">
+                        {% csrf_token %}
+                        <input type="hidden" name="suivant" value="{{ produit.get_absolute_url }}">
+
+                        <div class="produit-quantite">
+                            <button type="button" class="produit-quantite-btn" data-qte-moins aria-label="Diminuer">−</button>
+                            <input type="number" id="quantite" name="quantite" value="1" min="1" max="{{ produit.stock }}" class="produit-quantite-input">
+                            <button type="button" class="produit-quantite-btn" data-qte-plus aria-label="Augmenter">+</button>
+                        </div>
+
+                        <button type="submit" class="produit-btn produit-btn--principal">
+                            Ajouter au panier
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        </button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'utilisateurs:connexion' %}?next={{ produit.get_absolute_url|urlencode }}" class="produit-btn produit-btn--principal">
+                        Se connecter pour commander
+                    </a>
+                    <p class="produit-note-connexion">
+                        Pas encore de compte ?
+                        <a href="{% url 'utilisateurs:inscription' %}">Créer un compte</a>
+                    </p>
+                {% endif %}
+
+                <form method="post" action="{% url 'favoris:basculer' produit.pk %}" class="produit-favori">
                     {% csrf_token %}
-                    <input type="hidden" name="suivant" value="{{ produit.get_absolute_url }}">
-                    <label class="etiquette" for="quantite">Quantité</label>
-                    <input type="number" id="quantite" name="quantite" value="1" min="1" max="{{ produit.stock }}">
-                    <button type="submit" class="bouton bouton-plein">Ajouter au panier</button>
+                    <input type="hidden" name="suivant" value="{{ request.get_full_path }}">
+                    <button type="submit" class="produit-favori-btn">
+                        {% if produit.pk in favoris_ids %}
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.6"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21.2l7.8-7.7 1-1.1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+                            Retirer des favoris
+                        {% else %}
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21.2l7.8-7.7 1-1.1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+                            Ajouter aux favoris
+                        {% endif %}
+                    </button>
                 </form>
-            {% else %}
-                <a href="{% url 'utilisateurs:connexion' %}?next={{ produit.get_absolute_url|urlencode }}" class="bouton bouton-plein">Se connecter pour commander</a>
-                <p class="note-connexion">Pas encore de compte ? <a href="{% url 'utilisateurs:inscription' %}">Créer un compte</a></p>
-            {% endif %}
 
-            <form method="post" action="{% url 'favoris:basculer' produit.pk %}" class="favori-detail">
-                {% csrf_token %}
-                <input type="hidden" name="suivant" value="{{ request.get_full_path }}">
-                <button type="submit" class="lien-souligne">
-                    {% if produit.pk in favoris_ids %}♥ Retirer des favoris{% else %}♡ Ajouter aux favoris{% endif %}
-                </button>
-            </form>
+                <ul class="produit-avantages">
+                    <li>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 3v5h-7"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                        Livraison suivie sous 2 à 3 jours
+                    </li>
+                    <li>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12a9 9 0 1 0 9-9"/><path d="M3 4v5h5"/></svg>
+                        Retours gratuits sous 30 jours
+                    </li>
+                    <li>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l8 3v6c0 4.5-3.2 8.2-8 9-4.8-.8-8-4.5-8-9V6z"/></svg>
+                        Paiement sécurisé
+                    </li>
+                </ul>
 
-            <p class="reference">Réf. {{ produit.reference }}</p>
+                <p class="produit-reference">Réf. {{ produit.reference }}</p>
+            </div>
         </div>
+
+        {% include 'avis/_section.html' %}
+
+        {% if similaires %}
+        <section class="produit-similaires">
+            <header class="produit-similaires-head">
+                <span class="produit-similaires-eyebrow">Dans la même catégorie</span>
+                <h2 class="produit-similaires-titre">
+                    Vous aimerez <em>aussi.</em>
+                </h2>
+            </header>
+            <div class="produit-similaires-grid">
+                {% for produit in similaires %}
+                    {% include 'produits/_carte-boutique.html' %}
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
     </div>
+</section>
 
-    {% include 'avis/_section.html' %}
-
-    {% if similaires %}
-    <section class="section">
-        <div class="section-titre">
-            <span class="etiquette">Dans la même catégorie</span>
-            <h2>Vous aimerez aussi</h2>
-        </div>
-        <div class="grille-produits">
-            {% for produit in similaires %}
-                {% include 'produits/_carte.html' %}
-            {% endfor %}
-        </div>
-    </section>
-    {% endif %}
-</div>
+<script src="{% static 'js/produit.js' %}" defer></script>
 {% endblock %}
