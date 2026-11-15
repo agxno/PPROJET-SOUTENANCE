@@ -80,13 +80,41 @@ def synchroniser(paiement):
         return paiement.statut
 
     try:
-        statut = _client().payment.get_status(paiement.transaction_id, PAYS).status
+        reponse = _client().payment.get_status(paiement.transaction_id, PAYS)
+
+        # ─── LOGS DE DEBUG (à retirer en production) ───
+        logger.info(
+            "[CINETPAY] Réponse brute pour %s : %r",
+            paiement.transaction_id, reponse
+        )
+        logger.info(
+            "[CINETPAY] status=%r | code=%r | data=%r",
+            getattr(reponse, 'status', None),
+            getattr(reponse, 'code', None),
+            getattr(reponse, 'data', None),
+        )
+        # ────────────────────────────────────────────────
+
+        statut = getattr(reponse, 'status', None)
+        code = getattr(reponse, 'code', None)
+
     except Exception:
         logger.exception("Vérification CinetPay impossible pour %s", paiement.transaction_id)
         return etat(paiement)
 
-    if statut == 'SUCCESS':
+    # ─── Vérification du succès (multi-format) ───
+    # CinetPay renvoie parfois "SUCCESS", parfois "ACCEPTED",
+    # parfois code == "00". On accepte tous les cas.
+    if statut in ('SUCCESS', 'ACCEPTED', '00') or code == '00':
+        logger.info("[CINETPAY] Paiement %s CONFIRMÉ", paiement.transaction_id)
         paiement.marquer_reussi()
-    elif is_final_status(statut):
+    elif statut and is_final_status(statut):
+        logger.info("[CINETPAY] Paiement %s ÉCHOUÉ (statut=%s)", paiement.transaction_id, statut)
         paiement.marquer_echoue()
+    else:
+        logger.info(
+            "[CINETPAY] Paiement %s en attente (statut=%s, code=%s)",
+            paiement.transaction_id, statut, code
+        )
+
     return etat(paiement)

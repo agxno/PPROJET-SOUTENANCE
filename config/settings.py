@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -183,3 +184,110 @@ XAI_API_KEY = os.environ.get('XAI_API_KEY', '')
 XAI_MODEL = os.environ.get('XAI_MODEL', 'grok-4.7')
 ASSISTANT_VOIX = os.environ.get('ASSISTANT_VOIX', 'fr-FR-DeniseNeural')
 ASSISTANT_ACTIF = ASSISTANT_MODE == 'regles' or bool(XAI_API_KEY)
+
+
+JAZZMIN_SETTINGS = {
+    "custom_css": "css/admin-lumiere.css",
+    # Titres
+    "site_title": "Maison Lumière",
+    "site_header": "Maison Lumière",
+    "site_brand": "Maison Lumière",
+    "site_logo": None,  # ou "img/logo.svg" si tu as un logo
+    "login_logo": None,
+    "site_icon": None,
+    "welcome_sign": "Bienvenue dans l'administration Maison Lumière",
+    "copyright": "Maison Lumière",
+
+    # Recherche globale
+    "search_model": ["produits.Produit", "commandes.Commande", "utilisateurs.Utilisateur"],
+
+    # Menu du haut
+    "topmenu_links": [
+        {"name": "Accueil", "url": "admin:index", "permissions": ["auth.view_user"]},
+        {"name": "Voir le site", "url": "/", "new_window": True},
+    ],
+
+    # Sidebar
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "hide_apps": [],
+    "hide_models": [],
+
+    # Ordre des apps dans la sidebar
+    "order_with_respect_to": [
+        "produits",
+        "commandes",
+        "utilisateurs",
+        "paiements",
+        "livraisons",
+        "avis",
+        "favoris",
+        "statistiques",
+    ],
+
+    # Icônes FontAwesome par app/modèle
+    "icons": {
+        "produits": "fas fa-gem",
+        "produits.Produit": "fas fa-ring",
+        "produits.Categorie": "fas fa-tags",
+        "commandes": "fas fa-shopping-bag",
+        "commandes.Commande": "fas fa-receipt",
+        "utilisateurs": "fas fa-users",
+        "utilisateurs.Utilisateur": "fas fa-user",
+        "utilisateurs.Adresse": "fas fa-map-marker-alt",
+        "paiements": "fas fa-credit-card",
+        "paiements.Paiement": "fas fa-money-check",
+        "livraisons": "fas fa-truck",
+        "avis": "fas fa-star",
+        "favoris": "fas fa-heart",
+        "statistiques": "fas fa-chart-line",
+    },
+    "default_icon_parents": "fas fa-chevron-circle-right",
+    "default_icon_children": "fas fa-circle",
+
+    # UI
+    "related_modal_active": False,
+    "custom_css": "css/admin-lumiere.css",  # ton CSS existant
+    "custom_js": None,
+    "use_google_fonts_cdn": True,
+    "show_ui_builder": False,  # mets True pour tester en live
+
+    # Formulaires
+    "changeform_format": "horizontal_tabs",
+    "changeform_format_overrides": {
+        "auth.user": "collapsible",
+        "auth.group": "vertical_tabs",
+    },
+    "language_chooser": False,
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "navbar_small_text": False,
+    "footer_small_text": True,
+    "body_small_text": False,
+    "brand_colour": "navbar-dark",
+    "accent": "accent-rose",
+    "navbar": "navbar-dark",
+    "no_navbar_border": True,
+    "navbar_fixed": True,
+    "layout_boxed": False,
+    "footer_fixed": False,
+    "sidebar_fixed": True,
+    "sidebar": "sidebar-dark-rose",
+    "sidebar_nav_small_text": False,
+    "sidebar_disable_expand": False,
+    "sidebar_nav_child_indent": True,
+    "sidebar_nav_compact_style": False,
+    "sidebar_nav_legacy_style": False,
+    "sidebar_nav_flat_style": True,
+    "theme": "darkly",  # thème sombre
+    "default_theme_mode": "dark",  # force le mode sombre [citation:9]
+    "button_classes": {
+        "primary": "btn-primary",
+        "secondary": "btn-secondary",
+        "info": "btn-info",
+        "warning": "btn-warning",
+        "danger": "btn-danger",
+        "success": "btn-success",
+    },
+}

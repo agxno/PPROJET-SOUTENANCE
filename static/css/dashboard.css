@@ -1,0 +1,753 @@
+/* ==========================================
+   DASHBOARD CLIENT — Fond émeraude (priorité)
+========================================== */
+
+body.page-compte,
+body.page-compte.avec-hero {
+    background: var(--emeraude) !important;
+    color: var(--blanc) !important;
+}
+
+/* Les textes hérités de style.css doivent être blancs sur émeraude */
+body.page-compte h1,
+body.page-compte h2,
+body.page-compte h3,
+body.page-compte h4,
+body.page-compte p,
+body.page-compte span,
+body.page-compte a,
+body.page-compte li,
+body.page-compte label,
+body.page-compte div {
+    color: inherit;
+}
+
+body.page-compte .compte-menu a {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+body.page-compte .compte-menu a:hover,
+body.page-compte .compte-menu .actif {
+    color: var(--or-champagne) !important;
+}
+
+/* ==========================================
+   DASHBOARD CLIENT — Fond émeraude
+========================================== */
+
+body.page-compte {
+    background: var(--emeraude);
+    color: var(--blanc);
+    padding-top: var(--header-height);
+    border-top: 1px solid rgba(198, 161, 91, 0.4);
+    border-bottom: 1px solid rgba(198, 161, 91, 0.4);
+}
+
+/* ═══════════════════════════════════════════
+   STRUCTURE GÉNÉRALE (client)
+═══════════════════════════════════════════ */
+.compte-entete { padding: 50px 0 0; }
+.compte-entete h1 {
+    font-size: 3.2rem;
+    color: var(--blanc);
+}
+.compte {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 48px;
+    padding: 40px 0 70px;
+}
+
+/* Menu latéral */
+.compte-menu li { border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+.compte-menu a,
+.lien-bouton {
+    display: block;
+    width: 100%;
+    padding: 12px 0;
+    font-size: 0.85rem;
+    text-align: left;
+    color: rgba(255, 255, 255, 0.8);
+    transition: color 0.2s ease;
+}
+.compte-menu a:hover { color: var(--or-champagne); }
+.compte-menu .actif { color: var(--or-champagne); }
+.lien-bouton {
+    background: none;
+    border: none;
+    font-family: inherit;
+    cursor: pointer;
+}
+.lien-bouton:hover { color: var(--or-champagne); }
+
+.compte-contenu h2 {
+    font-size: 1.8rem;
+    margin-bottom: 22px;
+    color: var(--blanc);
+}
+.compte-contenu h2:not(:first-child) { margin-top: 48px; }
+.compte-contenu .formulaire { max-width: 520px; }
+
+/* ═══════════════════════════════════════════
+   EN-TÊTE DASHBOARD
+═══════════════════════════════════════════ */
+.dash-head {
+    display: grid;
+    gap: 12px;
+    margin-bottom: clamp(32px, 5vh, 48px);
+    max-width: 720px;
+}
+
+.dash-greeting {
+    font-family: var(--sans);
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+}
+.dash-greeting strong {
+    color: var(--blanc);
+    font-weight: 600;
+}
+
+.dash-titre {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 400;
+    line-height: 1.1;
+    color: var(--blanc);
+    margin: 0;
+}
+.dash-titre em {
+    font-style: italic;
+    color: var(--or-champagne);
+}
+
+.dash-sous-titre {
+    font-family: var(--sans);
+    font-size: 0.9375rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+    max-width: 44ch;
+}
+
+/* ═══════════════════════════════════════════
+   STATS
+═══════════════════════════════════════════ */
+.dash-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.dash-stat {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    gap: 4px 14px;
+    align-items: center;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+}
+
+a.dash-stat:hover {
+    border-color: var(--or-champagne);
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.dash-stat-icon {
+    grid-row: 1 / 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--or-champagne);
+}
+
+.dash-stat-label {
+    font-family: var(--sans);
+    font-size: 0.6875rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+}
+
+.dash-stat-value {
+    font-family: var(--serif);
+    font-size: 1.75rem;
+    font-weight: 400;
+    color: var(--blanc);
+    line-height: 1;
+    letter-spacing: -0.02em;
+}
+
+/* ═══════════════════════════════════════════
+   TOTAL DÉPENSÉ
+═══════════════════════════════════════════ */
+.dash-total {
+    margin-bottom: 24px;
+}
+
+.dash-total-inner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 32px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(198, 161, 91, 0.3);
+    color: var(--blanc);
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.dash-total-label {
+    font-family: var(--sans);
+    font-size: 0.6875rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--or-champagne);
+    display: block;
+    margin-bottom: 8px;
+}
+
+.dash-total-value {
+    font-family: var(--serif);
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 400;
+    color: var(--blanc);
+    letter-spacing: -0.02em;
+    line-height: 1;
+}
+
+.dash-total-decor {
+    width: 120px;
+    height: 120px;
+    color: var(--or-champagne);
+    flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════
+   SECTIONS
+═══════════════════════════════════════════ */
+.dash-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.dash-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.dash-section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.dash-section-titre {
+    font-family: var(--serif);
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
+    font-weight: 400;
+    color: var(--blanc);
+    margin: 0;
+}
+.dash-section-titre em {
+    font-style: italic;
+    color: var(--or-champagne);
+}
+
+.dash-section-link {
+    font-family: var(--sans);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--or-champagne);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+.dash-section-link:hover {
+    color: var(--blanc);
+}
+
+/* ═══════════════════════════════════════════
+   COMMANDES
+═══════════════════════════════════════════ */
+.dash-commandes {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.dash-commande {
+    display: grid;
+    gap: 8px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+}
+
+.dash-commande:hover {
+    border-color: var(--or-champagne);
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(4px);
+}
+
+.dash-commande-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.dash-commande-ref {
+    font-family: var(--sans);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--blanc);
+    letter-spacing: 0.02em;
+}
+
+.dash-statut {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-family: var(--sans);
+    font-size: 0.625rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.dash-statut--en_attente {
+    background: rgba(198, 161, 91, 0.25);
+    color: var(--or-champagne);
+}
+.dash-statut--en_preparation,
+.dash-statut--expediee,
+.dash-statut--livree {
+    background: rgba(255, 255, 255, 0.15);
+    color: var(--blanc);
+}
+.dash-statut--annulee {
+    background: rgba(162, 59, 59, 0.3);
+    color: #F5A8A8;
+}
+
+.dash-commande-info {
+    display: flex;
+    gap: 16px;
+    font-family: var(--sans);
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.dash-commande-total {
+    font-family: var(--serif);
+    font-size: 1.125rem;
+    font-weight: 400;
+    color: var(--blanc);
+    margin-top: 4px;
+}
+
+/* ═══════════════════════════════════════════
+   FAVORIS
+═══════════════════════════════════════════ */
+.dash-favoris {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.dash-favori {
+    display: flex;
+    gap: 12px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+}
+
+.dash-favori:hover {
+    border-color: var(--or-champagne);
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.dash-favori-image {
+    width: 56px;
+    height: 56px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.05);
+    flex-shrink: 0;
+}
+
+.dash-favori-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.dash-favori-infos {
+    display: grid;
+    gap: 2px;
+    min-width: 0;
+}
+
+.dash-favori-cat {
+    font-family: var(--sans);
+    font-size: 0.625rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--or-champagne);
+    margin: 0;
+    font-weight: 500;
+}
+
+.dash-favori-nom {
+    font-family: var(--serif);
+    font-size: 0.875rem;
+    color: var(--blanc);
+    margin: 0;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dash-favori-prix {
+    font-family: var(--sans);
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 2px 0 0;
+}
+
+/* ═══════════════════════════════════════════
+   ADRESSE
+═══════════════════════════════════════════ */
+.dash-adresse {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.dash-adresse-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.dash-adresse-card {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+}
+
+.dash-adresse-info {
+    display: grid;
+    gap: 2px;
+}
+
+.dash-adresse-nom {
+    font-family: var(--sans);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--blanc);
+    margin: 0;
+}
+
+.dash-adresse-ligne {
+    font-family: var(--sans);
+    font-size: 0.8125rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+}
+
+.dash-adresse-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    background: rgba(198, 161, 91, 0.2);
+    color: var(--or-champagne);
+    border-radius: 999px;
+    font-family: var(--sans);
+    font-size: 0.625rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════
+   ÉTAT VIDE
+═══════════════════════════════════════════ */
+.dash-empty {
+    padding: 40px 20px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px dashed rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+}
+
+.dash-empty p {
+    font-family: var(--sans);
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0 0 16px;
+}
+
+.dash-btn {
+    display: inline-flex;
+    align-items: center;
+    height: 40px;
+    padding: 0 20px;
+    background: var(--blanc);
+    color: var(--noir);
+    border: 1px solid var(--blanc);
+    border-radius: 999px;
+    font-family: var(--sans);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.dash-btn:hover {
+    background: var(--or-champagne);
+    border-color: var(--or-champagne);
+    color: var(--noir);
+}
+
+/* ═══════════════════════════════════════════
+   DASHBOARD LIVREUR — Fond noir
+═══════════════════════════════════════════ */
+body.page-livreur {
+    background: var(--noir-profond);
+    color: var(--blanc);
+    padding-top: var(--header-height);
+    border-top: 1px solid rgba(74, 155, 133, 0.5);
+    border-bottom: 1px solid rgba(74, 155, 133, 0.5);
+}
+
+/* En-tête livreur */
+body.page-livreur .dash-greeting {
+    color: rgba(255, 255, 255, 0.7);
+}
+body.page-livreur .dash-greeting strong {
+    color: var(--blanc);
+}
+body.page-livreur .dash-titre {
+    color: var(--blanc);
+}
+body.page-livreur .dash-titre em {
+    color: var(--emeraude-clair);
+}
+body.page-livreur .dash-sous-titre {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Stats livreur */
+body.page-livreur .dash-stat {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+body.page-livreur .dash-stat:hover {
+    border-color: var(--emeraude-clair);
+}
+body.page-livreur .dash-stat-icon {
+    background: rgba(23, 61, 56, 0.3);
+    color: var(--emeraude-clair);
+}
+body.page-livreur .dash-stat-label {
+    color: rgba(255, 255, 255, 0.7);
+}
+body.page-livreur .dash-stat-value {
+    color: var(--blanc);
+}
+
+/* Total livreur (si utilisé) */
+body.page-livreur .dash-total-inner {
+    background: rgba(23, 61, 56, 0.3);
+    border: 1px solid rgba(74, 155, 133, 0.4);
+}
+body.page-livreur .dash-total-label {
+    color: var(--emeraude-clair);
+}
+
+/* Commandes livreur */
+body.page-livreur .dash-commande {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+body.page-livreur .dash-commande:hover {
+    border-color: var(--emeraude-clair);
+}
+body.page-livreur .dash-section-titre {
+    color: var(--blanc);
+}
+body.page-livreur .dash-section-titre em {
+    color: var(--emeraude-clair);
+}
+body.page-livreur .dash-section-link {
+    color: var(--emeraude-clair);
+}
+
+/* Boutons livreur */
+body.page-livreur .dash-btn {
+    background: var(--emeraude);
+    color: var(--blanc);
+    border-color: var(--emeraude);
+}
+body.page-livreur .dash-btn:hover {
+    background: var(--blanc);
+    color: var(--noir);
+    border-color: var(--blanc);
+}
+
+/* Statuts livreur */
+body.page-livreur .dash-statut--en_preparation,
+body.page-livreur .dash-statut--expediee,
+body.page-livreur .dash-statut--livree {
+    background: rgba(23, 61, 56, 0.4);
+    color: #A8D5B8;
+}
+body.page-livreur .dash-statut--en_attente {
+    background: rgba(198, 161, 91, 0.25);
+    color: var(--or-champagne);
+}
+
+/* Cartes spécifiques livreur */
+body.page-livreur .carte-info,
+body.page-livreur .dash-adresse-card {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+body.page-livreur .carte-info .etiquette {
+    color: var(--emeraude-clair);
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════ */
+@media (max-width: 1023px) {
+    .dash-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .dash-grid {
+        grid-template-columns: 1fr;
+    }
+    .compte {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+}
+
+@media (max-width: 640px) {
+    .dash-stats {
+        grid-template-columns: 1fr;
+    }
+    .dash-favoris {
+        grid-template-columns: 1fr;
+    }
+    .dash-total-inner {
+        padding: 24px;
+    }
+    .dash-total-decor {
+        display: none;
+    }
+}/* ==========================================
+   BOUTONS DASHBOARD — Visibilité garantie
+========================================== */
+
+/* Bouton par défaut : fond blanc, texte noir (visible sur émeraude et noir) */
+.dash-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 44px !important;
+    padding: 0 24px !important;
+    background: var(--blanc) !important;
+    color: var(--noir) !important;
+    border: 1px solid var(--blanc) !important;
+    border-radius: 999px !important;
+    font-family: var(--sans) !important;
+    font-size: 0.6875rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.12em !important;
+    text-transform: uppercase !important;
+    text-decoration: none !important;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease !important;
+    cursor: pointer !important;
+}
+
+.dash-btn:hover {
+    background: var(--or-champagne) !important;
+    border-color: var(--or-champagne) !important;
+    color: var(--noir) !important;
+    transform: translateY(-1px) !important;
+}
+
+/* Sur le dashboard client (émeraude), le bouton reste blanc */
+body.page-compte .dash-btn {
+    background: var(--blanc) !important;
+    color: var(--noir) !important;
+    border-color: var(--blanc) !important;
+}
+
+body.page-compte .dash-btn:hover {
+    background: var(--or-champagne) !important;
+    border-color: var(--or-champagne) !important;
+    color: var(--noir) !important;
+}
+
+/* Sur le dashboard livreur (noir), le bouton est émeraude */
+body.page-livreur .dash-btn {
+    background: var(--emeraude) !important;
+    color: var(--blanc) !important;
+    border-color: var(--emeraude) !important;
+}
+
+body.page-livreur .dash-btn:hover {
+    background: var(--blanc) !important;
+    color: var(--noir) !important;
+    border-color: var(--blanc) !important;
+}
+
+/* S'assurer que le texte du bouton est toujours lisible */
+.dash-btn * {
+    color: inherit !important;
+}

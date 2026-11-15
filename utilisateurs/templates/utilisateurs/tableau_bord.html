@@ -1,57 +1,194 @@
 {% extends 'utilisateurs/compte_base.html' %}
+{% block classe_body %}page-compte{% endblock %}
+{% load static %}
 
 {% block titre %}Mon compte - Maison Lumière{% endblock %}
 {% block titre_page %}Mon compte{% endblock %}
 
+{% block css_page %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+{% endblock %}
+
 {% block contenu_compte %}
-<h2>Bonjour {{ user.first_name|default:user.email }}</h2>
 
-{% with derniere=user.commandes.first %}
-<div class="cartes">
-    <div class="carte-info">
-        <span class="etiquette">Dernière commande</span>
-        {% if derniere %}
-            <p>
-                <a href="{% url 'commandes:detail' derniere.reference %}" style="text-decoration:underline;">{{ derniere.reference }}</a>
-                · <span class="statut statut-{{ derniere.statut }}">{{ derniere.get_statut_display }}</span><br>
-                {{ derniere.date_creation|date:"d/m/Y" }} · {{ derniere.total|floatformat:"0g" }} FCFA
-            </p>
-        {% else %}
-            <p>Aucune commande pour le moment.</p>
-        {% endif %}
+{# En-tête #}
+<header class="dash-head">
+    <p class="dash-greeting">
+        Bonjour <strong>{{ user.first_name|default:user.email }}</strong>
+    </p>
+    <h1 class="dash-titre">
+        Votre <em>espace.</em>
+    </h1>
+    <p class="dash-sous-titre">
+        Retrouvez vos commandes, favoris et informations en un coup d'œil.
+    </p>
+</header>
+
+{# Stats #}
+<div class="dash-stats">
+    <a href="{% url 'commandes:liste' %}" class="dash-stat">
+        <span class="dash-stat-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+                <rect x="8" y="2" width="8" height="4" rx="1"/>
+            </svg>
+        </span>
+        <span class="dash-stat-label">Commandes</span>
+        <strong class="dash-stat-value">{{ total_commandes }}</strong>
+    </a>
+
+    <div class="dash-stat">
+        <span class="dash-stat-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 6v6l4 2"/>
+            </svg>
+        </span>
+        <span class="dash-stat-label">En cours</span>
+        <strong class="dash-stat-value">{{ en_cours }}</strong>
     </div>
-    <div class="carte-info">
-        <span class="etiquette">Adresse par défaut</span>
-        {% if adresse %}
-            <p>{{ adresse.adresse }}<br>{{ adresse.ville }}</p>
-        {% else %}
-            <p>Aucune adresse enregistrée.</p>
-            <div class="carte-actions"><a href="{% url 'utilisateurs:mes_adresses' %}">Ajouter une adresse</a></div>
-        {% endif %}
-    </div>
+
+    <a href="{% url 'favoris:liste' %}" class="dash-stat">
+        <span class="dash-stat-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21.2l7.8-7.7 1-1.1a5.5 5.5 0 0 0 0-7.8z"/>
+            </svg>
+        </span>
+        <span class="dash-stat-label">Favoris</span>
+        <strong class="dash-stat-value">{{ nb_favoris }}</strong>
+    </a>
+
+    <a href="{% url 'utilisateurs:mes_adresses' %}" class="dash-stat">
+        <span class="dash-stat-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+            </svg>
+        </span>
+        <span class="dash-stat-label">Adresses</span>
+        <strong class="dash-stat-value">{{ nb_adresses }}</strong>
+    </a>
 </div>
 
-{% if derniere %}
-<h2>Mes commandes</h2>
-<div class="tableau-defile">
-    <table class="tableau-commandes">
-        <thead>
-            <tr><th>N° commande</th><th>Date</th><th>Statut</th><th>Total</th><th></th></tr>
-        </thead>
-        <tbody>
-            {% for commande in user.commandes.all|slice:":4" %}
-            <tr>
-                <td>{{ commande.reference }}</td>
-                <td>{{ commande.date_creation|date:"d/m/Y" }}</td>
-                <td><span class="statut statut-{{ commande.statut }}">{{ commande.get_statut_display }}</span></td>
-                <td>{{ commande.total|floatformat:"0g" }} FCFA</td>
-                <td><a href="{% url 'commandes:detail' commande.reference %}">Voir</a></td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+{# Total dépensé #}
+{% if total_depense %}
+<div class="dash-total">
+    <div class="dash-total-inner">
+        <div>
+            <span class="dash-total-label">Total dépensé</span>
+            <strong class="dash-total-value">{{ total_depense|floatformat:0 }} FCFA</strong>
+        </div>
+        <svg class="dash-total-decor" viewBox="0 0 100 100" aria-hidden="true">
+            <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.3"/>
+            <circle cx="50" cy="50" r="30" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.2"/>
+            <circle cx="50" cy="50" r="20" fill="none" stroke="currentColor" stroke-width="0.5" opacity="0.1"/>
+        </svg>
+    </div>
 </div>
-<p style="margin-top:18px;"><a href="{% url 'commandes:liste' %}" style="text-decoration:underline; font-size:.85rem;">Voir toutes mes commandes</a></p>
 {% endif %}
-{% endwith %}
+
+{# Dernières commandes + Favoris #}
+<div class="dash-grid">
+    {# Commandes #}
+    <section class="dash-section">
+        <header class="dash-section-head">
+            <h2 class="dash-section-titre">
+                Dernières <em>commandes.</em>
+            </h2>
+            {% if dernieres_commandes %}
+            <a href="{% url 'commandes:liste' %}" class="dash-section-link">
+                Tout voir →
+            </a>
+            {% endif %}
+        </header>
+
+        {% if dernieres_commandes %}
+        <div class="dash-commandes">
+            {% for commande in dernieres_commandes %}
+            <a href="{% url 'commandes:detail' commande.reference %}" class="dash-commande">
+                <div class="dash-commande-head">
+                    <span class="dash-commande-ref">{{ commande.reference }}</span>
+                    <span class="dash-statut dash-statut--{{ commande.statut }}">
+                        {{ commande.get_statut_display }}
+                    </span>
+                </div>
+                <div class="dash-commande-info">
+                    <span>{{ commande.date_creation|date:"d M Y" }}</span>
+                    <span>{{ commande.lignes.count }} article{{ commande.lignes.count|pluralize }}</span>
+                </div>
+                <div class="dash-commande-total">
+                    {{ commande.total|floatformat:0 }} FCFA
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="dash-empty">
+            <p>Vous n'avez pas encore passé de commande.</p>
+            <a href="{% url 'produits:liste' %}" class="dash-btn">Découvrir la boutique</a>
+        </div>
+        {% endif %}
+    </section>
+
+    {# Favoris #}
+    <section class="dash-section">
+        <header class="dash-section-head">
+            <h2 class="dash-section-titre">
+                Vos <em>favoris.</em>
+            </h2>
+            {% if derniers_favoris %}
+            <a href="{% url 'favoris:liste' %}" class="dash-section-link">
+                Tout voir →
+            </a>
+            {% endif %}
+        </header>
+
+        {% if derniers_favoris %}
+        <div class="dash-favoris">
+            {% for favori in derniers_favoris %}
+            <a href="{{ favori.produit.get_absolute_url }}" class="dash-favori">
+                <div class="dash-favori-image">
+                    {% if favori.produit.image %}
+                    <img src="{{ favori.produit.image.url }}" alt="{{ favori.produit.nom }}">
+                    {% endif %}
+                </div>
+                <div class="dash-favori-infos">
+                    <p class="dash-favori-cat">{{ favori.produit.categorie.nom }}</p>
+                    <p class="dash-favori-nom">{{ favori.produit.nom }}</p>
+                    <p class="dash-favori-prix">{{ favori.produit.prix_actuel|floatformat:0 }} FCFA</p>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="dash-empty">
+            <p>Vous n'avez pas encore de favoris.</p>
+            <a href="{% url 'produits:liste' %}" class="dash-btn">Explorer la collection</a>
+        </div>
+        {% endif %}
+    </section>
+</div>
+
+{# Adresse par défaut #}
+{% if adresse %}
+<section class="dash-adresse">
+    <div class="dash-adresse-head">
+        <h2 class="dash-section-titre">
+            Adresse <em>par défaut.</em>
+        </h2>
+        <a href="{% url 'utilisateurs:mes_adresses' %}" class="dash-section-link">
+            Gérer mes adresses →
+        </a>
+    </div>
+    <div class="dash-adresse-card">
+        <div class="dash-adresse-info">
+            <p class="dash-adresse-nom">{{ adresse.prenom }} {{ adresse.nom }}</p>
+            <p class="dash-adresse-ligne">{{ adresse.adresse }}</p>
+            <p class="dash-adresse-ligne">{{ adresse.ville }} · {{ adresse.telephone }}</p>
+        </div>
+        <span class="dash-adresse-badge">Par défaut</span>
+    </div>
+</section>
+{% endif %}
+
 {% endblock %}

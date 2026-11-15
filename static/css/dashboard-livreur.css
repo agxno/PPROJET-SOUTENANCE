@@ -1,0 +1,78 @@
+/* ==========================================
+   DASHBOARD LIVREUR — Fond noir
+========================================== */
+
+body.page-livreur {
+    background: #171717 !important;
+    color: var(--blanc) !important;
+}
+
+/* Réutilise les classes .dash-* du dashboard client, mais en noir */
+body.page-livreur .dash-head,
+body.page-livreur .dash-stats,
+body.page-livreur .dash-grid,
+body.page-livreur .dash-section {
+    /* Identique au client, mais fond noir */
+}
+
+body.page-livreur .dash-titre {
+    color: var(--blanc) !important;
+}
+body.page-livreur .dash-titre em {
+    color: var(--emeraude) !important;
+}
+
+/* Stats cards noires */
+body.page-livreur .dash-stat {
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: var(--blanc) !important;
+}
+body.page-livreur .dash-stat:hover {
+    border-color: var(--emeraude) !important;
+}
+
+body.page-livreur .dash-stat-icon {
+    background: rgba(23, 61, 56, 0.3) !important;
+    color: var(--emeraude) !important;
+}
+body.page-livreur .dash-stat-label {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+body.page-livreur .dash-stat-value {
+    color: var(--blanc) !important;
+}
+
+/* Commandes à livrer */
+body.page-livreur .dash-commande {
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: var(--blanc) !important;
+}
+body.page-livreur .dash-commande:hover {
+    border-color: var(--emeraude) !important;
+}
+
+/* Boutons */
+body.page-livreur .dash-btn,
+body.page-livreur .btn-action {
+    background: var(--emeraude) !important;
+    color: var(--blanc) !important;
+    border-color: var(--emeraude) !important;
+}
+body.page-livreur .dash-btn:hover,
+body.page-livreur .btn-action:hover {
+    background: var(--blanc) !important;
+    color: var(--noir) !important;
+    border-color: var(--blanc) !important;
+}
+
+/* Statuts spécifiques livreur */
+body.page-livreur .statut-expediee {
+    background: rgba(23, 61, 56, 0.3) !important;
+    color: #A8D5B8 !important;
+}
+body.page-livreur .statut-livree {
+    background: rgba(198, 161, 91, 0.2) !important;
+    color: var(--or-champagne) !important;
+}

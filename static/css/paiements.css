@@ -1,10 +1,12 @@
 /* ==========================================
-   PAIEMENT
+   PAIEMENT — Thème noir
 ========================================== */
 
 body.page-paiement {
-    background: var(--ivoire);
-    padding-top: var(--header-height, 85px);
+    background: var(--noir-profond);
+    padding-top: var(--header-height);
+    border-top: 1px solid rgba(198, 161, 91, 0.3);
+    border-bottom: 1px solid rgba(198, 161, 91, 0.3);
 }
 
 .paiement-page {
@@ -17,7 +19,7 @@ body.page-paiement {
     padding: 0 clamp(14px, 2.2vw, 30px);
 }
 
-/* Fil */
+/* ─── Fil ─── */
 .paiement-fil {
     display: flex;
     flex-wrap: wrap;
@@ -27,14 +29,14 @@ body.page-paiement {
     font-size: 0.75rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--gris);
+    color: rgba(255, 255, 255, 0.6);
     margin-bottom: 32px;
 }
-.paiement-fil a { color: var(--gris); text-decoration: none; transition: color 0.2s ease; }
+.paiement-fil a { color: rgba(255, 255, 255, 0.6); text-decoration: none; transition: color 0.2s ease; }
 .paiement-fil a:hover { color: var(--or-rose); }
-.paiement-fil-actuel { color: var(--noir); font-weight: 500; }
+.paiement-fil-actuel { color: var(--blanc); font-weight: 500; }
 
-/* En-tête */
+/* ─── En-tête ─── */
 .paiement-head {
     display: grid;
     gap: 12px;
@@ -66,7 +68,7 @@ body.page-paiement {
     font-size: clamp(2.25rem, 4vw, 3.5rem);
     font-weight: 400;
     line-height: 1.05;
-    color: var(--noir);
+    color: var(--blanc);
     margin: 0;
 }
 .paiement-titre em { font-style: italic; color: var(--or-rose); }
@@ -74,23 +76,23 @@ body.page-paiement {
 .paiement-sous-titre {
     font-family: var(--sans);
     font-size: 0.875rem;
-    color: var(--gris);
+    color: rgba(255, 255, 255, 0.6);
     margin: 0;
 }
-.paiement-sous-titre strong { color: var(--noir); font-weight: 600; }
+.paiement-sous-titre strong { color: var(--blanc); font-weight: 600; }
 
-/* Alertes */
+/* ─── Alertes ─── */
 .paiement-alerte {
     display: flex;
     align-items: flex-start;
     gap: 12px;
     padding: 16px 20px;
-    background: #F5DDD9;
-    border-left: 3px solid var(--erreur);
+    background: rgba(162, 59, 59, 0.15);
+    border-left: 3px solid #F5A8A8;
     border-radius: 8px;
     font-family: var(--sans);
     font-size: 0.875rem;
-    color: var(--erreur);
+    color: #F5A8A8;
     margin-bottom: 24px;
 }
 .paiement-alerte svg { flex-shrink: 0; margin-top: 2px; }
@@ -111,17 +113,17 @@ body.page-paiement {
     align-items: center;
     gap: 12px;
     padding: 16px 20px;
-    background: #F4E9D0;
+    background: rgba(198, 161, 91, 0.15);
     border-left: 3px solid var(--or-champagne);
     border-radius: 8px;
     font-family: var(--sans);
     font-size: 0.875rem;
-    color: #8A6B1F;
+    color: var(--or-champagne);
     margin-bottom: 24px;
 }
 .paiement-info svg { flex-shrink: 0; }
 
-/* Layout */
+/* ─── Layout ─── */
 .paiement-layout {
     display: grid;
     grid-template-columns: 1fr 420px;
@@ -129,7 +131,6 @@ body.page-paiement {
     align-items: start;
 }
 
-/* Sections */
 .paiement-form {
     display: flex;
     flex-direction: column;
@@ -137,8 +138,8 @@ body.page-paiement {
 }
 
 .paiement-section {
-    background: var(--blanc);
-    border: 1px solid var(--bordure);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 16px;
     padding: 28px;
 }
@@ -147,7 +148,7 @@ body.page-paiement {
     font-family: var(--serif);
     font-size: 1.375rem;
     font-weight: 400;
-    color: var(--noir);
+    color: var(--blanc);
     margin: 0 0 20px;
     display: flex;
     align-items: baseline;
@@ -162,7 +163,7 @@ body.page-paiement {
     font-weight: 600;
 }
 
-/* Moyens de paiement */
+/* ─── Moyens de paiement ─── */
 .paiement-moyens {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -174,8 +175,8 @@ body.page-paiement {
     align-items: center;
     gap: 16px;
     padding: 20px;
-    background: var(--ivoire);
-    border: 1px solid var(--bordure);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 12px;
     transition: border-color 0.2s ease, transform 0.2s ease;
 }
@@ -200,33 +201,33 @@ body.page-paiement {
     font-family: var(--sans);
     font-size: 0.875rem;
     font-weight: 600;
-    color: var(--noir);
+    color: var(--blanc);
     margin: 0;
 }
 
 .paiement-moyen-desc {
     font-family: var(--sans);
     font-size: 0.75rem;
-    color: var(--gris);
+    color: rgba(255, 255, 255, 0.6);
     margin: 0;
 }
 
-/* Texte */
+/* ─── Texte ─── */
 .paiement-texte {
     font-family: var(--sans);
     font-size: 0.9375rem;
     line-height: 1.7;
-    color: var(--gris);
+    color: rgba(255, 255, 255, 0.7);
     margin: 0 0 20px;
 }
-.paiement-texte strong { color: var(--noir); font-weight: 600; }
+.paiement-texte strong { color: var(--blanc); font-weight: 600; }
 
-/* Garanties */
+/* ─── Garanties ─── */
 .paiement-garanties {
     list-style: none;
     padding: 20px 0 0;
     margin: 0;
-    border-top: 1px solid var(--bordure);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
     display: grid;
     gap: 16px;
 }
@@ -239,7 +240,7 @@ body.page-paiement {
 
 .paiement-garanties svg {
     flex-shrink: 0;
-    color: var(--emeraude);
+    color: var(--emeraude-clair);
     margin-top: 2px;
 }
 
@@ -252,21 +253,21 @@ body.page-paiement {
     font-family: var(--sans);
     font-size: 0.8125rem;
     font-weight: 600;
-    color: var(--noir);
+    color: var(--blanc);
 }
 
 .paiement-garanties span {
     font-family: var(--sans);
     font-size: 0.75rem;
-    color: var(--gris);
+    color: rgba(255, 255, 255, 0.6);
 }
 
-/* Récap */
+/* ─── Récap ─── */
 .paiement-resume {
     position: sticky;
-    top: calc(var(--header-height, 85px) + 24px);
-    background: var(--blanc);
-    border: 1px solid var(--bordure);
+    top: calc(var(--header-height) + 24px);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 16px;
     padding: 28px;
     display: flex;
@@ -278,10 +279,10 @@ body.page-paiement {
     font-family: var(--serif);
     font-size: 1.375rem;
     font-weight: 400;
-    color: var(--noir);
+    color: var(--blanc);
     margin: 0;
     padding-bottom: 16px;
-    border-bottom: 1px solid var(--bordure);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .paiement-recap-ligne {
@@ -290,30 +291,31 @@ body.page-paiement {
     align-items: baseline;
     font-family: var(--sans);
     font-size: 0.875rem;
-    color: var(--noir);
+    color: var(--blanc);
 }
 
 .paiement-recap-ref {
-    color: var(--gris);
+    color: rgba(255, 255, 255, 0.5);
     font-size: 0.75rem;
     letter-spacing: 0.05em;
 }
 
 .paiement-recap-gratuit {
-    color: var(--emeraude);
+    color: var(--emeraude-clair);
     font-weight: 500;
 }
 
 .paiement-recap-total {
     padding-top: 16px;
-    border-top: 1px solid var(--bordure);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
     font-family: var(--serif);
     font-size: 1.5rem;
     font-weight: 400;
     margin-top: 4px;
+    color: var(--blanc);
 }
 
-/* Bouton payer */
+/* ─── Bouton payer ─── */
 .paiement-btn {
     display: inline-flex;
     align-items: center;
@@ -336,18 +338,19 @@ body.page-paiement {
 }
 
 .paiement-btn--principal {
-    background: linear-gradient(135deg, var(--emeraude) 0%, var(--bleu-nuit) 100%);
+    background: var(--or-rose);
     color: var(--blanc);
 }
 .paiement-btn--principal:hover:not(:disabled) {
-    background: linear-gradient(135deg, var(--bleu-nuit) 0%, var(--emeraude) 100%);
+    background: var(--blanc);
+    color: var(--noir);
     transform: translateY(-1px);
-    box-shadow: 0 8px 24px rgba(23, 61, 56, 0.35);
+    box-shadow: 0 8px 24px rgba(183, 110, 121, 0.35);
 }
 
 .paiement-btn--principal:disabled {
-    background: var(--bordure);
-    color: var(--gris);
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.4);
     cursor: not-allowed;
 }
 
@@ -358,7 +361,7 @@ body.page-paiement {
     transform: translateX(4px);
 }
 
-/* Retour */
+/* ─── Retour ─── */
 .paiement-retour {
     display: inline-flex;
     align-items: center;
@@ -367,7 +370,7 @@ body.page-paiement {
     font-family: var(--sans);
     font-size: 0.75rem;
     letter-spacing: 0.1em;
-    color: var(--gris);
+    color: rgba(255, 255, 255, 0.6);
     text-decoration: none;
     transition: color 0.2s ease;
 }
@@ -381,12 +384,12 @@ body.page-paiement {
     transform: translateX(-4px);
 }
 
-/* Avantages */
+/* ─── Avantages ─── */
 .paiement-avantages {
     list-style: none;
     padding: 16px 0 0;
     margin: 8px 0 0;
-    border-top: 1px solid var(--bordure);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
     display: grid;
     gap: 10px;
 }
@@ -397,14 +400,14 @@ body.page-paiement {
     gap: 10px;
     font-family: var(--sans);
     font-size: 0.75rem;
-    color: var(--gris);
+    color: rgba(255, 255, 255, 0.6);
 }
 .paiement-avantages svg {
     flex-shrink: 0;
-    color: var(--emeraude);
+    color: var(--emeraude-clair);
 }
 
-/* Responsive */
+/* ─── Responsive ─── */
 @media (max-width: 1023px) {
     .paiement-layout {
         grid-template-columns: 1fr;

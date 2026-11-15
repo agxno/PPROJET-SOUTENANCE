@@ -1,10 +1,12 @@
 /* ==========================================
-   CHECKOUT
+   CHECKOUT — Thème noir
 ========================================== */
 
 body.page-checkout {
-    background: var(--ivoire);
-    padding-top: var(--header-height, 85px);
+    background: var(--noir-profond);
+    padding-top: var(--header-height);
+    border-top: 1px solid rgba(198, 161, 91, 0.3);
+    border-bottom: 1px solid rgba(198, 161, 91, 0.3);
 }
 
 .checkout {
@@ -17,7 +19,7 @@ body.page-checkout {
     padding: 0 clamp(14px, 2.2vw, 30px);
 }
 
-/* Fil */
+/* ─── Fil ─── */
 .checkout-fil {
     display: flex;
     flex-wrap: wrap;
@@ -27,14 +29,18 @@ body.page-checkout {
     font-size: 0.75rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--gris);
+    color: rgba(255, 255, 255, 0.6);
     margin-bottom: 32px;
 }
-.checkout-fil a { color: var(--gris); text-decoration: none; transition: color 0.2s ease; }
+.checkout-fil a {
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
 .checkout-fil a:hover { color: var(--or-rose); }
-.checkout-fil-actuel { color: var(--noir); font-weight: 500; }
+.checkout-fil-actuel { color: var(--blanc); font-weight: 500; }
 
-/* En-tête */
+/* ─── En-tête ─── */
 .checkout-head {
     display: grid;
     gap: 12px;
@@ -66,29 +72,29 @@ body.page-checkout {
     font-size: clamp(2.25rem, 4vw, 3.5rem);
     font-weight: 400;
     line-height: 1.05;
-    color: var(--noir);
+    color: var(--blanc);
     margin: 0;
 }
 .checkout-titre em { font-style: italic; color: var(--or-rose); }
 
-/* Alerte */
+/* ─── Alerte ─── */
 .checkout-alerte {
     display: flex;
     align-items: center;
     gap: 12px;
     padding: 16px 20px;
-    background: #F4E9D0;
+    background: rgba(198, 161, 91, 0.15);
     border-left: 3px solid var(--or-champagne);
     border-radius: 8px;
     font-family: var(--sans);
     font-size: 0.875rem;
-    color: #8A6B1F;
+    color: var(--or-champagne);
     margin-bottom: 24px;
 }
 .checkout-alerte svg { flex-shrink: 0; }
 .checkout-alerte a { color: inherit; font-weight: 500; text-decoration: underline; }
 
-/* Layout */
+/* ─── Layout ─── */
 .checkout-layout {
     display: grid;
     grid-template-columns: 1fr 420px;
@@ -96,7 +102,6 @@ body.page-checkout {
     align-items: start;
 }
 
-/* Formulaire */
 .checkout-form {
     display: flex;
     flex-direction: column;
@@ -104,8 +109,8 @@ body.page-checkout {
 }
 
 .checkout-section {
-    background: var(--blanc);
-    border: 1px solid var(--bordure);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 16px;
     padding: 28px;
 }
@@ -114,7 +119,7 @@ body.page-checkout {
     font-family: var(--serif);
     font-size: 1.375rem;
     font-weight: 400;
-    color: var(--noir);
+    color: var(--blanc);
     margin: 0 0 20px;
     display: flex;
     align-items: baseline;
@@ -129,18 +134,14 @@ body.page-checkout {
     font-weight: 600;
 }
 
-/* Adresses */
+/* ─── Adresses ─── */
 .checkout-adresses {
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
 
-.checkout-adresse {
-    cursor: pointer;
-    display: block;
-}
-
+.checkout-adresse { cursor: pointer; display: block; }
 .checkout-adresse input {
     position: absolute;
     opacity: 0;
@@ -150,15 +151,15 @@ body.page-checkout {
 .checkout-adresse-card {
     position: relative;
     padding: 18px 20px;
-    border: 1.5px solid var(--bordure);
+    border: 1.5px solid rgba(255, 255, 255, 0.1);
     border-radius: 12px;
-    background: var(--blanc);
+    background: rgba(255, 255, 255, 0.03);
     transition: border-color 0.2s ease, background 0.2s ease;
 }
 
 .checkout-adresse input:checked + .checkout-adresse-card {
-    border-color: var(--emeraude);
-    background: rgba(23, 61, 56, 0.03);
+    border-color: var(--or-rose);
+    background: rgba(183, 110, 121, 0.08);
 }
 
 .checkout-adresse input:checked + .checkout-adresse-card::before {
@@ -169,7 +170,7 @@ body.page-checkout {
     transform: translateY(-50%);
     width: 3px;
     height: 60%;
-    background: var(--emeraude);
+    background: var(--or-rose);
     border-radius: 0 2px 2px 0;
 }
 
@@ -177,14 +178,14 @@ body.page-checkout {
     font-family: var(--sans);
     font-size: 0.875rem;
     font-weight: 600;
-    color: var(--noir);
+    color: var(--blanc);
     margin: 0 0 4px;
 }
 
 .checkout-adresse-ligne {
     font-family: var(--sans);
     font-size: 0.8125rem;
-    color: var(--gris);
+    color: rgba(255, 255, 255, 0.6);
     margin: 0;
     line-height: 1.5;
 }
@@ -193,8 +194,8 @@ body.page-checkout {
     display: inline-block;
     margin-top: 8px;
     padding: 3px 10px;
-    background: var(--ivoire);
-    color: var(--noir);
+    background: rgba(198, 161, 91, 0.2);
+    color: var(--or-champagne);
     border-radius: 999px;
     font-family: var(--sans);
     font-size: 0.625rem;
@@ -203,10 +204,10 @@ body.page-checkout {
     font-weight: 500;
 }
 
-/* Nouvelle adresse (details) */
+/* ─── Nouvelle adresse ─── */
 .checkout-nouvelle-adresse {
-    background: var(--blanc);
-    border: 1px solid var(--bordure);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 16px;
     overflow: hidden;
 }
@@ -221,34 +222,24 @@ body.page-checkout {
     font-family: var(--sans);
     font-size: 0.875rem;
     font-weight: 500;
-    color: var(--noir);
+    color: var(--blanc);
     transition: background 0.2s ease;
 }
 
-.checkout-nouvelle-adresse summary::-webkit-details-marker {
-    display: none;
-}
-
-.checkout-nouvelle-adresse summary:hover {
-    background: var(--ivoire);
-}
+.checkout-nouvelle-adresse summary::-webkit-details-marker { display: none; }
+.checkout-nouvelle-adresse summary:hover { background: rgba(255, 255, 255, 0.03); }
 
 .checkout-nouvelle-adresse summary svg {
     color: var(--or-champagne);
     transition: transform 0.3s ease;
 }
 
-.checkout-nouvelle-adresse[open] summary svg {
-    transform: rotate(45deg);
-}
-
+.checkout-nouvelle-adresse[open] summary svg { transform: rotate(45deg); }
 .checkout-nouvelle-adresse[open] summary {
-    border-bottom: 1px solid var(--bordure);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.checkout-adresse-form {
-    padding: 24px;
-}
+.checkout-adresse-form { padding: 24px; }
 
 .checkout-fields {
     display: grid;
@@ -266,7 +257,7 @@ body.page-checkout {
     font-size: 0.75rem;
     font-weight: 500;
     letter-spacing: 0.05em;
-    color: var(--noir);
+    color: var(--or-champagne);
 }
 
 .checkout-fields input[type="text"],
@@ -278,12 +269,12 @@ body.page-checkout {
     width: 100%;
     height: 46px;
     padding: 0 16px;
-    background: var(--blanc);
-    border: 1px solid var(--bordure);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 999px;
     font-family: var(--sans);
     font-size: 0.9375rem;
-    color: var(--noir);
+    color: var(--blanc);
     box-sizing: border-box;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
     outline: none;
@@ -297,17 +288,22 @@ body.page-checkout {
     resize: vertical;
 }
 
+.checkout-fields input::placeholder,
+.checkout-fields textarea::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
 .checkout-fields input:focus,
 .checkout-fields select:focus,
 .checkout-fields textarea:focus {
-    border-color: var(--emeraude);
-    box-shadow: 0 0 0 3px rgba(23, 61, 56, 0.12);
+    border-color: var(--or-rose);
+    box-shadow: 0 0 0 3px rgba(183, 110, 121, 0.15);
 }
 
 .checkout-fields .helptext {
     font-family: var(--sans);
     font-size: 0.75rem;
-    color: var(--gris);
+    color: rgba(255, 255, 255, 0.5);
     margin-top: 4px;
 }
 
@@ -317,7 +313,7 @@ body.page-checkout {
     margin: 4px 0 0;
     font-family: var(--sans);
     font-size: 0.75rem;
-    color: var(--erreur);
+    color: #F5A8A8;
 }
 
 .checkout-fields .checkbox-row {
@@ -334,9 +330,9 @@ body.page-checkout {
 /* ─── Récap ─── */
 .checkout-resume {
     position: sticky;
-    top: calc(var(--header-height, 85px) + 24px);
-    background: var(--blanc);
-    border: 1px solid var(--bordure);
+    top: calc(var(--header-height) + 24px);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 16px;
     padding: 28px;
     display: flex;
@@ -348,13 +344,12 @@ body.page-checkout {
     font-family: var(--serif);
     font-size: 1.375rem;
     font-weight: 400;
-    color: var(--noir);
+    color: var(--blanc);
     margin: 0;
     padding-bottom: 16px;
-    border-bottom: 1px solid var(--bordure);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* Lignes recap */
 .checkout-recap-lignes {
     list-style: none;
     padding: 0;
@@ -377,7 +372,7 @@ body.page-checkout {
     aspect-ratio: 1;
     border-radius: 8px;
     overflow: hidden;
-    background: var(--ivoire);
+    background: rgba(255, 255, 255, 0.04);
 }
 
 .checkout-recap-image img {
@@ -395,7 +390,7 @@ body.page-checkout {
     height: 20px;
     padding: 0 5px;
     border-radius: 50%;
-    background: var(--noir);
+    background: var(--or-rose);
     color: var(--blanc);
     font-family: var(--sans);
     font-size: 0.6875rem;
@@ -416,7 +411,7 @@ body.page-checkout {
     font-family: var(--sans);
     font-size: 0.8125rem;
     font-weight: 500;
-    color: var(--noir);
+    color: var(--blanc);
     margin: 0;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -426,7 +421,7 @@ body.page-checkout {
 .checkout-recap-cat {
     font-family: var(--sans);
     font-size: 0.6875rem;
-    color: var(--gris);
+    color: rgba(255, 255, 255, 0.5);
     margin: 0;
     letter-spacing: 0.05em;
 }
@@ -435,15 +430,14 @@ body.page-checkout {
     font-family: var(--sans);
     font-size: 0.8125rem;
     font-weight: 500;
-    color: var(--noir);
+    color: var(--blanc);
     margin: 0;
     white-space: nowrap;
 }
 
-/* Totaux */
 .checkout-recap-totaux {
     padding-top: 16px;
-    border-top: 1px solid var(--bordure);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -455,24 +449,24 @@ body.page-checkout {
     align-items: baseline;
     font-family: var(--sans);
     font-size: 0.875rem;
-    color: var(--noir);
+    color: var(--blanc);
 }
 
 .checkout-recap-gratuit {
-    color: var(--emeraude);
+    color: var(--emeraude-clair);
     font-weight: 500;
 }
 
 .checkout-recap-ligne-total--grand {
     padding-top: 12px;
-    border-top: 1px solid var(--bordure);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
     font-family: var(--serif);
     font-size: 1.375rem;
     font-weight: 400;
     margin-top: 4px;
 }
 
-/* Case CGV */
+/* ─── Case CGV ─── */
 .checkout-cgv {
     display: flex;
     align-items: flex-start;
@@ -480,7 +474,7 @@ body.page-checkout {
     font-family: var(--sans);
     font-size: 0.75rem;
     line-height: 1.5;
-    color: var(--gris);
+    color: rgba(255, 255, 255, 0.6);
     cursor: pointer;
     margin-top: 8px;
 }
@@ -493,17 +487,17 @@ body.page-checkout {
     height: 18px;
     margin: 1px 0 0 0;
     padding: 0;
-    border: 1.5px solid var(--bordure);
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
     border-radius: 4px;
-    background: var(--blanc);
+    background: rgba(255, 255, 255, 0.04);
     cursor: pointer;
     position: relative;
     transition: border-color 0.2s ease, background 0.2s ease;
 }
 
 .checkout-cgv input[type="checkbox"]:checked {
-    background: var(--emeraude);
-    border-color: var(--emeraude);
+    background: var(--or-rose);
+    border-color: var(--or-rose);
 }
 
 .checkout-cgv input[type="checkbox"]:checked::after {
@@ -519,17 +513,15 @@ body.page-checkout {
 }
 
 .checkout-cgv a {
-    color: var(--noir);
+    color: var(--blanc);
     text-decoration: underline;
     text-underline-offset: 2px;
     font-weight: 500;
 }
 
-.checkout-cgv a:hover {
-    color: var(--or-rose);
-}
+.checkout-cgv a:hover { color: var(--or-rose); }
 
-/* Boutons */
+/* ─── Boutons ─── */
 .checkout-btn {
     display: inline-flex;
     align-items: center;
@@ -552,41 +544,39 @@ body.page-checkout {
 }
 
 .checkout-btn--principal {
-    background: linear-gradient(135deg, var(--emeraude) 0%, var(--bleu-nuit) 100%);
+    background: var(--or-rose);
     color: var(--blanc);
 }
 .checkout-btn--principal:hover:not(:disabled) {
-    background: linear-gradient(135deg, var(--bleu-nuit) 0%, var(--emeraude) 100%);
+    background: var(--blanc);
+    color: var(--noir);
     transform: translateY(-1px);
-    box-shadow: 0 8px 24px rgba(23, 61, 56, 0.35);
+    box-shadow: 0 8px 24px rgba(183, 110, 121, 0.35);
 }
 
 .checkout-btn--principal:disabled {
-    background: var(--bordure);
-    color: var(--gris);
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.4);
     cursor: not-allowed;
 }
 
-.checkout-btn--principal svg {
-    transition: transform 0.3s ease;
-}
-.checkout-btn--principal:hover:not(:disabled) svg {
-    transform: translateX(4px);
-}
+.checkout-btn--principal svg { transition: transform 0.3s ease; }
+.checkout-btn--principal:hover:not(:disabled) svg { transform: translateX(4px); }
 
 .checkout-btn--contour {
     background: transparent;
-    color: var(--noir);
-    border: 1px solid var(--noir);
+    color: var(--blanc);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     width: auto;
     margin-top: 8px;
 }
 .checkout-btn--contour:hover {
-    background: var(--noir);
-    color: var(--blanc);
+    background: var(--blanc);
+    color: var(--noir);
+    border-color: var(--blanc);
 }
 
-/* Retour */
+/* ─── Retour ─── */
 .checkout-retour {
     display: inline-flex;
     align-items: center;
@@ -595,27 +585,21 @@ body.page-checkout {
     font-family: var(--sans);
     font-size: 0.75rem;
     letter-spacing: 0.1em;
-    color: var(--gris);
+    color: rgba(255, 255, 255, 0.6);
     text-decoration: none;
     transition: color 0.2s ease;
     margin-top: 4px;
 }
-.checkout-retour:hover {
-    color: var(--or-rose);
-}
-.checkout-retour svg {
-    transition: transform 0.2s ease;
-}
-.checkout-retour:hover svg {
-    transform: translateX(-4px);
-}
+.checkout-retour:hover { color: var(--or-rose); }
+.checkout-retour svg { transition: transform 0.2s ease; }
+.checkout-retour:hover svg { transform: translateX(-4px); }
 
-/* Avantages */
+/* ─── Avantages ─── */
 .checkout-avantages {
     list-style: none;
     padding: 16px 0 0;
     margin: 8px 0 0;
-    border-top: 1px solid var(--bordure);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
     display: grid;
     gap: 10px;
 }
@@ -626,36 +610,111 @@ body.page-checkout {
     gap: 10px;
     font-family: var(--sans);
     font-size: 0.75rem;
-    color: var(--gris);
+    color: rgba(255, 255, 255, 0.6);
 }
 .checkout-avantages svg {
     flex-shrink: 0;
-    color: var(--emeraude);
+    color: var(--emeraude-clair);
 }
 
-/* Vide */
+/* ─── Vide ─── */
 .checkout-vide-texte {
     font-family: var(--sans);
     font-size: 0.9375rem;
-    color: var(--gris);
+    color: rgba(255, 255, 255, 0.6);
     margin: 0 0 20px;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 1023px) {
+    .checkout-layout { grid-template-columns: 1fr; }
+    .checkout-resume { position: static; }
+}
+
+@media (max-width: 520px) {
+    .checkout-section { padding: 20px; }
+    .checkout-resume { padding: 20px; }
+}
+/* ==========================================
+   CORRECTION — Section "Vous aimerez aussi"
+========================================== */
+
+/* La grille des similaires : 4 colonnes */
+.produit-similaires-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+}
+
+/* Forcer les cards à s'adapter au fond noir */
+.produit-similaires-grid .boutique-card {
+    background: transparent !important;
+}
+
+/* Images : limiter la hauteur */
+.produit-similaires-grid .boutique-card-image {
+    aspect-ratio: 3 / 4 !important;
+    max-height: 340px;
+    background: rgba(255, 255, 255, 0.04) !important;
+    border-radius: 10px;
+}
+
+.produit-similaires-grid .boutique-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Nom en blanc */
+.produit-similaires-grid .boutique-card-nom,
+.produit-similaires-grid .boutique-card-nom a {
+    color: var(--blanc) !important;
+    font-size: 1rem;
+}
+
+.produit-similaires-grid .boutique-card-nom a:hover {
+    color: var(--or-rose) !important;
+}
+
+/* Catégorie en or champagne */
+.produit-similaires-grid .boutique-card-categorie {
+    color: var(--or-champagne) !important;
+}
+
+/* Prix en blanc */
+.produit-similaires-grid .boutique-card-prix-actuel {
+    color: var(--blanc) !important;
+}
+
+.produit-similaires-grid .boutique-card-prix-barre {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* Étoiles */
+.produit-similaires-grid .boutique-card-etoiles {
+    color: var(--or-champagne) !important;
+}
+
+/* Stock faible */
+.produit-similaires-grid .boutique-card-stock {
+    color: var(--or-rose) !important;
 }
 
 /* Responsive */
 @media (max-width: 1023px) {
-    .checkout-layout {
-        grid-template-columns: 1fr;
+    .produit-similaires-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
-    .checkout-resume {
-        position: static;
+    .produit-similaires-grid .boutique-card-image {
+        max-height: 280px;
     }
 }
 
 @media (max-width: 520px) {
-    .checkout-section {
-        padding: 20px;
+    .produit-similaires-grid {
+        grid-template-columns: 1fr;
     }
-    .checkout-resume {
-        padding: 20px;
+    .produit-similaires-grid .boutique-card-image {
+        max-height: 400px;
     }
 }

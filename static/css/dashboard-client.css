@@ -1,0 +1,199 @@
+/* ==========================================
+   DASHBOARD CLIENT — Fond émeraude
+========================================== */
+
+body.page-compte {
+    background: var(--emeraude);
+    color: var(--blanc);
+}
+
+/* Forcer le texte en blanc dans tout le dashboard */
+body.page-compte h1,
+body.page-compte h2,
+body.page-compte h3,
+body.page-compte h4,
+body.page-compte p,
+body.page-compte span,
+body.page-compte a {
+    color: var(--blanc);
+}
+
+/* En-tête */
+.dash-greeting,
+.dash-greeting strong {
+    color: rgba(255, 255, 255, 0.75) !important;
+}
+.dash-greeting strong {
+    color: var(--blanc) !important;
+}
+
+.dash-titre {
+    color: var(--blanc) !important;
+}
+.dash-titre em {
+    color: var(--or-champagne) !important;
+}
+
+.dash-sous-titre {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Stats cards */
+.dash-stat {
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: var(--blanc) !important;
+}
+.dash-stat:hover {
+    border-color: var(--or-champagne) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.dash-stat-icon {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: var(--or-champagne) !important;
+}
+
+.dash-stat-label {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.dash-stat-value {
+    color: var(--blanc) !important;
+}
+
+/* Total dépensé */
+.dash-total-inner {
+    background: rgba(0, 0, 0, 0.3) !important;
+    border: 1px solid rgba(198, 161, 91, 0.3) !important;
+}
+.dash-total-label {
+    color: var(--or-champagne) !important;
+}
+.dash-total-value {
+    color: var(--blanc) !important;
+}
+
+/* Sections */
+.dash-section-titre {
+    color: var(--blanc) !important;
+}
+.dash-section-titre em {
+    color: var(--or-champagne) !important;
+}
+
+.dash-section-link {
+    color: var(--or-champagne) !important;
+}
+
+/* Commandes */
+.dash-commande {
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: var(--blanc) !important;
+}
+.dash-commande:hover {
+    border-color: var(--or-champagne) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.dash-commande-ref {
+    color: var(--blanc) !important;
+}
+.dash-commande-info {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+.dash-commande-total {
+    color: var(--blanc) !important;
+}
+
+/* Statuts */
+.dash-statut {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: var(--blanc) !important;
+}
+.dash-statut--en_attente {
+    background: rgba(198, 161, 91, 0.25) !important;
+    color: var(--or-champagne) !important;
+}
+.dash-statut--en_preparation,
+.dash-statut--expediee,
+.dash-statut--livree {
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: var(--blanc) !important;
+}
+.dash-statut--annulee {
+    background: rgba(162, 59, 59, 0.3) !important;
+    color: #F5A8A8 !important;
+}
+
+/* Favoris */
+.dash-favori {
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: var(--blanc) !important;
+}
+.dash-favori:hover {
+    border-color: var(--or-champagne) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.dash-favori-image {
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+.dash-favori-cat {
+    color: var(--or-champagne) !important;
+}
+.dash-favori-nom {
+    color: var(--blanc) !important;
+}
+.dash-favori-prix {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Adresse */
+.dash-adresse-card {
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+.dash-adresse-nom {
+    color: var(--blanc) !important;
+}
+.dash-adresse-ligne {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+.dash-adresse-badge {
+    background: rgba(198, 161, 91, 0.2) !important;
+    color: var(--or-champagne) !important;
+}
+
+/* État vide */
+.dash-empty {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px dashed rgba(255, 255, 255, 0.2) !important;
+}
+.dash-empty p {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+.dash-btn {
+    background: var(--blanc) !important;
+    color: var(--noir) !important;
+    border-color: var(--blanc) !important;
+}
+.dash-btn:hover {
+    background: var(--or-champagne) !important;
+    border-color: var(--or-champagne) !important;
+    color: var(--noir) !important;
+}
+
+/* Sidebar compte (à adapter si tu en as une) */
+body.page-compte .compte-menu li {
+    border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+}
+body.page-compte .compte-menu a {
+    color: rgba(255, 255, 255, 0.75) !important;
+}
+body.page-compte .compte-menu a:hover,
+body.page-compte .compte-menu .actif {
+    color: var(--or-champagne) !important;
+}

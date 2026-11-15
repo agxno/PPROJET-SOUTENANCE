@@ -77,9 +77,46 @@ def renvoyer_activation(request):
 
 
 @login_required
+@login_required
 def tableau_bord(request):
+    from commandes.models import Commande
+    from favoris.models import Favori
+    from django.db.models import Sum
+
     adresse = request.user.adresses.filter(par_defaut=True).first()
-    return render(request, 'utilisateurs/tableau_bord.html', {'adresse': adresse})
+    commandes = request.user.commandes.all()
+    derniere = commandes.first()
+
+    # Stats
+    total_commandes = commandes.count()
+    en_cours = commandes.filter(
+        statut__in=['en_attente', 'en_preparation', 'expediee']
+    ).count()
+    total_depense = commandes.filter(
+        statut__in=['en_preparation', 'expediee', 'livree']
+    ).aggregate(total=Sum('total'))['total'] or 0
+    nb_favoris = Favori.objects.filter(utilisateur=request.user).count()
+    nb_adresses = request.user.adresses.count()
+
+    # Dernières commandes (4 max)
+    dernieres_commandes = commandes[:4]
+
+    # Derniers favoris (4 max)
+    derniers_favoris = Favori.objects.filter(
+        utilisateur=request.user
+    ).select_related('produit', 'produit__categorie')[:4]
+
+    return render(request, 'utilisateurs/tableau_bord.html', {
+        'adresse': adresse,
+        'derniere': derniere,
+        'total_commandes': total_commandes,
+        'en_cours': en_cours,
+        'total_depense': total_depense,
+        'nb_favoris': nb_favoris,
+        'nb_adresses': nb_adresses,
+        'dernieres_commandes': dernieres_commandes,
+        'derniers_favoris': derniers_favoris,
+    })
 
 
 @login_required
