@@ -37,9 +37,9 @@
                         <br><a href="{% url 'avis:laisser' ligne.produit.slug %}"><small>Donner mon avis</small></a>
                     {% endif %}
                 </td>
-                <td>{{ ligne.prix_unitaire|floatformat:"0g" }} FCFA</td>
-                <td>{{ ligne.quantite }}</td>
-                <td>{{ ligne.sous_total|floatformat:"0g" }} FCFA</td>
+                <td data-label="Prix">{{ ligne.prix_unitaire|floatformat:"0g" }} FCFA</td>
+                <td data-label="Qté">{{ ligne.quantite }}</td>
+                <td data-label="Total">{{ ligne.sous_total|floatformat:"0g" }} FCFA</td>
             </tr>
             {% endfor %}
         </tbody>

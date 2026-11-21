@@ -1,0 +1,203 @@
+/* ==========================================================================
+   RESPONSIVE — correctifs d'affichage (mobile, tablette, bureau)
+   Chargé en dernier dans base.html : il complète les autres feuilles de style.
+   Sommaire :
+     1. Sécurités générales
+     2. En-tête (navigation) sur tablette et mobile
+     3. Tableaux de commandes (bureau + cartes sur mobile)
+     4. Pages de connexion / inscription
+     5. Filtres de la boutique repliables sur mobile
+     6. Bouton de l'assistant vocal
+   ========================================================================== */
+
+/* ---------- 1. Sécurités générales ---------- */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+img, svg, video { max-width: 100%; }
+body { overflow-x: clip; }
+.conteneur, .container-luxe { min-width: 0; }
+
+/* ---------- 2. En-tête : 2 lignes compactes (logo + outils, puis menu) ---------- */
+@media (max-width: 860px) {
+    :root { --header-height: 100px; } /* affiné par responsive.js avec la hauteur réelle */
+
+    .verre-entete {
+        grid-template-columns: 1fr auto;
+        grid-template-areas:
+            "logo  outils"
+            "menu  menu";
+        justify-items: stretch;
+        align-items: center;
+        gap: 2px 12px;
+        padding: 8px 16px 4px;
+        background: rgba(10, 10, 10, 0.94);
+        -webkit-backdrop-filter: blur(12px);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(198, 161, 91, 0.2);
+        padding-left: max(16px, env(safe-area-inset-left));
+        padding-right: max(16px, env(safe-area-inset-right));
+    }
+    .verre-logo   { grid-area: logo;   order: 0; justify-self: start; font-size: 1.25rem; }
+    .verre-outils { grid-area: outils; justify-content: flex-end; flex-wrap: nowrap; gap: 0; }
+    .verre        { grid-area: menu;   width: 100%; justify-content: space-between; flex-wrap: nowrap; gap: 0; }
+    .verre-lien   { flex: 1 1 auto; justify-content: center; padding: 8px 4px; }
+    .verre-lien::after { left: 20%; right: 20%; bottom: 2px; }
+    .verre-icone  { width: 38px; height: 38px; }
+}
+@media (max-width: 640px) {
+    /* Le menu ne garde que les icônes (le texte se lit mal en si petit) */
+    .verre-lien span { display: none; }
+    .verre-lien svg  { display: block; width: 20px; height: 20px; }
+    .verre-lien      { padding: 9px 4px; }
+}
+@media (max-width: 480px) {
+    .verre-logo { font-size: 1.1rem; }
+    .verre-icone--recherche { display: none; } /* la recherche reste dans la page Boutique */
+    .verre-icone { width: 36px; height: 36px; }
+}
+@media (max-width: 340px) {
+    .verre-logo { font-size: 1rem; }
+    .verre-icone { width: 32px; }
+}
+
+/* ---------- 3. Tableaux de commandes ---------- */
+body .tableau-defile { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 8px 0 24px; }
+body .tableau-commandes { width: 100%; border-collapse: collapse; font-size: .9rem; }
+body .tableau-commandes th {
+    text-align: left;
+    padding: 12px 14px;
+    font-size: .68rem;
+    font-weight: 500;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--or-champagne);
+    border-bottom: 1px solid rgba(198, 161, 91, .35);
+    white-space: nowrap;
+}
+body .tableau-commandes td {
+    padding: 14px;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--bordure);
+}
+body .tableau-commandes td small { color: var(--texte-doux); }
+body .tableau-commandes td a { text-decoration: underline; text-underline-offset: 3px; }
+body .tableau-commandes tfoot .total td {
+    border-bottom: 0;
+    padding-top: 18px;
+    font-family: var(--police-titre);
+    font-size: 1.1rem;
+    color: var(--blanc);
+}
+
+@media (max-width: 860px) {
+    body .tableau-defile { overflow-x: visible; }
+    body .tableau-commandes,
+    body .tableau-commandes tbody,
+    body .tableau-commandes tfoot,
+    body .tableau-commandes tr { display: block; width: 100%; }
+
+    /* L'en-tête reste lisible par les lecteurs d'écran mais disparaît visuellement */
+    body .tableau-commandes thead {
+        position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0);
+    }
+    body .tableau-commandes tbody tr {
+        margin-bottom: 12px;
+        padding: 10px 16px;
+        border: 1px solid var(--bordure);
+        border-radius: 12px;
+        background: rgba(255, 255, 255, .04);
+    }
+    body .tableau-commandes td {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 16px;
+        padding: 7px 0;
+        border-bottom: 0;
+        text-align: right;
+    }
+    body .tableau-commandes td[data-label]::before {
+        content: attr(data-label);
+        flex: none;
+        font-size: .68rem;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+        color: var(--texte-doux);
+        text-align: left;
+    }
+    /* Cellule « Article » : titre en pleine largeur */
+    body .tableau-commandes td:not([data-label]) { text-align: left; display: block; }
+    body .tableau-commandes td:last-child:not([data-label]) { text-align: right; }
+    /* Ligne de total */
+    body .tableau-commandes tfoot tr.total {
+        display: flex; justify-content: space-between; padding: 14px 4px 0; border: 0; background: none;
+    }
+    body .tableau-commandes tfoot .total td { display: block; padding: 0; }
+}
+
+/* ---------- 4. Connexion / inscription ---------- */
+.auth-split > * { min-width: 0; }
+.auth-input-wrap { position: relative; display: flex; align-items: center; }
+.auth-input-wrap input { width: 100%; min-width: 0; }
+.auth-input-wrap .auth-input-icon { display: none; } /* l'icône est déjà dessinée dans le champ */
+/* Le bouton « œil » est désormais le seul œil : on retire celui du fond du champ */
+.auth-form input[type="password"],
+.auth-form input#id_password, .auth-form input#id_password1, .auth-form input#id_password2 {
+    background-image: none !important;
+}
+.auth-toggle-password { background-image: none !important; padding: 0 !important; top: 50%; transform: translateY(-50%); }
+.auth-forgot { text-align: right; margin: 2px 0 18px; }
+.auth-forgot a { font-size: .8rem; color: var(--gris); text-decoration: underline; text-underline-offset: 3px; }
+.auth-forgot a:hover { color: var(--emeraude); }
+
+@media (max-width: 1023px) {
+    .auth-split { height: auto; }
+    .auth-visual { aspect-ratio: auto; width: 100%; min-height: 320px; max-height: 420px; }
+    .auth-visual-bg img { width: 100%; height: 100%; object-fit: cover; }
+}
+@media (max-width: 640px) {
+    .auth-visual { min-height: 300px; }
+    .auth-visual-badge { display: none; } /* évite le chevauchement avec la citation */
+    .auth-form-side { padding: 32px 18px; }
+}
+
+/* ---------- 5. Filtres de la boutique repliables (tablette + mobile) ---------- */
+.boutique-filtres-toggle { display: none; }
+@media (max-width: 1023px) {
+    .boutique-filtres-toggle {
+        display: flex; align-items: center; justify-content: space-between;
+        width: 100%; padding: 14px 20px;
+        background: transparent; border: 0; border-bottom: 1px solid var(--bordure);
+        font: inherit; font-family: var(--police-titre); font-size: 1.05rem; color: var(--blanc);
+        cursor: pointer;
+    }
+    .boutique-filtres-toggle::after { content: "+"; font-size: 1.4rem; line-height: 1; color: var(--or-champagne); }
+    .boutique-filtres.ouvert .boutique-filtres-toggle::after { content: "\2212"; }
+    .boutique-filtres:not(.ouvert) .boutique-filtre { display: none; }
+    .boutique-filtres-head { padding-top: 10px; }
+    .boutique-filtres-head > span { display: none; } /* le titre « Filtres » est porté par le bouton */
+    .boutique-filtres-head:not(:has(a)) { display: none; }
+    .boutique-recherche input { min-width: 0; }
+}
+.boutique-recherche input { min-width: 0; }
+
+/* ---------- 6. Assistant vocal : plus discret sur petit écran ---------- */
+@media (max-width: 640px) {
+    .assistant { right: 12px; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); }
+    .assistant-bouton { width: 48px; height: 48px; }
+    .assistant-panneau { bottom: 62px; }
+    main { padding-bottom: 64px; } /* le bouton ne masque plus le bas des pages */
+}
+
+/* ---------- 7. Boutons d'action des commandes : pleine largeur sur mobile ---------- */
+@media (max-width: 640px) {
+    .actions-commande { display: flex; flex-direction: column; gap: 10px; }
+    .actions-commande .bouton,
+    .actions-commande form,
+    .actions-commande form .bouton { display: block; width: 100%; text-align: center; }
+}
+
+/* ---------- 8. Éléments qui forçaient la page à s'élargir ---------- */
+.contact-inner > *, .contact-info, .contact-facts li > * { min-width: 0; }
+.contact-facts a, .contact-facts span { overflow-wrap: anywhere; }
+.compte > *, .compte-contenu { min-width: 0; }
+.dash-stats > *, .dash-grid > *, .dash-head > * { min-width: 0; }

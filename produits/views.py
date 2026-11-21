@@ -54,6 +54,8 @@ def _catalogue(request, produits, titre, intro, recherche=False, page_type='bout
         nombre_avis=Count('avis', filter=Q(avis__statut='publie')),
     )
 
+    # Tri explicite : sans lui, la pagination peut répéter ou sauter des produits
+    produits = produits.order_by('-date_creation', '-pk')
     page_obj = Paginator(produits, PRODUITS_PAR_PAGE).get_page(request.GET.get('page'))
     params = request.GET.copy()
     params.pop('page', None)

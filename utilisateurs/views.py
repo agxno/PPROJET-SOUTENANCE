@@ -77,7 +77,6 @@ def renvoyer_activation(request):
 
 
 @login_required
-@login_required
 def tableau_bord(request):
     from commandes.models import Commande
     from favoris.models import Favori

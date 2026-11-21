@@ -75,6 +75,8 @@ class Commande(models.Model):
     def clean(self):
         if self.pk and self._statut_initial == 'annulee' and self.statut != 'annulee':
             raise ValidationError({'statut': "Une commande annulée ne peut pas être rouverte."})
+        if self.livreur_id and not self.livreur.est_livreur:
+            raise ValidationError({'livreur': "Cet utilisateur n'a pas le rôle de livreur."})
 
     def save(self, *args, **kwargs):
         ancien = self._statut_initial

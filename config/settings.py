@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+from django.core.exceptions import ImproperlyConfigured
 from dotenv import load_dotenv
 
 load_dotenv(BASE_DIR / '.env')
@@ -22,12 +23,18 @@ load_dotenv(BASE_DIR / '.env')
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-=6_l7!8mdhrr-wj*hw)t)*l2u-@wdryrmlo--s-d!x32^5y9rd'
+# En production : définir SECRET_KEY, DEBUG=False et ALLOWED_HOSTS dans le fichier .env.
+# La valeur ci-dessous ne sert qu'au développement local (DEBUG=True).
+DEBUG = os.environ.get('DEBUG', 'True').lower() == 'true'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+SECRET_KEY = os.environ.get('SECRET_KEY', '')
+if not SECRET_KEY:
+    if DEBUG:
+        SECRET_KEY = 'django-insecure-cle-de-developpement-local-uniquement'
+    else:
+        raise ImproperlyConfigured("SECRET_KEY doit être définie dans le .env quand DEBUG=False.")
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [h.strip() for h in os.environ.get('ALLOWED_HOSTS', '').split(',') if h.strip()]
 
 
 # Application definition
@@ -291,3 +298,25 @@ JAZZMIN_UI_TWEAKS = {
         "success": "btn-success",
     },
 }
+
+
+# ---------------------------------------------------------------------------
+# Sécurité des sessions et de la connexion (cf. chapitre « Sécurité » du mémoire)
+# ---------------------------------------------------------------------------
+# Déconnexion automatique après inactivité : la session expire quand le visiteur
+# reste inactif plus de SESSION_INACTIVITE_MINUTES (renouvelée à chaque requête).
+SESSION_COOKIE_AGE = int(os.environ.get('SESSION_INACTIVITE_MINUTES', '30')) * 60
+SESSION_SAVE_EVERY_REQUEST = True
+SESSION_COOKIE_HTTPONLY = True
+
+# HTTPS : actif uniquement hors développement (DEBUG=False).
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    if os.environ.get('DERRIERE_PROXY', 'False').lower() == 'true':
+        # Nginx / hébergeur qui termine le HTTPS et transmet l'en-tête X-Forwarded-Proto
+        SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
