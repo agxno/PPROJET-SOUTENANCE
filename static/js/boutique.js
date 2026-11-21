@@ -187,3 +187,42 @@
     // Init
     open(current);
 })();
+
+/* ==========================================
+   CHROMA GRID — PAGE PROMOTIONS
+   Effet lumineux piloté par le curseur
+========================================== */
+
+(() => {
+    const grid = document.getElementById('promos-chroma-grid');
+
+    if (!grid) return;
+
+    const cards = grid.querySelectorAll('.chroma-card');
+
+    cards.forEach((card) => {
+        const media = card.querySelector('.chroma-media');
+
+        if (!media) return;
+
+        card.addEventListener('pointerenter', () => {
+            card.classList.add('is-active');
+        });
+
+        card.addEventListener('pointermove', (event) => {
+            const rect = media.getBoundingClientRect();
+
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+
+            media.style.setProperty('--mouse-x', `${x}px`);
+            media.style.setProperty('--mouse-y', `${y}px`);
+        });
+
+        card.addEventListener('pointerleave', () => {
+            card.classList.remove('is-active');
+            media.style.setProperty('--mouse-x', '50%');
+            media.style.setProperty('--mouse-y', '50%');
+        });
+    });
+})();

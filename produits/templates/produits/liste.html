@@ -235,54 +235,96 @@
 {% endif %}
 
 
-{# ═══════════════════════════════════════════ #}
-{# PAGE PROMOTIONS — Grille éditoriale         #}
-{# ═══════════════════════════════════════════ #}
-{% if page_type == 'promotions' %}
 
+{% if page_type == 'promotions' %}
 <section class="promos-page">
     <div class="promos-page-inner">
+
         {% if page_obj %}
-        <div class="promos-grid">
-            {% for produit in page_obj %}
-            <a href="{{ produit.get_absolute_url }}" class="promos-card">
-                <div class="promos-card-image">
-                    {% if produit.image %}
-                    <img src="{{ produit.image.url }}" alt="{{ produit.nom }}" loading="lazy">
-                    {% endif %}
-                    <span class="promos-card-remise">-{{ produit.remise }}%</span>
-                </div>
-                <div class="promos-card-info">
-                    <p class="promos-card-cat">{{ produit.categorie.nom }}</p>
-                    <h3 class="promos-card-nom">{{ produit.nom }}</h3>
-                    <div class="promos-card-prix">
-                        <span class="promos-card-prix-promo">{{ produit.prix_promo|floatformat:0 }} FCFA</span>
-                        <s class="promos-card-prix-barre">{{ produit.prix|floatformat:0 }} FCFA</s>
-                    </div>
-                </div>
-            </a>
-            {% endfor %}
-        </div>
+            <div class="promos-grid chroma-grid" id="promos-chroma-grid">
+
+                {% for produit in page_obj %}
+                    <a href="{{ produit.get_absolute_url }}"
+                       class="promos-card chroma-card">
+
+                        <div class="promos-card-image chroma-media">
+
+                            {% if produit.image %}
+                                <img
+                                    src="{{ produit.image.url }}"
+                                    alt="{{ produit.nom }}"
+                                    loading="lazy"
+                                    class="chroma-mono"
+                                >
+
+                                <div class="chroma-color">
+                                    <img
+                                        src="{{ produit.image.url }}"
+                                        alt=""
+                                        loading="lazy"
+                                    >
+                                </div>
+                            {% endif %}
+
+                            <div class="chroma-wash"></div>
+
+                            <span class="promos-card-remise">
+                                -{{ produit.remise }}%
+                            </span>
+                        </div>
+
+                        <div class="promos-card-info chroma-info">
+                            <p class="promos-card-cat">
+                                {{ produit.categorie.nom }}
+                            </p>
+
+                            <h3 class="promos-card-nom chroma-title">
+                                {{ produit.nom }}
+                            </h3>
+
+                            <div class="promos-card-prix">
+                                <span class="promos-card-prix-promo">
+                                    {{ produit.prix_promo|floatformat:0 }} FCFA
+                                </span>
+
+                                <s class="promos-card-prix-barre">
+                                    {{ produit.prix|floatformat:0 }} FCFA
+                                </s>
+                            </div>
+                        </div>
+
+                    </a>
+                {% endfor %}
+
+            </div>
         {% else %}
-        <div class="catalogue-empty catalogue-empty--dark">
-            <p>Aucune promotion en cours. Revenez bientôt.</p>
-        </div>
+            <div class="catalogue-empty catalogue-empty--dark">
+                <p>Aucune promotion en cours. Revenez bientôt.</p>
+            </div>
         {% endif %}
 
         {% if page_obj.has_other_pages %}
-        <nav class="pagination pagination--light">
-            {% if page_obj.has_previous %}
-            <a href="?page={{ page_obj.previous_page_number }}">← Précédent</a>
-            {% endif %}
-            <span>Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }}</span>
-            {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">Suivant →</a>
-            {% endif %}
-        </nav>
+            <nav class="pagination pagination--light">
+                {% if page_obj.has_previous %}
+                    <a href="?{% if qs %}{{ qs }}&{% endif %}page={{ page_obj.previous_page_number }}">
+                        Précédent
+                    </a>
+                {% endif %}
+
+                <span>
+                    Page {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?{% if qs %}{{ qs }}&{% endif %}page={{ page_obj.next_page_number }}">
+                        Suivant
+                    </a>
+                {% endif %}
+            </nav>
         {% endif %}
+
     </div>
 </section>
-
 {% endif %}
 
 <script src="{% static 'js/boutique.js' %}" defer></script>
