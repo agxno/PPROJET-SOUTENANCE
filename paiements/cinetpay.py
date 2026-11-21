@@ -82,18 +82,17 @@ def synchroniser(paiement):
     try:
         reponse = _client().payment.get_status(paiement.transaction_id, PAYS)
 
-        # ─── LOGS DE DEBUG (à retirer en production) ───
-        logger.info(
+        # Détails de la réponse : niveau DEBUG, donc absents des journaux de production
+        logger.debug(
             "[CINETPAY] Réponse brute pour %s : %r",
             paiement.transaction_id, reponse
         )
-        logger.info(
+        logger.debug(
             "[CINETPAY] status=%r | code=%r | data=%r",
             getattr(reponse, 'status', None),
             getattr(reponse, 'code', None),
             getattr(reponse, 'data', None),
         )
-        # ────────────────────────────────────────────────
 
         statut = getattr(reponse, 'status', None)
         code = getattr(reponse, 'code', None)

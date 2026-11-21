@@ -51,9 +51,6 @@ def payer(request, reference):
         'commande': commande,
         'configure': configure,
         'mode_test': settings.CINETPAY_MODE_TEST,
-        'debug_site_url': settings.SITE_URL,
-        'debug_has_api_key': bool(settings.CINETPAY_API_KEY_CI),
-        'debug_has_api_password': bool(settings.CINETPAY_API_PASSWORD_CI),
     })
 
 
@@ -99,43 +96,6 @@ def _payer_cinetpay(request, commande):
                 f"Détail technique (visible en mode développement uniquement) : "
                 f"{type(erreur).__name__} : {erreur}",
             )
-        return redirect('paiements:payer', reference=commande.reference)
-    return redirect(url)
-    if not _cinetpay_configure():
-        logger.error("CinetPay mal configuré : SITE_URL (https) ou clés API manquantes dans .env.")
-        messages.error(
-            request,
-            "Le paiement en ligne n'est pas encore configuré. Contactez-nous pour régler votre commande.",
-        )
-        return redirect('commandes:detail', reference=commande.reference)
-
-    if not cinetpay.MONTANT_MIN <= commande.total <= cinetpay.MONTANT_MAX:
-        messages.error(
-            request,
-            "Le montant de cette commande ne permet pas le paiement en ligne "
-            "(entre 100 et 2 500 000 FCFA). Contactez-nous pour la régler.",
-        )
-        return redirect('commandes:detail', reference=commande.reference)
-
-    # On vérifie le vrai statut des tentatives précédentes avant d'en ouvrir une nouvelle
-    for ancien in commande.paiements.filter(statut='en_attente', fournisseur='cinetpay'):
-        cinetpay.synchroniser(ancien)
-    if commande.paiements.filter(statut='reussi').exists():
-        messages.success(request, "Votre paiement a bien été reçu.")
-        return redirect('commandes:confirmation', reference=commande.reference)
-    commande.paiements.filter(statut='en_attente').update(statut='echoue')
-
-    paiement = Paiement.objects.create(
-        commande=commande, fournisseur='cinetpay', methode='en_ligne', montant=commande.total,
-    )
-    try:
-        url = cinetpay.initialiser(paiement)
-    except Exception:
-        logger.exception("Échec de l'initialisation du paiement CinetPay")
-        paiement.marquer_echoue()
-        messages.error(
-            request, "Le service de paiement est momentanément indisponible. Réessayez dans quelques instants."
-        )
         return redirect('paiements:payer', reference=commande.reference)
     return redirect(url)
 

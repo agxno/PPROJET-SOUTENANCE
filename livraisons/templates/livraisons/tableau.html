@@ -24,10 +24,10 @@
             <tbody>
                 {% for commande in commandes %}
                 <tr>
-                    <td>{{ commande.reference }}</td>
-                    <td>{{ commande.livraison_prenom }} {{ commande.livraison_nom }}<br><small>{{ commande.livraison_telephone }}</small></td>
-                    <td>{{ commande.livraison_ville }}</td>
-                    <td><span class="statut statut-{{ commande.statut }}">{{ commande.get_statut_display }}</span></td>
+                    <td data-label="N° commande">{{ commande.reference }}</td>
+                    <td data-label="Client"><span>{{ commande.livraison_prenom }} {{ commande.livraison_nom }}<br><small>{{ commande.livraison_telephone }}</small></span></td>
+                    <td data-label="Ville">{{ commande.livraison_ville }}</td>
+                    <td data-label="Statut"><span class="statut statut-{{ commande.statut }}">{{ commande.get_statut_display }}</span></td>
                     <td><a href="{% url 'livraisons:detail' commande.reference %}">Voir</a></td>
                 </tr>
                 {% endfor %}

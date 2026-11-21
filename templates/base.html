@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/auth.css' %}">
     {% block css_page %}{% endblock %}
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
     <style>
         /* Icônes dans un cercle, utilisées sur tout le site */
         .valeur-icone {
@@ -45,6 +46,7 @@
         }
     </style>
     <script src="{% static 'js/site.js' %}" defer></script>
+    <script src="{% static 'js/responsive.js' %}" defer></script>
 </head>
 <body class="{% block classe_body %}{% endblock %}">
     <header class="verre-entete">

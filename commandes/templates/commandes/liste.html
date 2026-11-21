@@ -20,10 +20,10 @@
         <tbody>
             {% for commande in commandes %}
             <tr>
-                <td>{{ commande.reference }}</td>
-                <td>{{ commande.date_creation|date:"d/m/Y" }}</td>
-                <td><span class="statut statut-{{ commande.statut }}">{{ commande.get_statut_display }}</span></td>
-                <td>{{ commande.total|floatformat:"0g" }} FCFA</td>
+                <td data-label="N° commande">{{ commande.reference }}</td>
+                <td data-label="Date">{{ commande.date_creation|date:"d/m/Y" }}</td>
+                <td data-label="Statut"><span class="statut statut-{{ commande.statut }}">{{ commande.get_statut_display }}</span></td>
+                <td data-label="Total">{{ commande.total|floatformat:"0g" }} FCFA</td>
                 <td><a href="{% url 'commandes:detail' commande.reference %}">Voir</a></td>
             </tr>
             {% endfor %}
